@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavSalerComponent } from './nav-saler.component';
+import { ExportFileComponent } from './export-file.component';
 
-describe('NavSalerComponent', () => {
-  let component: NavSalerComponent;
-  let fixture: ComponentFixture<NavSalerComponent>;
+describe('ExportFileComponent', () => {
+  let component: ExportFileComponent;
+  let fixture: ComponentFixture<ExportFileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavSalerComponent]
+      imports: [ExportFileComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NavSalerComponent);
+    fixture = TestBed.createComponent(ExportFileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
