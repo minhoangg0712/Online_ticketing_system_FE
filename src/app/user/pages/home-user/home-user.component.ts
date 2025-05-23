@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SwiperModule } from 'swiper/angular';
+
 
 @Component({
   selector: 'app-home-user',
   standalone: true,
-  imports: [CommonModule,SwiperModule],
+  imports: [CommonModule],
   templateUrl: './home-user.component.html',
   styleUrl: './home-user.component.css'
 })
