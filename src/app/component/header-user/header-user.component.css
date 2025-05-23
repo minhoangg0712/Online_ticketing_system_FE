@@ -1,0 +1,75 @@
+.header-user {
+  display: flex;
+  align-items: center;
+  background-color: #ff8540;
+  font-family: Arial, sans-serif;
+}
+
+.logo img {
+  margin: 10px 0 0 50px;
+  height: auto;
+  width: 220px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin-left: 50px;
+  width: 300px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+.search-icon {
+  color: gray;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.create-event-btn {
+  background-color: #ff8540;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  margin-left: 50px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-event-btn:hover {
+  background-color: #ffffff;
+  color: black;
+}
+
+.nav-links,
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 50px;
+}
+
+.bi-ticket-perforated {
+  font-size: 1.8rem;
+  color: #000;
+}
+
+.nav-links a,
+.auth-links a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+

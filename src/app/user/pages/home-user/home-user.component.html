@@ -1,1 +1,52 @@
-<p>home-user works!</p>
+<nav class="sub-navbar">
+  <ul class="sub-nav-list">
+    <li class="sub-nav-item">Nhạc sống</li>
+    <li class="sub-nav-item">Sân khấu & Nghệ thuật</li>
+    <li class="sub-nav-item">Thể Thao</li>
+    <li class="sub-nav-item">Khác</li>
+  </ul>
+</nav>
+
+<div class="main-content">
+  <div class="carousel-container">
+    <div class="carousel-wrapper" [style.transition]="transitionStyle">
+      <div class="carousel-item" *ngFor="let image of visibleImages">
+        <div class="image-wrapper">
+          <img [src]="image.src" [alt]="image.alt" />
+          <button class="detail-button" (click)="viewDetails(image)">Xem chi tiết</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="arrow left" (click)="prevSlide()">&#10094;</button>
+    <button class="arrow right" (click)="nextSlide()">&#10095;</button>
+
+    <div class="dots">
+      <span
+        *ngFor="let dot of dotIndicators; let i = index"
+        [class.active]="i === currentIndex"
+      ></span>
+    </div>
+  </div>
+  <div class="special-event">
+    <p>Sự kiện đặc biệt</p>
+  </div>
+  <div class="carousel-vertical-container">
+    <div class="carousel-vertical-wrapper">
+      <div class="carousel-vertical-item" >
+        <div class="image-wrapper">
+          <img  />
+        </div>
+      </div>
+    </div>
+
+    <button class="" >&#10094;</button>
+    <button class="">&#10095;</button>
+
+  </div>
+</div>
+
+
+
+
+
