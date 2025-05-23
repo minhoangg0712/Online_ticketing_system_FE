@@ -1,56 +1,55 @@
 <div class="content">
-  <ng-content></ng-content>
-  <div class="search-filter-section">
-    <div class="search-section">
-      <div class="search-input-wrapper">
-        <i class="bi bi-search search-icon"></i>
-        <input
-          type="text"
-          placeholder="Tìm kiếm sự kiện..."
-          class="search-input"
-        />
-      </div>
+    <div class="search-filter-section">
+        <div class="search-section">
+            <div class="search-input-wrapper">
+                <i class="bi bi-search search-icon"></i>
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm sự kiện..."
+                    class="search-input"
+                />
+            </div>
+        </div>
+        
+        <div class="filter-tab">
+            <button class="filter-btn" (click)="setTab('upcoming')" [class.active]="selectedTab === 'upcoming'">
+                <i class="bi bi-calendar-event"></i>
+                <span>Sắp tới</span>
+            </button>
+            
+            <button class="filter-btn" (click)="setTab('past')" [class.active]="selectedTab === 'past'">
+                <i class="bi bi-clock-history"></i>
+                <span>Đã qua</span>
+            </button>
+            
+            <button class="filter-btn" (click)="setTab('pending')" [class.active]="selectedTab === 'pending'">
+                <i class="bi bi-hourglass-split"></i>
+                <span>Chờ duyệt</span>
+            </button>
+            
+            <button class="filter-btn" (click)="setTab('draft')" [class.active]="selectedTab === 'draft'">
+                <i class="bi bi-file-earmark-text"></i>
+                <span>Nháp</span>
+            </button>
+        </div>
     </div>
 
-    <!-- Filter Tabs -->
-    <div class="filter-tabs">
-      <button class="filter-tab active">
-        <i class="bi bi-calendar-event"></i>
-        <span>Sắp tới</span>
-      </button>
-
-      <button class="filter-tab">
-        <i class="bi bi-clock-history"></i>
-        <span>Đã qua</span>
-      </button>
-
-      <button class="filter-tab">
-        <i class="bi bi-hourglass-split"></i>
-        <span>Chờ duyệt</span>
-      </button>
-
-      <button class="filter-tab">
-        <i class="bi bi-file-earmark-text"></i>
-        <span>Nháp</span>
-      </button>
+    <!-- Nội dung động -->
+    <div class="events-list">
+        <ng-container *ngIf="selectedTab === 'upcoming'">
+            <app-upcoming></app-upcoming>
+        </ng-container>
+        
+        <ng-container *ngIf="selectedTab === 'past'">
+            <app-past></app-past>
+        </ng-container>
+        
+        <ng-container *ngIf="selectedTab === 'pending'">
+            <app-pending></app-pending>
+        </ng-container>
+        
+        <ng-container *ngIf="selectedTab === 'draft'">
+            <app-draft></app-draft>
+        </ng-container>
     </div>
-  </div>
-
-  <!-- Thông báo không có sự kiện -->
-  <div class="no-events">
-    <div class="no-events-icon">
-      <i class="bi bi-calendar-x"></i>
-    </div>
-    <h3 class="no-events-title">Không có sự kiện nào</h3>
-    <p class="no-events-subtitle">Bạn chưa tạo sự kiện nào. Hãy tạo sự kiện đầu tiên của bạn!</p>
-    <button class="create-first-event-btn" (click)="createNewEvent()">
-      <i class="bi bi-plus-lg"></i>
-      <span>Tạo sự kiện đầu tiên</span>
-    </button>
-  </div>
-
-  <!-- Sự kiện -->
-  <div class="events-list">
-    <ng-content></ng-content>
-  </div>
 </div>
