@@ -28,7 +28,6 @@
 
 .main-content {
   padding: 20px;
-  background-color: #1e1e1e;
   color: white;
 }
 
@@ -49,7 +48,6 @@ button.btn-light {
   max-width: 1300px;
   margin: 20px auto;
   overflow: hidden;
-  background-color: #1e1e1e;
   border-radius: 12px;
   padding: 20px 0;
 }
@@ -126,7 +124,7 @@ button.btn-light {
   display: inline-block;
   width: 10px;
   height: 10px;
-  background: white;
+  background: gray;
   margin: 0 4px;
   border-radius: 50%;
   cursor: pointer;
