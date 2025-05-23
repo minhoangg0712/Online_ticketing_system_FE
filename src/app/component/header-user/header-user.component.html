@@ -1,1 +1,29 @@
-<p>header-user works!</p>
+<header class="header-user">
+  <div class="logo">
+    <img src="assets/logoeventa.png" alt="Eventa Logo"/>
+  </div>
+
+  <div class="search-box">
+    <i class="bi bi-search search-icon"></i>
+    <input type="text" placeholder="Bạn tìm gì hôm nay ?" />
+  </div>
+
+  <button class="create-event-btn" (click)="goToOrganizer()">
+    Tạo sự kiện
+  </button>
+
+  <div class="nav-links">
+    <i class="bi bi-ticket-perforated"></i>
+    <a href="#">Vé đã mua</a>
+  </div>
+
+  <div class="auth-links">
+    <a href="#">Đăng nhập</a>
+    <span>|</span>
+    <a href="#">Đăng ký</a>
+  </div>
+</header>
+
+
+
+
