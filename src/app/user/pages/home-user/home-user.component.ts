@@ -6,7 +6,7 @@ import { SwiperModule } from 'swiper/angular';
 @Component({
   selector: 'app-home-user',
   standalone: true,
-  imports: [CommonModule,SwiperModule],
+  imports: [CommonModule, SwiperModule],
   templateUrl: './home-user.component.html',
   styleUrl: './home-user.component.css'
 })
