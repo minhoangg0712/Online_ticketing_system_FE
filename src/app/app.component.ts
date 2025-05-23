@@ -11,4 +11,5 @@ import { CommonModule } from "@angular/common";
 })
 export class AppComponent {
   title = 'Online_ticketing_system_FE';
+  isAuthPage: boolean = false;
 }
