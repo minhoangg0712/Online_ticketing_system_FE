@@ -1,0 +1,30 @@
+<div class="trending-section">
+  <div class="section-header">
+    <div class="fire-icon">🔥</div>
+    <p>Sự kiện xu hướng</p>
+  </div>
+  
+  <div class="carousel-container">
+    <div class="carousel-wrapper" [style.transform]="getTransformStyle()">
+      <div class="carousel-item" *ngFor="let item of items; let i = index">
+        <p class="item-number">{{ i + 1 }}</p>
+        <div class="item-content">
+          <img [src]="item.image" [alt]="item.title" />
+        </div>
+      </div>
+    </div>
+    
+    <button 
+      class="nav-btn prev-btn" 
+      (click)="prevSlide()" 
+      [disabled]="isPrevDisabled()">
+      ‹
+    </button>
+    <button 
+      class="nav-btn next-btn" 
+      (click)="nextSlide()" 
+      [disabled]="isNextDisabled()">
+      ›
+    </button>
+  </div>
+</div>
