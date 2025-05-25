@@ -11,6 +11,7 @@ export const routes: Routes = [
     path: 'organizer',
     component: NavOrganizerComponent,
     children: [
+      { path: '', redirectTo: 'events', pathMatch: 'full' },
       { path: 'events', component: HomeOrganizerComponent },
       { path: 'export-file', component: ExportFileComponent },
       { path: 'create-event', component: CreateEventComponent },

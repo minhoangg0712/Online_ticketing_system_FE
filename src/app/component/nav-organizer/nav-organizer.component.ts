@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CreateEventComponent } from '../../organizer/pages/create-event/create-event.component';
-import { HomeOrganizerComponent } from "../../organizer/pages/home-organizer/home-organizer.component";
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav-organizer',
@@ -11,9 +10,7 @@ import { HomeOrganizerComponent } from "../../organizer/pages/home-organizer/hom
   imports: [
     RouterModule,
     CommonModule,
-    CreateEventComponent,
-    HomeOrganizerComponent
-],
+  ],
   templateUrl: './nav-organizer.component.html',
   styleUrls: ['./nav-organizer.component.css']
 })
@@ -23,16 +20,15 @@ export class NavOrganizerComponent implements OnInit {
   isLogoutModalOpen: boolean = false;
   notificationCount: number = 2;
   currentDate: Date = new Date();
-  selectedTab: string = '';
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.currentRoute = this.router.url;
-  }
-
-  setTab(tab: string) {
-    this.selectedTab = tab;
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.currentRoute = event.urlAfterRedirects;
+      });
   }
 
   goToEvents(): void {
@@ -45,5 +41,9 @@ export class NavOrganizerComponent implements OnInit {
 
   goToLegalDocument(): void {
     this.router.navigate(['/organizer/legal-document']);
+  }
+
+  goToCreateEvent(): void {
+    this.router.navigate(['/organizer/create-event']);
   }
 }
