@@ -4,9 +4,10 @@ import { NavOrganizerComponent } from './component/nav-organizer/nav-organizer.c
 import { ExportFileComponent } from './organizer/pages/export-file/export-file.component';
 import { HomeUserComponent } from './user/pages/home-user/home-user.component';
 import { CreateEventComponent } from './organizer/pages/create-event/create-event.component';
+import { HomeAdminComponent } from './admin/pages/home-admin/home-admin.component';
 
 export const routes: Routes = [
-    {
+  {
     path: 'organizer',
     component: NavOrganizerComponent,
     children: [
@@ -15,5 +16,11 @@ export const routes: Routes = [
       { path: 'create-event', component: CreateEventComponent },
     ]
   },
-  {path: 'home', component: HomeUserComponent}
+  { path: 'home', component: HomeUserComponent },
+  {
+    path: 'admin',component: HomeAdminComponent,
+    // children: [
+    //   { path: 'home', component: HomeAdminComponent },
+    // ]
+  }
 ];
