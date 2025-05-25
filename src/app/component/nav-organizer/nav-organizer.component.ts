@@ -1,35 +1,49 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav-organizer',
+  standalone: true,
   imports: [
     RouterModule,
     CommonModule,
   ],
   templateUrl: './nav-organizer.component.html',
-  styleUrl: './nav-organizer.component.css'
+  styleUrls: ['./nav-organizer.component.css']
 })
-export class NavOrganizerComponent {
+export class NavOrganizerComponent implements OnInit {
   currentRoute: string = '';
   isLoggedIn: boolean = false;
   isLogoutModalOpen: boolean = false;
-  notificationCount: number = 2; // Example notification count
+  notificationCount: number = 2;
   currentDate: Date = new Date();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.currentRoute = event.urlAfterRedirects;
+      });
+  }
 
   goToEvents(): void {
     this.router.navigate(['/organizer/events']);
   }
-  
+
   goToExportFile(): void {
     this.router.navigate(['/organizer/export-file']);
   }
-  
+
   goToLegalDocument(): void {
     this.router.navigate(['/organizer/legal-document']);
+  }
+
+  goToCreateEvent(): void {
+    this.router.navigate(['/organizer/create-event']);
   }
 }
