@@ -3,6 +3,7 @@ import { HomeOrganizerComponent } from './organizer/pages/home-organizer/home-or
 import { NavOrganizerComponent } from './component/nav-organizer/nav-organizer.component';
 import { ExportFileComponent } from './organizer/pages/export-file/export-file.component';
 import { HomeUserComponent } from './user/pages/home-user/home-user.component';
+import { CreateEventComponent } from './organizer/pages/create-event/create-event.component';
 
 export const routes: Routes = [
     {
@@ -11,6 +12,7 @@ export const routes: Routes = [
     children: [
       { path: 'events', component: HomeOrganizerComponent },
       { path: 'export-file', component: ExportFileComponent },
+      { path: 'create-event', component: CreateEventComponent },
     ]
   },
   {path: 'home', component: HomeUserComponent}
