@@ -1,8 +1,14 @@
 import { Component, OnInit, OnDestroy, Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { FooterComponent } from '../../../component/admin/footer/footer.component';
+import { HeaderComponent } from '../../../component/admin/header/header.component';
+import { SidebarComponent } from "../../../component/admin/sidebar/sidebar.component";
+
+
 @Component({
   selector: 'app-home-admin',
-  imports: [],
+  imports: [CommonModule, FooterComponent, HeaderComponent, SidebarComponent],
   templateUrl: './home-admin.component.html',
   styleUrl: './home-admin.component.css'
 })
