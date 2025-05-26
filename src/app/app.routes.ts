@@ -7,32 +7,34 @@ import { HomeAdminComponent } from './admin/pages/home-admin/home-admin.componen
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { CreateEventComponent } from './organizer/pages/create-event/create-event.component';
 
 export const routes: Routes = [
-  {
-    path: 'organizer',
+  { path: 'login', component: LoginComponent},
+  { path: 'signup', component: RegisterComponent},
+  { path: 'reset-password', component: ForgotPasswordComponent},
+
+  { path: 'organizer',
     component: NavOrganizerComponent,
     children: [
       { path: 'events', component: HomeOrganizerComponent },
       { path: 'export-file', component: ExportFileComponent },
+      { path: 'create-event', component: CreateEventComponent },
+      { path: '', redirectTo: 'events', pathMatch: 'full' }
     ]
   },
+
+
+
+
   { path: 'home', component: HomeUserComponent },
+
+
+
+
   {
     path: 'admin',
     component: HomeAdminComponent,
    
   },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'signup',
-    component: RegisterComponent
-  },
-  {
-    path: 'reset-password',
-    component: ForgotPasswordComponent
-  }
 ];
