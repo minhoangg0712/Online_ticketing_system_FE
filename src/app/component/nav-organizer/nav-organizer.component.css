@@ -181,9 +181,8 @@
 
 /* Content area */
 .content {
-  padding: 30px;
   flex: 1;
-  background-color: #343434;
+  background-color: #4b4b4b;
   min-height: calc(100vh - 120px);
 }
 

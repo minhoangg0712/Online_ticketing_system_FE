@@ -1,1 +1,33 @@
-<p>create-event works!</p>
+<div class="main-content">
+  <nav class="nav-header">
+    <div class="nav-buttons">
+      <button class="nav-item" (click)="setTab('info')" [class.active]="selectedTab === 'info'">
+        <i class="bi bi-calendar-fill"></i>
+        <span>Thông tin sự kiện</span>
+      </button>
+      <button class="nav-item" (click)="setTab('date')" [class.active]="selectedTab === 'date'">
+        <i class="bi bi-folder-fill"></i>
+        <span>Thời gian & loại vé</span>
+      </button>
+      <button class="nav-item" (click)="setTab('pay')" [class.active]="selectedTab === 'pay'">
+        <i class="bi bi-credit-card-fill"></i>
+        <span>Thanh toán</span>
+      </button>
+    </div>
+    <button class="btn btn-continue" (click)="onContinue()" [disabled]="selectedTab === 'pay'">
+      Tiếp tục
+    </button>
+  </nav>
+
+  <div class="content">
+    <ng-container *ngIf="selectedTab === 'info'">
+      <app-info></app-info>
+    </ng-container>
+    <ng-container *ngIf="selectedTab === 'date'">
+      <app-date></app-date>
+    </ng-container>
+    <ng-container *ngIf="selectedTab === 'pay'">
+      <app-pay></app-pay>
+    </ng-container>
+  </div>
+</div>
