@@ -4,6 +4,9 @@ import { NavOrganizerComponent } from './component/nav-organizer/nav-organizer.c
 import { ExportFileComponent } from './organizer/pages/export-file/export-file.component';
 import { HomeUserComponent } from './user/pages/home-user/home-user.component';
 import { HomeAdminComponent } from './admin/pages/home-admin/home-admin.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   {
@@ -19,5 +22,17 @@ export const routes: Routes = [
     path: 'admin',
     component: HomeAdminComponent,
    
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'signup',
+    component: RegisterComponent
+  },
+  {
+    path: 'reset-password',
+    component: ForgotPasswordComponent
   }
 ];
