@@ -1,0 +1,65 @@
+.filter-tab {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.tab-group {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: 75px;
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+  cursor: pointer;
+  padding-bottom: 4px;
+  transition: color 0.3s;
+}
+
+.filter-btn:hover {
+  color: #222;
+}
+
+.filter-btn.active {
+  color: #222;
+  font-weight: 600;
+}
+
+.filter-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #00c896; /* màu xanh highlight */
+  border-radius: 2px;
+}
+
+.see-more-btn {
+  color: #222;
+  font-size: 14px;
+  gap:5px;
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s;
+}
+
+.see-more-btn:hover {
+  color: #222;
+}
+
+.see-more-btn i {
+  margin-right: 70px;
+  font-size: 12px;
+}
