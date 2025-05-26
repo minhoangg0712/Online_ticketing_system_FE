@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { TrendingEventComponent } from '../../slides/trending-event/trending-event.component';
 import { ForyouEventComponent } from '../../slides/foryou-event/foryou-event.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TimelineEventComponent } from "../../slides/EventTimeline/timeline-event/timeline-event.component";
 
 @Component({
   selector: 'app-home-user',
   standalone: true,
-  imports: [CommonModule, TrendingEventComponent, ForyouEventComponent, HttpClientModule],
+  imports: [CommonModule, TrendingEventComponent, ForyouEventComponent, HttpClientModule, TimelineEventComponent],
   templateUrl: './home-user.component.html',
   styleUrl: './home-user.component.css'
 })
