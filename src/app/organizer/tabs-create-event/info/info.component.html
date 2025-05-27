@@ -1,204 +1,158 @@
 <div class="form-wrapper">
-  <!-- Upload hình ảnh -->
-  <div class="upload-section">
-    <div class="section-label">Upload hình ảnh</div>
+  <section class="section-upload">
+    <label>Upload hình ảnh</label>
     <div class="image-upload-row">
-      <!-- Logo sự kiện -->
       <div class="image-box" (click)="triggerFileInput('eventLogo')">
-        <input #eventLogoInput type="file" accept="image/*" style="display: none" (change)="onImageSelected($event, 'eventLogo')">
-        <div *ngIf="!eventLogoPreview" class="upload-placeholder">
-          <img src="assets/icons/upload-icon.svg" width="24" height="24" alt="Upload logo" />
-          <div class="text-center">
-            Thêm logo sự kiện<br/>(270x180)
+        <input #eventLogoInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'eventLogo')">
+        <ng-container *ngIf="!eventLogoPreview; else eventLogo">
+          <div class="upload-placeholder">
+            <img src="assets/icons/upload-icon.svg" width="24" height="24" />
+            <div class="text-center">Thêm logo sự kiện<br/>(270x180)</div>
           </div>
-        </div>
-        <div *ngIf="eventLogoPreview" class="image-preview">
-          <img [src]="eventLogoPreview" alt="Event logo preview" />
-          <div class="image-overlay">
-            <span>Thay đổi ảnh</span>
+        </ng-container>
+        <ng-template #eventLogo>
+          <div class="image-preview">
+            <img [src]="eventLogoPreview" alt="Event logo" />
+            <div class="image-overlay">Thay đổi ảnh</div>
           </div>
-        </div>
+        </ng-template>
       </div>
 
       <!-- Ảnh nền sự kiện -->
       <div class="image-box flex-1" (click)="triggerFileInput('eventBackground')">
-        <input #eventBackgroundInput type="file" accept="image/*" style="display: none" (change)="onImageSelected($event, 'eventBackground')">
-        <div *ngIf="!eventBackgroundPreview" class="upload-placeholder">
-          <img src="assets/icons/image-icon.svg" width="120" height="72" alt="Upload event background" />
-          <div class="text-center">
-            Thêm ảnh nền sự kiện<br/>(1280x720)
+        <input #eventBackgroundInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'eventBackground')">
+        <ng-container *ngIf="!eventBackgroundPreview; else background">
+          <div class="upload-placeholder">
+            <img src="assets/icons/image-icon.svg" width="24" height="24" />
+            <div class="text-center">Thêm ảnh nền sự kiện<br/>(1280x720)</div>
           </div>
-        </div>
-        <div *ngIf="eventBackgroundPreview" class="image-preview">
-          <img [src]="eventBackgroundPreview" alt="Event background preview" />
-          <div class="image-overlay">
-            <span>Thay đổi ảnh</span>
+        </ng-container>
+        <ng-template #background>
+          <div class="image-preview">
+            <img [src]="eventBackgroundPreview" alt="Background" />
+            <div class="image-overlay">Thay đổi ảnh</div>
           </div>
-        </div>
+        </ng-template>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Tên sự kiện -->
-  <div class="form-group">
-    <input 
-      type="text" 
-      maxlength="100" 
-      placeholder="Tên sự kiện" 
-      class="input-field" 
-      [(ngModel)]="eventForm.eventName"
-      (input)="updateCharCount('eventName', $event)"
-    />
-    <div class="char-count">{{getCharCount('eventName')}} / 100</div>
-  </div>
+  <section class="section-event-name form-group">
+    <label>Tên sự kiện</label>
+    <input type="text" maxlength="100" placeholder="Tên sự kiện" class="input-field" 
+      [(ngModel)]="eventForm.eventName" (input)="updateCharCount('eventName', $event)" />
+    <div class="char-count">{{ getCharCount('eventName') }} / 100</div>
+  </section>
 
   <!-- Loại sự kiện -->
-  <div class="form-section">
+  <section class="section-event-type form-group">
+    <label>Loại sự kiện</label>
     <div class="radio-group">
-      <label>
-        <input 
-          type="radio" 
-          name="eventType" 
-          value="offline"
-          [(ngModel)]="eventForm.eventType"
-        /> 
-        Sự kiện Offline
-      </label>
-      <label>
-        <input 
-          type="radio" 
-          name="eventType" 
-          value="online"
-          [(ngModel)]="eventForm.eventType"
-        /> 
-        Sự kiện Online
-      </label>
+      <label><input type="radio" name="eventType" value="offline" [(ngModel)]="eventForm.eventType" /> Offline</label>
+      <label><input type="radio" name="eventType" value="online" [(ngModel)]="eventForm.eventType" /> Online</label>
     </div>
+  </section>
 
-    <!-- Thông tin địa điểm (chỉ hiện khi offline) -->
-    <div *ngIf="eventForm.eventType === 'offline'">
-      <input 
-        type="text" 
-        maxlength="60" 
-        placeholder="Tên địa điểm" 
-        class="input-field" 
-        [(ngModel)]="eventForm.venueName"
-        (input)="updateCharCount('venueName', $event)"
-      />
-      <div class="char-count">{{getCharCount('venueName')}} / 60</div>
+  <!-- Địa điểm (chỉ khi offline) -->
+  <section *ngIf="eventForm.eventType === 'offline'" class="section-venue form-group">
+    <label>Tên địa điểm</label>
+    <input type="text" maxlength="60" placeholder="Tên địa điểm" class="input-field"
+      [(ngModel)]="eventForm.venueName" (input)="updateCharCount('venueName', $event)" />
+    <div class="char-count">{{ getCharCount('venueName') }} / 60</div>
 
-      <div class="address-grid">
-        <select class="input-field" [(ngModel)]="eventForm.province">
-          <option value="">Tỉnh/Thành</option>
-          <option *ngFor="let province of provinces" [value]="province.code">{{province.name}}</option>
-        </select>
-        <select class="input-field" [(ngModel)]="eventForm.district">
-          <option value="">Quận/Huyện</option>
-          <option *ngFor="let district of districts" [value]="district.code">{{district.name}}</option>
-        </select>
-        <select class="input-field" [(ngModel)]="eventForm.ward">
-          <option value="">Phường/Xã</option>
-          <option *ngFor="let ward of wards" [value]="ward.code">{{ward.name}}</option>
-        </select>
-        <input 
-          type="text" 
-          maxlength="60" 
-          placeholder="Số nhà, đường" 
-          class="input-field" 
-          [(ngModel)]="eventForm.streetAddress"
-        />
-      </div>
+    <div class="address-grid">
+  <div class="address-row">
+    <div>
+      <label>Tỉnh/Thành</label>
+      <select class="input-field" [(ngModel)]="eventForm.province">
+        <option value="">Tỉnh/Thành</option>
+        <option *ngFor="let province of provinces" [value]="province.code">{{province.name}}</option>
+      </select>
     </div>
-
-    <!-- Link online (chỉ hiện khi online) -->
-    <div *ngIf="eventForm.eventType === 'online'">
-      <input 
-        type="url" 
-        placeholder="Link tham gia sự kiện online" 
-        class="input-field" 
-        [(ngModel)]="eventForm.onlineLink"
-      />
+    <div>
+      <label>Quận/Huyện</label>
+      <select class="input-field" [(ngModel)]="eventForm.district">
+        <option value="">Quận/Huyện</option>
+        <option *ngFor="let district of districts" [value]="district.code">{{district.name}}</option>
+      </select>
+    </div>
+    <div>
+      <label>Phường/Xã</label>
+      <select class="input-field" [(ngModel)]="eventForm.ward">
+        <option value="">Phường/Xã</option>
+        <option *ngFor="let ward of wards" [value]="ward.code">{{ward.name}}</option>
+      </select>
     </div>
   </div>
 
-  <!-- Thể loại sự kiện -->
-  <div class="form-group">
+  <div class="address-row">
+    <div style="flex: 1;">
+      <label>Số nhà, đường</label>
+      <input type="text" maxlength="60" class="input-field" placeholder="Số nhà, đường"
+        [(ngModel)]="eventForm.streetAddress" />
+    </div>
+  </div>
+</div>
+
+  </section>
+
+  <!-- Link online (chỉ khi online) -->
+  <section *ngIf="eventForm.eventType === 'online'" class="section-online form-group">
+    <label>Link tham gia sự kiện</label>
+    <input type="url" placeholder="Link sự kiện online" class="input-field" [(ngModel)]="eventForm.onlineLink" />
+  </section>
+
+  <!-- Thể loại -->
+  <section class="section-category form-group">
+    <label>Thể loại sự kiện</label>
     <select class="input-field" [(ngModel)]="eventForm.category">
-      <option value="">Vui lòng chọn thể loại</option>
-      <option value="conference">Hội nghị</option>
-      <option value="workshop">Workshop</option>
-      <option value="seminar">Seminar</option>
-      <option value="networking">Networking</option>
-      <option value="training">Đào tạo</option>
-      <option value="exhibition">Triển lãm</option>
-      <option value="entertainment">Giải trí</option>
-      <option value="sports">Thể thao</option>
-      <option value="other">Khác</option>
+      <option value="">Vui lòng chọn</option>
+      <option value="conference">Âm nhạc</option>
+      <option value="workshop">Sân khấu & nghệ thuật</option>
+      <option value="seminar">Workshop</option>
+      <option value="networking">Thể thao</option>
+      <option value="training">Khác</option>
     </select>
-  </div>
+  </section>
 
-  <!-- Thông tin sự kiện -->
-  <div class="form-group">
-    <textarea 
-      class="input-textarea" 
-      rows="10"
-      placeholder="Nhập thông tin chi tiết về sự kiện..."
-      [(ngModel)]="eventForm.description"
-    >{{defaultEventDescription}}</textarea>
-  </div>
+  <!-- Mô tả sự kiện -->
+  <section class="section-description form-group">
+    <label>Thông tin sự kiện</label>
+    <textarea class="input-textarea" rows="10" placeholder="Mô tả chi tiết..."
+      [(ngModel)]="eventForm.description">{{defaultEventDescription}}</textarea>
+  </section>
 
   <!-- Thông tin tổ chức -->
-  <div class="image-upload-row">
+  <section class="section-organization image-upload-row">
     <!-- Logo tổ chức -->
     <div class="image-box" (click)="triggerFileInput('organizationLogo')">
-      <input #organizationLogoInput type="file" accept="image/*" style="display: none" (change)="onImageSelected($event, 'organizationLogo')">
-      <div *ngIf="!organizationLogoPreview" class="upload-placeholder">
-        <img src="assets/icons/org-icon.svg" width="24" height="24" alt="Upload organization logo" />
-        <div class="text-center">
-          Thêm logo bản tổ chức<br/>(270x180)
+      <input #organizationLogoInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'organizationLogo')">
+      <ng-container *ngIf="!organizationLogoPreview; else orgLogo">
+        <div class="upload-placeholder">
+          <img src="assets/icons/org-icon.svg" width="24" height="24" />
+          <div class="text-center">Thêm logo tổ chức<br/>(270x180)</div>
         </div>
-      </div>
-      <div *ngIf="organizationLogoPreview" class="image-preview">
-        <img [src]="organizationLogoPreview" alt="Organization logo preview" />
-        <div class="image-overlay">
-          <span>Thay đổi ảnh</span>
+      </ng-container>
+      <ng-template #orgLogo>
+        <div class="image-preview">
+          <img [src]="organizationLogoPreview" alt="Org logo" />
+          <div class="image-overlay">Thay đổi ảnh</div>
         </div>
-      </div>
+      </ng-template>
     </div>
 
     <!-- Thông tin tổ chức -->
-    <div class="flex-1 space-y-1">
-      <input 
-        type="text" 
-        maxlength="60" 
-        placeholder="Tên bản tổ chức" 
-        class="input-field" 
-        [(ngModel)]="eventForm.organizationName"
-        (input)="updateCharCount('organizationName', $event)"
-      />
-      <input 
-        type="text" 
-        maxlength="60" 
-        placeholder="Thông tin bản tổ chức" 
-        class="input-field" 
-        [(ngModel)]="eventForm.organizationInfo"
-        (input)="updateCharCount('organizationInfo', $event)"
-      />
-      <textarea 
-        maxlength="250" 
-        placeholder="Mô tả chi tiết về tổ chức..." 
-        class="input-textarea" 
-        rows="3"
-        [(ngModel)]="eventForm.organizationDescription"
-        (input)="updateCharCount('organizationDescription', $event)"
-      ></textarea>
-      <div class="char-count">{{getCharCount('organizationDescription')}} / 250</div>
+    <div class="flex-1 space-y-2">
+      <input type="text" maxlength="60" placeholder="Tên tổ chức" class="input-field"
+        [(ngModel)]="eventForm.organizationName" (input)="updateCharCount('organizationName', $event)" />
+      <input type="text" maxlength="60" placeholder="Thông tin tổ chức" class="input-field"
+        [(ngModel)]="eventForm.organizationInfo" (input)="updateCharCount('organizationInfo', $event)" />
+      <textarea maxlength="250" rows="3" placeholder="Mô tả chi tiết tổ chức..." class="input-textarea"
+        [(ngModel)]="eventForm.organizationDescription" (input)="updateCharCount('organizationDescription', $event)">
+      </textarea>
+      <div class="char-count">{{ getCharCount('organizationDescription') }} / 250</div>
     </div>
-  </div>
+  </section>
 
-  <!-- Buttons -->
-  <div class="form-actions">
-    <button type="button" class="btn btn-secondary" (click)="onCancel()">Hủy</button>
-    <button type="button" class="btn btn-primary" (click)="onSubmit()">Tiếp tục</button>
-  </div>
 </div>
