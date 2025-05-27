@@ -9,6 +9,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './timeline-event.component.css'
 })
 export class TimelineEventComponent {
+  images: string[] = [
+    '/assets/anh.webp'
+  ];
 
   selectedTab: string = 'thisweekend';
   setTab(tab: string) {

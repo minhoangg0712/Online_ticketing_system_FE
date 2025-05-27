@@ -21,3 +21,10 @@
         <app-thismonth-event></app-thismonth-event>
     </ng-container>
 </div>
+<div class="banner-container">
+    <div class="images-section">
+        <div class="image-container" *ngFor="let image of images; let i = index">
+          <img [src]="images">
+        </div>
+    </div>
+</div>

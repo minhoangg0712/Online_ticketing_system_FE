@@ -63,3 +63,27 @@
   margin-right: 70px;
   font-size: 12px;
 }
+
+.banner-container {
+  padding: 10px;
+  margin: 10px;
+  max-width: 1330px;
+  margin: 5px auto;
+}
+
+.image-container {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 8px;
+}
