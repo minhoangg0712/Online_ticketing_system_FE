@@ -17,17 +17,21 @@ export const routes: Routes = [
   { path: 'organizer',
     component: NavOrganizerComponent,
     children: [
+      { path: '', redirectTo: 'events', pathMatch: 'full' },
       { path: 'events', component: HomeOrganizerComponent },
       { path: 'export-file', component: ExportFileComponent },
-      { path: 'create-event', component: CreateEventComponent },
-      { path: '', redirectTo: 'events', pathMatch: 'full' }
+      { path: 'create-event', component: CreateEventComponent }
     ]
   },
 
 
 
-
-  { path: 'home', component: HomeUserComponent },
+// Home
+  { path: '', 
+    component: HomeUserComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+  ] },
 
 
 
