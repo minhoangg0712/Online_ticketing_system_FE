@@ -4,11 +4,14 @@ import { TrendingEventComponent } from '../../slides/trending-event/trending-eve
 import { ForyouEventComponent } from '../../slides/foryou-event/foryou-event.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TimelineEventComponent } from "../../slides/EventTimeline/timeline-event/timeline-event.component";
+import { LivemusicEventComponent } from "../../slides/livemusic-event/livemusic-event.component";
+import { StageArtEventComponent } from "../../slides/stage-art-event/stage-art-event.component";
+import { InterestPlaceComponent } from "../../slides/interest-place/interest-place.component";
 
 @Component({
   selector: 'app-home-user',
   standalone: true,
-  imports: [CommonModule, TrendingEventComponent, ForyouEventComponent, HttpClientModule, TimelineEventComponent],
+  imports: [CommonModule, TrendingEventComponent, ForyouEventComponent, HttpClientModule, TimelineEventComponent, LivemusicEventComponent, StageArtEventComponent, InterestPlaceComponent],
   templateUrl: './home-user.component.html',
   styleUrl: './home-user.component.css'
 })

@@ -1,0 +1,102 @@
+.event-section {
+  padding: 10px;
+  color: #fff;
+  position: relative;
+  padding-left: 95px;
+  padding-right: 85px;
+  left: 0;
+  margin-bottom: 0;
+}
+
+.tab-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 5px;
+  border-radius: 8px;
+  color: black;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.event-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.event-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.event-card {
+  width: 325px;
+  background-color: transparent;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.event-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.event-details {
+  margin-top: 10px;
+}
+
+.event-title {
+  font-weight: bold;
+  font-size: 14.5px;
+  color: black;
+  margin-bottom: 6px;
+}
+
+.event-price {
+  color: #00FF00;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.event-date {
+  font-size: 13px;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+}
+
+.event-date .material-icons {
+  font-size: 14px;
+  margin-right: 4px;
+  color:black;
+}
+
+.event-date span {
+  color: black;
+}
+
+.see-more-btn {
+  display: flex;
+  align-items: center;
+  color: gray;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.see-more-btn i {
+  margin-left: 4px;
+  font-size: 14px;
+}
