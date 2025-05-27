@@ -183,7 +183,7 @@
 /* Content area */
 .content {
   flex: 1;
-  background-color: #4b4b4b;
+  background-color: #1e1e1e;
   min-height: calc(100vh - 120px);
 }
 
