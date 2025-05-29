@@ -31,6 +31,14 @@ export class NavOrganizerComponent implements OnInit {
       });
   }
 
+  logout() {
+  // Xóa token hoặc session
+  localStorage.removeItem('token');
+  // Điều hướng về trang đăng nhập
+  this.router.navigate(['/login']);
+  // Hoặc thêm đoạn gọi API logout nếu cần
+}
+
   goToEvents(): void {
     this.router.navigate(['/organizer/events']);
   }
@@ -45,5 +53,9 @@ export class NavOrganizerComponent implements OnInit {
 
   goToCreateEvent(): void {
     this.router.navigate(['/organizer/create-event']);
+  }
+
+  goToProfile(): void {
+    this.router.navigate(['/organizer/profile']);
   }
 }

@@ -8,6 +8,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { CreateEventComponent } from './organizer/pages/create-event/create-event.component';
+import { ProfileComponent } from './organizer/pages/profile/profile.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -20,7 +21,8 @@ export const routes: Routes = [
       { path: '', redirectTo: 'events', pathMatch: 'full' },
       { path: 'events', component: HomeOrganizerComponent },
       { path: 'export-file', component: ExportFileComponent },
-      { path: 'create-event', component: CreateEventComponent }
+      { path: 'create-event', component: CreateEventComponent },
+      { path: 'profile', component: ProfileComponent },
     ]
   },
 

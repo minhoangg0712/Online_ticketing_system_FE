@@ -41,9 +41,18 @@
           </div>
 
           <ul class="dropdown-menu">
-            <li><a href="#">Hồ sơ</a></li>
-            <li><a href="#">Cài đặt</a></li>
-            <li><a href="#">Đăng xuất</a></li>
+            <li>
+              <a (click)="goToProfile()" class="nav-item important-action" [class.active]="currentRoute.startsWith('/organizer/profile')">
+                <i class="bi bi-person"></i>         
+                <span>Hồ sơ</span>
+              </a>
+            </li>
+            <li>
+              <a (click)="logout()" class="nav-item important-action">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Đăng xuất</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
