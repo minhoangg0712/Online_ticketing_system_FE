@@ -1,17 +1,20 @@
-/* ========== CÀI ĐẶT TOÀN CỤC ========== */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   background-color: #000000da;
 }
 
-/* ========== LAYOUT CHÍNH ========== */
 .organizer-layout {
   display: flex;
   min-height: 100vh;
 }
 
-/* ========== SIDEBAR ========== */
+.logo img {
+  margin: 35px 0 2px 10px;
+  height: auto;
+  width: 220px;
+}
+
 .sidebar {
   width: 240px;
   background: linear-gradient(135deg, #000000 0%, #a2694bbb 100%);
@@ -40,7 +43,7 @@ body {
   padding: 15px 25px;
   color: #fff;
   text-decoration: none;
-  border-radius: 0 25px 25px 0;
+  border-radius: 0 15px 15px 0;
   margin-right: 15px;
   font-weight: 500;
   cursor: pointer;
@@ -70,7 +73,6 @@ body {
   white-space: nowrap;
 }
 
-/* ========== MAIN CONTENT ========== */
 .main-content {
   flex: 1;
   margin-left: 240px;
@@ -79,7 +81,6 @@ body {
   transition: margin-left 0.3s ease;
 }
 
-/* ========== HEADER ========== */
 .nav-header {
   background-color: #000;
   padding: 20px;
@@ -94,6 +95,7 @@ body {
 
 .header-title {
   font-size: 28px;
+  margin-left: 2%;
   font-weight: 700;
   color: #ffffff;
   background-color: #ffffff;
@@ -108,7 +110,6 @@ body {
   gap: 20px;
 }
 
-/* ========== NÚT TẠO SỰ KIỆN ========== */
 .create-event-btn {
   background-color: #FF7E42;
   color: white;
@@ -137,7 +138,6 @@ body {
   font-size: 12px;
 }
 
-/* ========== DROPDOWN MENU ========== */
 .user-dropdown {
   position: relative;
   display: flex;
@@ -208,14 +208,12 @@ body {
   background-color: #f8d7da;
 }
 
-/* ========== NỘI DUNG ========== */
 .content {
   flex: 1;
   background-color: #1e1e1e;
   min-height: calc(100vh - 120px);
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .sidebar {
     width: 220px;
