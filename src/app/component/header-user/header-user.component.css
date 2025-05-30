@@ -1,7 +1,7 @@
 .header-user {
   display: flex;
   align-items: center;
-  background-color: #ff8540;
+  background-color: #FE5D26;
   font-family: Arial, sans-serif;
 }
 
@@ -35,23 +35,6 @@
   cursor: pointer;
 }
 
-.create-event-btn {
-  background-color: #ff8540;
-  color: #ffffff;
-  border: 1px solid #ffffff;
-  padding: 10px 20px;
-  border-radius: 30px;
-  margin-left: 50px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.create-event-btn:hover {
-  background-color: #ffffff;
-  color: black;
-}
-
 .nav-links,
 .auth-links {
   display: flex;
@@ -72,4 +55,62 @@
   font-weight: 500;
 }
 
+@media (max-width: 768px) {
+  .header-user {
+    flex-direction: column;
+    padding: 10px;
+  }
 
+  .logo img {
+    margin: 10px auto;
+    width: 150px;
+  }
+
+  .search-box {
+    margin: 10px auto;
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .nav-links,
+  .auth-links {
+    flex-direction: column;
+    margin: 10px 0;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .nav-links a,
+  .auth-links a {
+    font-size: 1rem;
+  }
+
+  .bi-ticket-perforated {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo img {
+    width: 120px;
+  }
+
+  .search-box {
+    max-width: 200px;
+    padding: 3px 8px;
+  }
+
+  .search-box input {
+    padding: 3px;
+    font-size: 0.9rem;
+  }
+
+  .search-icon {
+    font-size: 1rem;
+  }
+
+  .nav-links a,
+  .auth-links a {
+    font-size: 0.9rem;
+  }
+}

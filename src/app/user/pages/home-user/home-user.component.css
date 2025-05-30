@@ -1,6 +1,7 @@
 .sub-navbar {
   padding: 10px 0;
   border-bottom: 1px solid #000;
+  background-color: #F3F3E0;
 }
 
 .sub-nav-list {
@@ -24,6 +25,10 @@
 
 .sub-nav-item.active {
   color: #2ecc71;
+}
+
+.main-content {
+  background-color: #F3F3E0;
 }
 
 .carousel-item img {
