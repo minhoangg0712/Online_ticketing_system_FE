@@ -9,6 +9,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { CreateEventComponent } from './organizer/pages/create-event/create-event.component';
 import { ProfileComponent } from './organizer/pages/profile/profile.component';
+import { DetailTicketComponent } from './user/pages/detail-ticket/detail-ticket.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
@@ -34,7 +35,10 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
   ] },
-
+  {
+    path: 'detail-ticket',
+    component: DetailTicketComponent
+  },
 
 
 
