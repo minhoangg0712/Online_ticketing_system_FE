@@ -176,7 +176,7 @@ button.btn-light {
 
 .event-carousel-item {
   flex: 0 0 300px;
-  height: 400px;
+  height: 250px;
   border-radius: 12px;
   overflow: hidden;
   position: relative;
@@ -292,5 +292,250 @@ button.btn-light {
   .event-carousel-item {
     flex: 0 0 180px;
     height: 240px;
+  }
+}
+/* Responsive Design */
+
+/* Large screens (up to 1200px) */
+@media (max-width: 1200px) {
+  .sub-nav-list {
+    margin: 0 0 0 30px;
+    padding: 0 15px;
+  }
+
+  .sub-nav-item {
+    margin-right: 20px;
+    font-size: 14px;
+  }
+
+  .carousel-container {
+    width: 95%;
+    max-width: 1000px;
+  }
+
+  .carousel-item {
+    flex: 0 0 45%;
+  }
+
+  .image-wrapper {
+    height: 250px;
+  }
+
+  .event-carousel-item {
+    flex: 0 0 250px;
+    height: 350px;
+  }
+
+  .event-carousel-title {
+    font-size: 24px;
+    margin-left: 50px;
+  }
+
+  .event-list p {
+    margin-left: 50px;
+  }
+}
+
+/* Medium screens (up to 768px) */
+@media (max-width: 768px) {
+  .sub-nav-list {
+    flex-wrap: wrap;
+    margin: 0 0 0 10px;
+    padding: 0 10px;
+  }
+
+  .sub-nav-item {
+    margin-right: 15px;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .carousel-container {
+    width: 100%;
+    margin: 10px auto;
+    padding: 10px 0;
+  }
+
+  .carousel-item {
+    flex: 0 0 80%;
+  }
+
+  .image-wrapper {
+    height: 200px;
+  }
+
+  .detail-button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .arrow {
+    font-size: 24px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+  }
+
+  .event-carousel-container {
+    margin: 0 10px;
+  }
+
+  .event-carousel-track-container {
+    margin: 0 10px;
+  }
+
+  .event-carousel-item {
+    flex: 0 0 200px;
+    height: 280px;
+  }
+
+  .event-carousel-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .event-carousel-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .event-carousel-title {
+    font-size: 20px;
+    margin-left: 10px;
+  }
+
+  .event-list p {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+}
+
+/* Small screens (up to 480px) */
+@media (max-width: 480px) {
+  .sub-nav-list {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0 5px;
+  }
+
+  .sub-nav-item {
+    margin-right: 0;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+
+  .carousel-container {
+    width: 100%;
+    margin: 5px auto;
+    padding: 5px 0;
+  }
+
+  .carousel-item {
+    flex: 0 0 100%;
+    padding: 0 5px;
+  }
+
+  .image-wrapper {
+    height: 180px;
+  }
+
+  .detail-button {
+    padding: 5px 10px;
+    font-size: 12px;
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .arrow {
+    font-size: 20px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+  }
+
+  .dots span {
+    width: 8px;
+    height: 8px;
+    margin: 0 3px;
+  }
+
+  .event-carousel-track {
+    gap: 10px;
+  }
+
+  .event-carousel-item {
+    flex: 0 0 160px;
+    height: 220px;
+  }
+
+  .event-carousel-arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .event-carousel-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .event-carousel-title {
+    font-size: 16px;
+    margin-left: 5px;
+  }
+
+  .event-list p {
+    margin-left: 5px;
+    font-size: 12px;
+  }
+}
+
+/* Extra small screens (up to 360px) */
+@media (max-width: 360px) {
+  .sub-nav-list {
+    padding: 0;
+  }
+
+  .sub-nav-item {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .carousel-container {
+    margin: 0;
+    padding: 5px 0;
+  }
+
+  .carousel-item {
+    padding: 0 3px;
+  }
+
+  .image-wrapper {
+    height: 150px;
+  }
+
+  .detail-button {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .arrow {
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+  }
+
+  .event-carousel-item {
+    flex: 0 0 140px;
+    height: 200px;
+  }
+
+  .event-carousel-title {
+    font-size: 14px;
+  }
+
+  .event-list p {
+    font-size: 11px;
   }
 }

@@ -1,0 +1,413 @@
+
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  padding: 24px;
+  background-color: #1f2024;
+}
+
+.card {
+  max-width: 1350px;
+  height: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #2a2b2f;
+}
+
+@media (min-width: 768px) {
+  .card {
+    flex-direction: row;
+  }
+}
+
+.left-panel {
+  position: relative;
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  .left-panel {
+    width: 40%;
+    padding: 40px;
+  }
+}
+
+.right-panel {
+  width: 100%;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .right-panel {
+    width: 60%;
+  }
+}
+
+.title {
+  color: white;
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  color: white;
+  font-size: 18px;
+  margin-right: 12px;
+}
+
+.text-green {
+  color: #2bb673;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.address {
+  color: #9ca3af;
+  font-size: 12px;
+  max-width: 380px;
+}
+
+.divider {
+  border: 1px solid #3f4146;
+  margin: 64px 0;
+}
+
+.price-section {
+  display: flex;
+  align-items: center;
+}
+
+.price-label {
+  color: white;
+  font-weight: 800;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.price {
+  color: #2bb673;
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.price-icon {
+  color: #2bb673;
+  font-size: 18px;
+  margin-left: 8px;
+}
+
+.buy-btn {
+  width: 80%;
+  background-color: #2bb673;
+  color: white;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 12px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.poster {
+  width: 100%;
+  height: 100%;
+  object-fit:fill;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.circle {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .circle {
+    display: block;
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-color: #1f2024;
+    border-radius: 50%;
+    z-index: 10;
+  }
+
+
+    .top-right {
+    top: -80px;
+    right: -60px;
+    }
+
+    .bottom-right {
+    bottom: -80px;
+    right: -60px;
+    }
+
+    .top-left {
+    top: -40px;
+    left: -40px;
+    }
+
+    .bottom-left {
+    bottom: -40px;
+    left: -40px;
+    }
+}
+
+.tp-content {
+  display: flex;
+  flex-direction: row; /* giữ layout 2 cột */
+  padding: 20px;
+  background-color: #f5f7fc;
+}
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  margin-left: 20px;
+}
+
+
+.tp-container {
+  max-width: 1000px;
+  margin: 0 0 15px 65px;
+  padding: 24px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.tp-fade-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 180px; /* có thể điều chỉnh tùy độ dài bạn muốn phủ */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #FDFAF6);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+
+.tp-title {
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.tp-intro-text {
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.tp-table {
+  width: 100%;
+  border-spacing: 0 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.tp-table th {
+  text-align: left;
+  font-weight: bold;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.tp-table td {
+  padding: 8px;
+}
+
+.tp-toggle-btn {
+  text-align: center;
+  margin-top: 12px;
+  color: black;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.tp-toggle-btn i {
+  transition: transform 0.3s ease;
+  color: black;
+}
+
+.side-banner {
+  flex: 1;
+  max-width: 250px;
+  height: auto;
+  margin-right: 80px;
+  display: flex;
+  overflow: hidden;
+  justify-content: right;
+  align-items: flex-start;
+  background-color: transparent;
+}
+
+.side-banner img {
+  height: auto;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-container {
+  background-color: #f0f3f5;
+  max-width: 62.8rem;
+  margin-top: 0;
+  margin-left: 65px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  user-select: none;
+}
+
+.ticket-header {
+  background-color: #222529;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.ticket-event {
+  background-color: #1c1d1f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #2f3133;
+  cursor: pointer;
+}
+
+.ticket-event-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.buy-now-button {
+  background-color: #2ecc71;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buy-now-button:hover {
+  background-color: #27ae60;
+}
+
+.ticket-section {
+  background-color: #222529;
+}
+
+.ticket-item {
+  border-bottom: 1px solid #2f3133;
+}
+
+.ticket-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.ticket-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ticket-price {
+  color: #2ecc71;
+}
+
+.ticket-details {
+  padding: 0.5rem 1rem;
+  background-color: #2a2c2f;
+  color: #ccc;
+  font-size: 0.75rem;
+}
+
+.organizer-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  width: 1000px;
+  margin: 15px 5px 5px 65px;
+}
+
+.organizer-title {
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.organizer-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.organizer-image {
+  width: 5rem;
+  height: 5rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.organizer-name {
+  font-weight: bold;
+  color: #1f2937;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.organizer-description {
+  color: #374151;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-top: 0.25rem;
+}
+
+
