@@ -12,7 +12,7 @@ import { ProfileComponent } from './organizer/pages/profile/profile.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
-  { path: 'signup', component: RegisterComponent},
+  { path: 'register', component: RegisterComponent},
   { path: 'reset-password', component: ForgotPasswordComponent},
 
   { path: 'organizer',
