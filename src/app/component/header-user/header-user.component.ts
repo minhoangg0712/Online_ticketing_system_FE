@@ -11,8 +11,11 @@ import { CommonModule } from '@angular/common';
 export class HeaderUserComponent {
   constructor(private router: Router) {}
 
-  goToOrganizer(): void {
-    // Navigate to the organizer page
-    this.router.navigate(['/organizer']);
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  goToRegister() {
+    this.router.navigate(['/signup']);
   }
 }

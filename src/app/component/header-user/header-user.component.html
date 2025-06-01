@@ -1,24 +1,32 @@
-<header class="header-user">
-  <div class="logo">
-    <img src="assets/logoeventa.png" alt="Eventa Logo"/>
-  </div>
+<header class="header">
+  <div class="header-container">
+    <a routerLink="/" class="logo">
+      <img src="assets/logoeventa.png" alt="Eventa Logo"
+      class="logo-badget"
+      width="150px"/>
+    </a>
 
-  <div class="search-box">
-    <i class="bi bi-search search-icon"></i>
-    <input type="text" placeholder="Bạn tìm gì hôm nay ?" />
-  </div>
+    <div class="search-container">
+      <input type="text" class="search-box" placeholder="Bạn tìm gì hôm nay?" />
+      <i class="fas fa-search search-icon"></i>
+    </div>
 
-  <div class="nav-links">
-    <i class="bi bi-ticket-perforated"></i>
-    <a href="#">Vé đã mua</a>
-  </div>
+    <nav class="nav-actions">
+      <a routerLink="/tickets" class="tickets-btn">
+        <i class="fas fa-ticket-alt"></i>
+        <span>Vé đã mua</span>
+      </a>
 
-  <div class="auth-links">
-    <a href="#">Đăng nhập</a>
-    <span>|</span>
-    <a href="#">Đăng ký</a>
+      <div class="divider"></div>
+
+      <div class="auth-links">
+        <a (click)="goToLogin()" class="auth-link login">Đăng nhập</a>
+        <a (click)="goToRegister()" class="auth-link register">Đăng ký</a>
+      </div>
+    </nav>
   </div>
 </header>
+
 
 
 
