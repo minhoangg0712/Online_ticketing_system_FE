@@ -1,23 +1,29 @@
-// login.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  loginForm: FormGroup;
+export class LoginComponent implements OnInit {
+  loginForm! : FormGroup;
   hidePassword = true;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)
+      ]],
       rememberMe: [false]
     });
   }
@@ -38,21 +44,6 @@ export class LoginComponent {
   loginWithGoogle() {
     console.log('Login with Google');
     // Handle Google login
-  }
-
-  loginWithFacebook() {
-    console.log('Login with Facebook');
-    // Handle Facebook login
-  }
-
-  loginWithApple() {
-    console.log('Login with Apple');
-    // Handle Apple login
-  }
-
-  loginWithTwitter() {
-    console.log('Login with Twitter');
-    // Handle Twitter login
   }
 
   forgotPassword() {
