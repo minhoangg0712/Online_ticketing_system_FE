@@ -1,0 +1,208 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #121212;
+  color: #e5e5e5;
+  line-height: 1.6;
+}
+
+.ticket-sale-container {
+  max-width: 100%;
+  padding: 1.5rem;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+}
+
+.ticket-sale-container h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #e5e5e5;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  position: relative;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  margin-left: 4rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #d1d5db;
+  margin-bottom: 0.5rem;
+}
+
+.datetime-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.datetime-row > div {
+  flex: 1;
+  min-width: 150px;
+}
+
+.datetime-row label {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+  font-weight: 400;
+}
+
+/* Added for "Loại vé" section: Styling for ticket type row to match .datetime-row layout */
+.ticket-type-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Added for "Loại vé" section: Ensure ticket type fields have consistent width and responsiveness */
+.ticket-type-row > div {
+  flex: 1;
+  min-width: 150px;
+}
+
+/* Added for "Loại vé" section: Style secondary labels in ticket type row to match .datetime-row */
+.ticket-type-row label {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+  font-weight: 400;
+}
+
+.form-group input[type="date"],
+.form-group input[type="time"] {
+  width: 70%;
+  padding: 0.75rem;
+  background-color: #2a2a2a;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #f9fafb;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Added for "Loại vé" section: Include text and number inputs for ticket type fields */
+.form-group input[type="text"],
+.form-group input[type="number"] {
+  width: 70%;
+  padding: 0.75rem;
+  background-color: #2a2a2a;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #f9fafb;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input[type="date"]:focus,
+.form-group input[type="time"]:focus,
+.form-group input[type="text"]:focus, /* Added for "Loại vé" section: Focus state for text input */
+.form-group input[type="number"]:focus { /* Added for "Loại vé" section: Focus state for number inputs */
+  outline: none;
+  border-color: #ff7e42;
+  box-shadow: 0 0 0 3px rgba(255, 126, 66, 0.2);
+}
+
+.form-group input[type="date"]:hover,
+.form-group input[type="time"]:hover,
+.form-group input[type="text"]:hover, /* Added for "Loại vé" section: Hover state for text input */
+.form-group input[type="number"]:hover { /* Added for "Loại vé" section: Hover state for number inputs */
+  border-color: #4d4d4d;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator,
+.form-group input[type="time"]::-webkit-calendar-picker-indicator {
+  background-color: #ff7e42;
+  border-radius: 4px;
+  padding: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  filter: invert(1);
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator:hover,
+.form-group input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  background-color: #e56b38;
+}
+
+.form-group input[type="date"]::-webkit-datetime-edit,
+.form-group input[type="time"]::-webkit-datetime-edit {
+  color: #f9fafb;
+}
+
+.form-group input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+.form-group input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  color: #f9fafb;
+}
+
+.form-group input[type="date"]::-webkit-datetime-edit-text,
+.form-group input[type="time"]::-webkit-datetime-edit-text {
+  color: #9ca3af;
+}
+
+.form-group input[type="date"]::-webkit-datetime-edit-month-field,
+.form-group input[type="date"]::-webkit-datetime-edit-day-field,
+.form-group input[type="date"]::-webkit-datetime-edit-year-field,
+.form-group input[type="time"]::-webkit-datetime-edit-hour-field,
+.form-group input[type="time"]::-webkit-datetime-edit-minute-field {
+  color: #f9fafb;
+}
+
+/* Added for "Loại vé" section: Style for character count display */
+.char-count {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+label i {
+  margin-right: 6px;
+  color: #9ca3af;
+}
+
+@media (max-width: 600px) {
+  .ticket-sale-container {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+
+  .ticket-sale-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .datetime-row,
+  .ticket-type-row { /* Added for "Loại vé" section: Stack ticket type fields vertically on mobile */
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .datetime-row > div,
+  .ticket-type-row > div { /* Added for "Loại vé" section: Ensure full width on mobile */
+    width: 100%;
+  }
+
+  .datetime-row label,
+  .ticket-type-row label { /* Added for "Loại vé" section: Adjust label size on mobile */
+    font-size: 0.8rem;
+  }
+
+  .form-group input[type="date"],
+  .form-group input[type="time"],
+  .form-group input[type="text"], /* Added for "Loại vé" section: Full width inputs on mobile */
+  .form-group input[type="number"] { /* Added for "Loại vé" section: Full width inputs on mobile */
+    width: 100%;
+  }
+}

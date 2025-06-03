@@ -36,15 +36,13 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
   ] },
   {
-    path: 'detail-ticket',
-    component: DetailTicketComponent
+    path: 'detail-ticket', component: DetailTicketComponent
   },
 
 
 
   {
-    path: 'admin',
-    component: HomeAdminComponent,
+    path: 'admin', component: HomeAdminComponent,
    
   },
 ];
