@@ -1,16 +1,24 @@
 import { Component, OnInit, OnDestroy, Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { RouterModule, RouterOutlet } from '@angular/router'; // Nhập RouterModule
 import { FooterComponent } from '../../../component/admin/footer/footer.component';
 import { HeaderComponent } from '../../../component/admin/header/header.component';
-import { SidebarComponent } from "../../../component/admin/sidebar/sidebar.component";
-
+import { SidebarComponent } from '../../../component/admin/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-home-admin',
-  imports: [CommonModule, FooterComponent, HeaderComponent, SidebarComponent],
+  standalone: true, // Đảm bảo component là standalone
+  imports: [
+    CommonModule,
+    RouterModule, // Thêm RouterModule để hỗ trợ routerLink
+    RouterOutlet,
+    FooterComponent,
+    HeaderComponent,
+    SidebarComponent,
+  ],
   templateUrl: './home-admin.component.html',
-  styleUrl: './home-admin.component.css'
+  styleUrls: ['./home-admin.component.css'], // Sửa styleUrl thành styleUrls (dạng mảng)
 })
 export class HomeAdminComponent implements OnInit, OnDestroy {
   private cssFiles = [
@@ -23,7 +31,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     'dist/css/adminlte.min.css',
     'plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
     'plugins/daterangepicker/daterangepicker.css',
-    'plugins/summernote/summernote-bs4.min.css'
+    'plugins/summernote/summernote-bs4.min.css',
   ];
 
   private jsFiles = [
@@ -42,7 +50,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js',
     'dist/js/adminlte.js',
     'dist/js/demo.js',
-    'dist/js/pages/dashboard.js'
+    'dist/js/pages/dashboard.js',
   ];
 
   private elements: HTMLElement[] = [];

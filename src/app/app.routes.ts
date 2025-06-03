@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HomeOrganizerComponent } from './organizer/pages/home-organizer/home-organizer.component';
 import { NavOrganizerComponent } from './component/nav-organizer/nav-organizer.component';
 import { ExportFileComponent } from './organizer/pages/export-file/export-file.component';
@@ -10,13 +10,16 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
 import { CreateEventComponent } from './organizer/pages/create-event/create-event.component';
 import { ProfileComponent } from './organizer/pages/profile/profile.component';
 import { DetailTicketComponent } from './user/pages/detail-ticket/detail-ticket.component';
-
+import { ApprovalRequestComponent } from './admin/pages/approval-request/approval-request.component';
+import { NgModule } from '@angular/core';
+import { DashboardComponent } from './admin/pages/dashboard/dashboard.component';
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent},
-  { path: 'reset-password', component: ForgotPasswordComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'reset-password', component: ForgotPasswordComponent },
 
-  { path: 'organizer',
+  {
+    path: 'organizer',
     component: NavOrganizerComponent,
     children: [
       { path: '', redirectTo: 'events', pathMatch: 'full' },
@@ -29,20 +32,37 @@ export const routes: Routes = [
 
 
 
-// Home
-  { path: '', 
+  // Home
+  {
+    path: '',
     component: HomeUserComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-  ] },
+    ]
+  },
   {
     path: 'detail-ticket', component: DetailTicketComponent
   },
 
 
 
+// Admin routes
   {
-    path: 'admin', component: HomeAdminComponent,
-   
+    path: 'admin',
+    component: HomeAdminComponent,
+    children: [
+      { path: '', component: DashboardComponent }, // Sử dụng DashboardComponent cho /admin
+      { path: 'approval-request', component: ApprovalRequestComponent },
+    ],
   },
+
+  // Chuyển hướng mặc định và wildcard
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home' },
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}
