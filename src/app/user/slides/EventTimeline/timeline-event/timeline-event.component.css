@@ -72,7 +72,7 @@
 .banner-container {
   padding: clamp(5px, 2vw, 10px);
   margin: clamp(5px, 2vw, 10px) auto;
-  max-width: 1200px; /* Reduced from 1330px for better compatibility */
+  max-width: 1350px; /* Reduced from 1330px for better compatibility */
   box-sizing: border-box;
 }
 
