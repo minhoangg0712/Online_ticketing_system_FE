@@ -13,6 +13,7 @@ import { DetailTicketComponent } from './user/pages/detail-ticket/detail-ticket.
 import { ApprovalRequestComponent } from './admin/pages/approval-request/approval-request.component';
 import { NgModule } from '@angular/core';
 import { DashboardComponent } from './admin/pages/dashboard/dashboard.component';
+import { UserManagementComponent } from './admin/pages/user-management/user-management.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -53,6 +54,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: DashboardComponent }, // Sử dụng DashboardComponent cho /admin
       { path: 'approval-request', component: ApprovalRequestComponent },
+      { path: 'user-management', component: UserManagementComponent },
     ],
   },
 
