@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,6 +9,13 @@ import { CommonModule } from '@angular/common';
 })
 export class DetailTicketComponent implements OnInit {
   expanded = false;
+  showHeader = false;
+  isMainExpanded: boolean = true;
+
+  headerData = {
+    title: 'VBA 2025 - Saigon Heat vs CT Catfish',
+    location: 'Nhà Thi Đấu CIS'
+  };
 
   tickets = [
     { zone: 'Zone - GA B2', originalPrice: '899,000 đ', discountedPrice: '449,500 đ', discount: '50%' },
@@ -164,5 +171,15 @@ export class DetailTicketComponent implements OnInit {
   onEventClick(event: any): void {
     // Logic khi click vào sự kiện
     console.log('Event clicked:', event);
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.showHeader = scrollPosition > 600;
+  }
+
+  toggleMainSection(): void {
+    this.isMainExpanded = !this.isMainExpanded;
   }
 }
