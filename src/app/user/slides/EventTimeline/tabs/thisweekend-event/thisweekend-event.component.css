@@ -130,11 +130,11 @@
   }
 
   .scroll-btn.left {
-    left: 15px;
+    left: 0;
   }
 
   .scroll-btn.right {
-    right: 15px;
+    right: 0;
   }
 }
 
