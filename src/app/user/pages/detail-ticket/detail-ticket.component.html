@@ -5,12 +5,12 @@
       <div>
         <h2 class="title">GAMA Music Racing Festival</h2>
         <div class="info">
-          <i class="fas fa-calendar-alt icon"></i>
+          <i class="bi bi-calendar4 icon"></i>
           <p class="text-green">15:00 - 23:00, 28 Tháng 06, 2025</p>
         </div>
         <div class="info">
-          <i class="fas fa-map-marker-alt icon"></i>
-          <p class="text-green">Công viên Bờ sông Sài Gòn</p>
+          <i class="bi bi-geo-alt icon"></i>
+          <p class="text-green">{{ headerData.location }}</p>
         </div>
         <p class="address">
           59 Thủ Thiêm, Phường Thủ Thiêm, Quận 2, Thành Phố Hồ Chí Minh
@@ -22,7 +22,7 @@
         <div class="price-section">
           <h3 class="price-label">Giá từ</h3>
           <p class="price">299.500 đ</p>
-          <i class="fas fa-chevron-right price-icon"></i>
+          <i class="bi bi-chevron-compact-right price-icon"></i>
         </div>
         <button class="buy-btn">Mua vé ngay</button>
       </div>
@@ -42,6 +42,12 @@
       <div class="circle bottom-left"></div>
     </div>
   </div>
+</div>
+
+<div *ngIf="showHeader" class="sticky-header">
+  <span>{{ headerData.title }}</span>
+  <span> <i class="bi bi-geo-alt"></i> {{ headerData.location }} </span>
+  <button> <i class="bi bi-ticket-detailed"></i> Mua vé ngay</button>
 </div>
 
 <div class="tp-content"> 
@@ -88,18 +94,18 @@
       </div>
 
       <div class="ticket-event">
-        <div class="ticket-event-info">
-          <i class="fas fa-chevron-down text-xs"></i>
+        <div class="ticket-event-info" (click)="toggleMainSection()">
+          <i [ngClass]="isMainExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
           <span>15:00 - 23:00, 28 Tháng 06, 2025</span>
         </div>
           <button type="button" class="buy-now-button">Mua vé ngay</button>
       </div>
 
-      <div class="ticket-section">
+      <div class="ticket-section" *ngIf="isMainExpanded">
         <div class="ticket-item" *ngFor="let ticket of ticketList; let i = index">
           <div class="ticket-item-header" (click)="toggleTicket(i)">
             <div class="ticket-title">
-              <i class="fas" [ngClass]="ticket.isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+              <i [ngClass]="ticket.isExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
               <span>{{ ticket.name }}</span>
             </div>
             <span class="ticket-price">{{ ticket.price }}</span>
