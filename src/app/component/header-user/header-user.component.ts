@@ -18,4 +18,8 @@ export class HeaderUserComponent {
   goToRegister() {
     this.router.navigate(['/signup']);
   }
+
+  goToHome() {
+    this.router.navigate(['/']);
+  }
 }
