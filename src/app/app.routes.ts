@@ -40,15 +40,14 @@ export const routes: Routes = [
     component: HomeUserComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      {
-        path: 'detail-ticket', component: DetailTicketComponent
-      },
-      {
-        path: 'select-ticket', component: SelectTicketComponent
-      },
     ]
   },
-
+    {
+       path: 'detail-ticket', component: DetailTicketComponent
+    },
+    {
+      path: 'select-ticket', component: SelectTicketComponent
+    },
 
 // Admin routes
   {
