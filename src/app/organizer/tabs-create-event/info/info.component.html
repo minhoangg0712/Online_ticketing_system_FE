@@ -120,39 +120,51 @@
   <!-- Mô tả sự kiện -->
   <section class="section-description form-group">
     <label>Thông tin sự kiện</label>
-    <textarea class="input-textarea" rows="10" placeholder="Mô tả chi tiết..."
-      [(ngModel)]="eventForm.description">{{defaultEventDescription}}</textarea>
+    <textarea class="input-textarea" rows="10" maxlength="500" placeholder="Mô tả chi tiết..."
+      [(ngModel)]="eventForm.description" (input)="updateCharCount('description', $event)">
+    </textarea>
+    <div class="char-count">{{ getCharCount('description') }} / 500</div>
   </section>
 
   <!-- Thông tin tổ chức -->
-  <section class="section-organization image-upload-row">
-    <!-- Logo tổ chức -->
-    <div class="image-box" (click)="triggerFileInput('organizationLogo')">
-      <input #organizationLogoInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'organizationLogo')">
-      <ng-container *ngIf="!organizationLogoPreview; else orgLogo">
-        <div class="upload-placeholder">
-          <img src="assets/icons/org-icon.svg" width="24" height="24" />
-          <div class="text-center">Thêm logo tổ chức<br/>(270x180)</div>
+  <section class="section-organization">
+    <label>Thông tin ban tổ chức</label>
+    <div class="organization-content">
+      <!-- Logo tổ chức -->
+      <div class="org-logo-section">
+        <div class="image-box" (click)="triggerFileInput('organizationLogo')">
+          <input #organizationLogoInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'organizationLogo')">
+          <ng-container *ngIf="!organizationLogoPreview; else orgLogo">
+            <div class="upload-placeholder">
+              <img src="assets/icons/org-icon.svg" width="24" height="24" />
+              <div class="text-center">Logo tổ chức<br/><span class="text-sm">(275x275)</span></div>
+            </div>
+          </ng-container>
+          <ng-template #orgLogo>
+            <div class="image-preview">
+              <img [src]="organizationLogoPreview" alt="Org logo" />
+              <div class="image-overlay">Thay đổi ảnh</div>
+            </div>
+          </ng-template>
         </div>
-      </ng-container>
-      <ng-template #orgLogo>
-        <div class="image-preview">
-          <img [src]="organizationLogoPreview" alt="Org logo" />
-          <div class="image-overlay">Thay đổi ảnh</div>
-        </div>
-      </ng-template>
-    </div>
+      </div>
 
-    <!-- Thông tin tổ chức -->
-    <div class="flex-1 space-y-2">
-      <input type="text" maxlength="60" placeholder="Tên tổ chức" class="input-field"
-        [(ngModel)]="eventForm.organizationName" (input)="updateCharCount('organizationName', $event)" />
-      <input type="text" maxlength="60" placeholder="Thông tin tổ chức" class="input-field"
-        [(ngModel)]="eventForm.organizationInfo" (input)="updateCharCount('organizationInfo', $event)" />
-      <textarea maxlength="250" rows="3" placeholder="Mô tả chi tiết tổ chức..." class="input-textarea"
-        [(ngModel)]="eventForm.organizationDescription" (input)="updateCharCount('organizationDescription', $event)">
-      </textarea>
-      <div class="char-count">{{ getCharCount('organizationDescription') }} / 250</div>
+      <!-- Thông tin -->
+      <div class="org-info-section">
+        <div class="org-name-field">
+          <label>Tên tổ chức</label>
+          <input type="text" maxlength="80" placeholder="Nhập tên tổ chức của bạn" class="input-field"
+            [(ngModel)]="eventForm.organizationName" (input)="updateCharCount('organizationName', $event)" />
+          <div class="char-count">{{ getCharCount('organizationName') }} / 80</div>
+        </div>
+        <div class="org-description-field">
+          <label>Mô tả tổ chức</label>
+          <textarea class="input-textarea" rows="6" maxlength="500" placeholder="Giới thiệu về tổ chức của bạn..."
+            [(ngModel)]="eventForm.organizationInfo" (input)="updateCharCount('organizationInfo', $event)">
+          </textarea>
+          <div class="char-count">{{ getCharCount('organizationInfo') }} / 500</div>
+        </div>
+      </div>
     </div>
   </section>
 
