@@ -14,6 +14,7 @@ import { ApprovalRequestComponent } from './admin/pages/approval-request/approva
 import { NgModule } from '@angular/core';
 import { DashboardComponent } from './admin/pages/dashboard/dashboard.component';
 import { UserManagementComponent } from './admin/pages/user-management/user-management.component';
+import { SelectTicketComponent } from './user/pages/select-ticket/select-ticket.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -39,12 +40,14 @@ export const routes: Routes = [
     component: HomeUserComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
+      {
+        path: 'detail-ticket', component: DetailTicketComponent
+      },
+      {
+        path: 'select-ticket', component: SelectTicketComponent
+      },
     ]
   },
-  {
-    path: 'detail-ticket', component: DetailTicketComponent
-  },
-
 
 
 // Admin routes
