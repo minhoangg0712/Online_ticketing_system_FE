@@ -1,0 +1,137 @@
+/* === Giao diện riêng cho trang Đăng nhập === */
+
+/* Layout hộp đăng nhập */
+.login-box {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(12, 105, 255, 0.5);
+    width: 400px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-header {
+    display: flex;
+    justify-content: space-between;
+    padding: .6rem .9rem;
+}
+
+.header-logo {
+    padding-left: 100px;
+    padding-top: 20px;
+}
+
+.header-logo img {
+    width: 80px;
+}
+
+h2 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"]
+input[type="fullname"] {
+    border: 0.5px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container .btn-hiding {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+}
+
+.login-btn {
+    background: #0C69FF;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    box-shadow: 0px 4px 10px rgba(12, 105, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.login-btn:active {
+    transform: scale(0.95);
+}
+
+.text-danger {
+    font-size: 12px;
+    color: red;
+    margin: 0 0 10px 0;
+}
+
+.register {
+    color: black;
+    cursor: pointer;
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+}
+
+.forgot {
+    color: blue;
+    display: block;
+    margin-top: 15px;
+    text-align: right;
+    font-size: 14px;
+}
+
+/* === Giao diện riêng cho trang Đăng ký === */
+.signup-box {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(12, 105, 255, 0.5);
+    width: 400px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.signup-box h2 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.signup-box .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.signup-box p {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.alert-info {
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
