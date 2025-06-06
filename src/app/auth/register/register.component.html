@@ -1,1 +1,64 @@
+<div class="background">
+  <!-- <div class="login-header">
+    <div class="header-logo">
+      <img src="assets/logo-choppe.png" alt="logo">
+    </div>
+  </div> -->
+  <div class="container-login">
+    <div class="signup-box">
+        <h2 class="d-flex align-items-center justify-content-center">Đăng ký</h2>
+        <form [formGroup]="registerForm">
+          <!-- Bước 1: Nhập email, gửi mã -->
+          <div *ngIf="currentStep === 1">
+            <div class="mb-3">
+              <label>Email</label>
+              <input type="email" class="form-control" formControlName="email" placeholder="Nhập email" />
+            </div>
+            <button type="button" class="btn btn-primary" (click)="onSendVerification()" [disabled]="isLoading">
+              Gửi mã xác thực
+            </button>
+            
+            <!-- Hiển thị thông báo (chỉ nội dung từ server) -->
+            <p style="color: blue;">{{ message }}</p>
 
+            <!-- Nếu đang chờ server, hiển thị thông báo -->
+            <div *ngIf="isLoading" class="alert alert-info">
+              Đang xử lý...
+            </div>
+          </div>
+
+          <!-- Bước 2: Nhập code, kiểm tra -->
+          <div *ngIf="currentStep === 2">
+            <div class="mb-3">
+              <label>Mã xác thực</label>
+              <input type="text" class="form-control" formControlName="code" placeholder="Nhập mã xác thực" />
+            </div>
+            <button type="button" class="btn btn-primary" (click)="onVerifyCode()" [disabled]="isLoading">
+              Kiểm tra mã
+            </button>
+          </div>
+
+          <!-- Bước 3: Nhập mật khẩu, đăng ký -->
+          <div *ngIf="currentStep === 3">
+            <div class="mb-3">
+              <label>Mật khẩu</label>
+              <input type="password" class="form-control" formControlName="password" placeholder="Nhập mật khẩu" />
+            </div>
+            <div class="mb-3">
+              <label>Nhập lại mật khẩu</label>
+              <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Nhập lại mật khẩu" />
+            </div>
+            <div class="mb-3">
+              <label>Tên đầy đủ</label>
+              <input type="fullname" class="form-control" formControlName="fullName" placeholder="Nhập tên đầy đủ" />
+            </div>
+            <button type="button" class="btn btn-success" (click)="onRegister()" [disabled]="isLoading">
+              Đăng ký
+            </button>
+          </div>
+        </form>
+      </div>
+  </div>
+
+
+</div>
