@@ -1,10 +1,7 @@
 <header class="header">
   <div class="header-container">
-    <a routerLink="/" class="logo">
-      <img src="assets/logoeventa.png" alt="Eventa Logo"
-      class="logo-badget"
-      width="150px"
-      (click)="goToHome()"/>
+    <a routerLink="/" class="logo" (click)="goToHome()">
+      <img src="assets/logoeventa.png" alt="Eventa Logo" class="logo-badge" />
     </a>
 
     <div class="search-container">
@@ -13,13 +10,6 @@
     </div>
 
     <nav class="nav-actions">
-      <a routerLink="/tickets" class="tickets-btn">
-        <i class="fas fa-ticket-alt"></i>
-        <span>Vé đã mua</span>
-      </a>
-
-      
-
       <div class="auth-links">
         <a (click)="goToLogin()" class="auth-link login">Đăng nhập</a>
         <div class="divider"></div>
@@ -29,7 +19,7 @@
 
     <div class="user-profile">
       <div class="profile-container">
-        <img src="assets/user-avatar.png" alt="User Avatar" class="user-avatar"/>
+        <img src="assets/user-avatar.png" alt="User Avatar" class="user-avatar" />
         <span class="account-label">Tài khoản</span>
         <span class="dropdown-icon">▼</span>
       </div>
@@ -42,8 +32,3 @@
     </div>
   </div>
 </header>
-
-
-
-
-
