@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service'; 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,17 +13,21 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginForm! : FormGroup;
+  loginForm!: FormGroup;
   hidePassword = true;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [
         Validators.required,
-        Validators.minLength(8),
+        Validators.minLength(10),
         Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)
       ]],
       rememberMe: [false]
@@ -30,8 +36,18 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Login attempt:', this.loginForm.value);
-      // Handle login logic here
+      const { email, password } = this.loginForm.value;
+
+      this.authService.login(email, password).subscribe({
+        next: (res) => {
+          console.log('Login success:', res);
+          this.router.navigate(['/home']);
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          alert('Đăng nhập thất bại. Vui lòng kiểm tra lại.');
+        }
+      });
     } else {
       console.log('Form is invalid');
     }
@@ -52,7 +68,6 @@ export class LoginComponent implements OnInit {
   }
 
   createAccount() {
-    console.log('Create account clicked');
-    // Handle create account
+    this.router.navigate(['/register']); 
   }
 }
