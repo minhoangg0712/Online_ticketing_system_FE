@@ -15,7 +15,6 @@
               autocomplete="email"
               [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
             <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-text">
-              <small *ngIf="loginForm.get('email')?.errors?.['required']">Email không được để trống.</small>
               <small *ngIf="loginForm.get('email')?.errors?.['email']">Email không hợp lệ.</small>
             </div>
           </div>
@@ -48,10 +47,6 @@
             </div>
             <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-text">
               <small *ngIf="loginForm.get('password')?.errors?.['required']">Mật khẩu không được để trống.</small>
-              <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Mật khẩu tối thiểu 10 ký tự.</small>
-              <small *ngIf="loginForm.get('password')?.errors?.['pattern']">
-                Mật khẩu phải có chữ in hoa, số và ký tự đặc biệt.
-              </small>
             </div>
           </div>
 
@@ -69,6 +64,10 @@
           <button type="submit" class="login-btn" [disabled]="loginForm.invalid">
             Đăng nhập
           </button>
+
+          <div *ngIf="loginErrorMessage" class="error-popup">
+            {{ loginErrorMessage }}
+          </div>
 
           <!-- Create Account -->
           <div class="create-account">

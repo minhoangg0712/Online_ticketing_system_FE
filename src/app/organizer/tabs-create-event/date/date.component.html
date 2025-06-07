@@ -1,69 +1,183 @@
 <div class="ticket-sale-container">
+  <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
     <h2>Thời gian bán vé</h2>
-    <form>
-        <div class="form-group">
-            <label><i class="bi bi-play-circle"></i> Bắt đầu bán:</label>
-            <div class="datetime-row">
-                <div>
-                    <label for="startDate"><i class="bi bi-calendar"></i> Ngày mở bán</label>
-                    <input id="startDate" type="date" name="startDate" />
-                </div>
-                <div>
-                    <label for="startTime"><i class="bi bi-clock"></i> Giờ mở bán</label>
-                    <input id="startTime" type="time" name="startTime" />
-                </div>
-            </div>
+    
+    <div class="form-group">
+      <label><i class="bi bi-play-circle"></i> Bắt đầu bán:</label>
+      <div class="datetime-row">
+        <div>
+          <label for="startDate"><i class="bi bi-calendar"></i> Ngày mở bán</label>
+          <input 
+            id="startDate" 
+            type="date" 
+            formControlName="startDate"
+            [class.error]="ticketForm.get('startDate')?.invalid && ticketForm.get('startDate')?.touched"
+          />
+          <div class="error-message" *ngIf="ticketForm.get('startDate')?.invalid && ticketForm.get('startDate')?.touched">
+            Vui lòng chọn ngày mở bán
+          </div>
         </div>
+        <div>
+          <label for="startTime"><i class="bi bi-clock"></i> Giờ mở bán</label>
+          <input 
+            id="startTime" 
+            type="time" 
+            formControlName="startTime"
+            [class.error]="ticketForm.get('startTime')?.invalid && ticketForm.get('startTime')?.touched"
+          />
+          <div class="error-message" *ngIf="ticketForm.get('startTime')?.invalid && ticketForm.get('startTime')?.touched">
+            Vui lòng chọn giờ mở bán
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <div class="form-group">
-            <label><i class="bi bi-stop-circle"></i> Kết thúc bán:</label>
-            <div class="datetime-row">
-                <div>
-                    <label for="endDate"><i class="bi bi-calendar-x"></i> Ngày kết thúc</label>
-                    <input id="endDate" type="date" name="endDate" />
-                </div>
-                <div>
-                    <label for="endTime"><i class="bi bi-clock-history"></i> Giờ kết thúc</label>
-                    <input id="endTime" type="time" name="endTime" />
-                </div>
-            </div>
+    <div class="form-group">
+      <label><i class="bi bi-stop-circle"></i> Kết thúc bán:</label>
+      <div class="datetime-row">
+        <div>
+          <label for="endDate"><i class="bi bi-calendar-x"></i> Ngày kết thúc</label>
+          <input 
+            id="endDate" 
+            type="date" 
+            formControlName="endDate"
+            [class.error]="ticketForm.get('endDate')?.invalid && ticketForm.get('endDate')?.touched"
+          />
+          <div class="error-message" *ngIf="ticketForm.get('endDate')?.invalid && ticketForm.get('endDate')?.touched">
+            Vui lòng chọn ngày kết thúc
+          </div>
         </div>
+        <div>
+          <label for="endTime"><i class="bi bi-clock-history"></i> Giờ kết thúc</label>
+          <input 
+            id="endTime" 
+            type="time" 
+            formControlName="endTime"
+            [class.error]="ticketForm.get('endTime')?.invalid && ticketForm.get('endTime')?.touched"
+          />
+          <div class="error-message" *ngIf="ticketForm.get('endTime')?.invalid && ticketForm.get('endTime')?.touched">
+            Vui lòng chọn giờ kết thúc
+          </div>
+        </div>
+      </div>
+      <div class="error-message" *ngIf="!isEndTimeAfterStart && ticketForm.get('endDate')?.touched && ticketForm.get('endTime')?.touched">
+        Thời gian kết thúc phải sau thời gian bắt đầu
+      </div>
+    </div>
 
-        <div class="form-group">
-            <label><i class="bi bi-calendar-event"></i> Ngày diễn ra sự kiện:</label>
-            <div class="datetime-row">
-                <div>
-                    <label for="eventDate"><i class="bi bi-calendar-event-fill"></i> Ngày diễn ra sự kiện</label>
-                    <input id="eventDate" type="date" name="eventDate" />
-                </div>
-                <div>
-                    <label for="eventTime"><i class="bi bi-clock-fill"></i> Giờ diễn ra sự kiện</label>
-                    <input id="eventTime" type="time" name="eventTime" />
-                </div>
-            </div>
+    <div class="form-group">
+      <label><i class="bi bi-calendar-event"></i> Ngày diễn ra sự kiện:</label>
+      <div class="datetime-row">
+        <div>
+          <label for="eventDate"><i class="bi bi-calendar-event-fill"></i> Ngày diễn ra sự kiện</label>
+          <input 
+            id="eventDate" 
+            type="date" 
+            formControlName="eventDate"
+            [class.error]="ticketForm.get('eventDate')?.invalid && ticketForm.get('eventDate')?.touched"
+          />
+          <div class="error-message" *ngIf="ticketForm.get('eventDate')?.invalid && ticketForm.get('eventDate')?.touched">
+            Vui lòng chọn ngày diễn ra sự kiện
+          </div>
         </div>
-    </form>
+        <div>
+          <label for="eventTime"><i class="bi bi-clock-fill"></i> Giờ diễn ra sự kiện</label>
+          <input 
+            id="eventTime" 
+            type="time" 
+            formControlName="eventTime"
+            [class.error]="ticketForm.get('eventTime')?.invalid && ticketForm.get('eventTime')?.touched"
+          />
+          <div class="error-message" *ngIf="ticketForm.get('eventTime')?.invalid && ticketForm.get('eventTime')?.touched">
+            Vui lòng chọn giờ diễn ra sự kiện
+          </div>
+        </div>
+      </div>
+      <div class="error-message" *ngIf="!isEventDateValid && ticketForm.get('eventDate')?.touched">
+        Ngày sự kiện không thể trước ngày mở bán
+      </div>
+    </div>
 
     <h2>Loại vé</h2>
-    <form>
-        <div class="form-group ticket-type-row">
-            <div>
-                <label for="ticketName"><i class="bi bi-ticket"></i> Tên loại vé</label>
-                <input id="ticketName" type="text" name="ticketName" placeholder="Tên loại vé" class="input-field" maxlength="60" />
-                <div class="char-count">0 / 60</div>
-            </div>
-            <div>
-                <label for="ticketPrice"><i class="bi bi-currency-dollar"></i> Giá vé</label>
-                <input id="ticketPrice" type="number" name="ticketPrice" placeholder="Giá vé (VND)" class="input-field" min="0" />
-            </div>
-            <div>
-                <label for="ticketQuantity"><i class="bi bi-ticket-detailed"></i> Tổng số lượng vé</label>
-                <input id="ticketQuantity" type="number" name="ticketQuantity" placeholder="Tổng số lượng" class="input-field" min="1" />
-            </div>
-            <div>
-                <label for="maxTicketsPerOrder"><i class="bi bi-cart"></i> Số vé tối đa của 1 đơn hàng</label>
-                <input id="maxTicketsPerOrder" type="number" name="maxTicketsPerOrder" placeholder="Số vé tối đa" class="input-field" min="1" />
-            </div>
+    
+    <div class="form-group ticket-type-row" *ngFor="let ticket of tickets; let i = index">
+      <!-- Tên loại vé -->
+      <div>
+        <label for="ticketName-{{ i }}"><i class="bi bi-ticket"></i> Tên loại vé {{ i + 1 }}</label>
+        <input
+          type="text"
+          [(ngModel)]="ticket.name"
+          name="ticketName-{{ i }}"
+          placeholder="Tên loại vé"
+          class="input-field"
+          maxlength="60"
+          [class.error]="ticket.name.trim() === ''"
+        />
+        <div class="char-count">{{ getCharCount(ticket.name) }} / 60</div>
+        <div class="error-message" *ngIf="ticket.name.trim() === ''">
+          Vui lòng nhập tên loại vé
         </div>
-    </form>
+      </div>
+
+      <!-- Giá vé -->
+      <div>
+        <label for="ticketPrice-{{ i }}"><i class="bi bi-currency-dollar"></i> Giá vé</label>
+        <input
+          type="number"
+          [(ngModel)]="ticket.price"
+          name="ticketPrice-{{ i }}"
+          placeholder="Giá vé (VND)"
+          class="input-field"
+          min="1"
+          [class.error]="ticket.price <= 0"
+        />
+        <div class="error-message" *ngIf="ticket.price <= 0">
+          Giá vé phải lớn hơn 0
+        </div>
+      </div>
+
+      <!-- Tổng số lượng vé -->
+      <div>
+        <label for="ticketQuantity-{{ i }}"><i class="bi bi-ticket-detailed"></i> Tổng số lượng vé</label>
+        <input
+          type="number"
+          [(ngModel)]="ticket.quantity"
+          name="ticketQuantity-{{ i }}"
+          placeholder="Tổng số lượng"
+          class="input-field"
+          min="1"
+          [class.error]="ticket.quantity <= 0"
+        />
+        <div class="error-message" *ngIf="ticket.quantity <= 0">
+          Số lượng vé phải lớn hơn 0
+        </div>
+      </div>
+
+      <!-- Nút xóa loại vé -->
+      <button 
+        type="button" 
+        class="btn-remove"
+        (click)="removeTicket(i)" 
+        *ngIf="tickets.length > 1"
+      >
+        <i class="bi bi-trash"></i> Xóa
+      </button>
+    </div>
+
+    <!-- Nút thêm loại vé -->
+    <button type="button" class="btn-add" (click)="addTicket()">
+      <i class="bi bi-plus-circle"></i> Thêm loại vé
+    </button>
+
+    <!-- Submit button -->
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="btn-submit"
+        [disabled]="!isFormValid"
+      >
+        <i class="bi bi-check-circle"></i> Lưu thông tin
+      </button>
+    </div>
+  </form>
 </div>

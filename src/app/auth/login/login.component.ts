@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   hidePassword = true;
+  loginErrorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -25,11 +26,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)
-      ]],
+      password: ['', [Validators.required,]],
       rememberMe: [false]
     });
   }
@@ -41,11 +38,13 @@ export class LoginComponent implements OnInit {
       this.authService.login(email, password).subscribe({
         next: (res) => {
           console.log('Login success:', res);
+          this.loginErrorMessage = null; // Xóa lỗi nếu đăng nhập thành công
           this.router.navigate(['/home']);
         },
         error: (err) => {
           console.error('Login failed:', err);
-          alert('Đăng nhập thất bại. Vui lòng kiểm tra lại.');
+          this.loginErrorMessage = err?.error?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.';
+          setTimeout(() => this.loginErrorMessage = null, 5000);
         }
       });
     } else {
@@ -63,8 +62,7 @@ export class LoginComponent implements OnInit {
   }
 
   forgotPassword() {
-    console.log('Forgot password clicked');
-    // Handle forgot password
+    this.router.navigate(['/forgot-password']);
   }
 
   createAccount() {
