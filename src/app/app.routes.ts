@@ -11,10 +11,11 @@ import { CreateEventComponent } from './organizer/pages/create-event/create-even
 import { ProfileComponent } from './organizer/pages/profile/profile.component';
 import { DetailTicketComponent } from './user/pages/detail-ticket/detail-ticket.component';
 import { ApprovalRequestComponent } from './admin/pages/approval-request/approval-request.component';
-import { NgModule } from '@angular/core';
 import { DashboardComponent } from './admin/pages/dashboard/dashboard.component';
 import { UserManagementComponent } from './admin/pages/user-management/user-management.component';
 import { SelectTicketComponent } from './user/pages/select-ticket/select-ticket.component';
+import { NgModule } from '@angular/core';
+
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -32,35 +33,30 @@ export const routes: Routes = [
     ]
   },
 
-
-
-  // Home
+  // Home và các route liên quan
   {
-    path: '',
-    component: HomeUserComponent,
-    children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-    ]
+    path: 'home', component: HomeUserComponent
   },
-    {
-       path: 'detail-ticket', component: DetailTicketComponent
-    },
-    {
-      path: 'select-ticket', component: SelectTicketComponent
-    },
+  {
+    path: 'detail-ticket',
+    component: DetailTicketComponent
+  },
+  {
+    path: 'select-ticket',
+    component: SelectTicketComponent
+  },
 
-// Admin routes
   {
     path: 'admin',
     component: HomeAdminComponent,
     children: [
-      { path: '', component: DashboardComponent }, // Sử dụng DashboardComponent cho /admin
+      { path: '', component: DashboardComponent },
       { path: 'approval-request', component: ApprovalRequestComponent },
       { path: 'user-management', component: UserManagementComponent },
     ],
   },
 
-  // Chuyển hướng mặc định và wildcard
+  // Chuyển hướng mặc định
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },
 ];
