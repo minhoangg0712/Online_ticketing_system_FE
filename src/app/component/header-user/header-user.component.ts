@@ -17,7 +17,7 @@ export class HeaderUserComponent {
   }
 
   goToRegister() {
-    this.router.navigate(['/signup']);
+    this.router.navigate(['/register']);
   }
 
   goToHome() {
