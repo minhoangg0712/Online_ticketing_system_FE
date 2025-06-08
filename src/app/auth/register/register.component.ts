@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  currentPassword = true;
+  validatePassword = true;
 
   // Quản lý bước hiện tại: 1(email), 2(code), 3(password)
   currentStep = 1;
@@ -142,7 +144,7 @@ export class RegisterComponent implements OnInit {
         this.serverResponse = res;
         // Khi đăng ký thành công, server có thể trả về thông báo thành công dưới dạng text
         this.message = res || 'Đăng ký thành công!';
-        this.router.navigate(['/home']);
+        this.router.navigate(['/login']);
       },
       error: (err: any) => {
         this.isLoading = false;
@@ -168,4 +170,11 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  toggleCurrentPasswordVisibility() {
+    this.currentPassword = !this.currentPassword;
+  }
+
+  toggleValidatePasswordVisibility() {
+    this.validatePassword = !this.validatePassword;
+  }
 }

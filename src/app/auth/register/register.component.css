@@ -47,6 +47,22 @@
   display: block;
 }
 
+.password-toggle {
+  background: none;
+  border: none;
+  position: absolute;
+  top: 80%;
+  right: 12px;
+  transform: translateY(-70%);
+  cursor: pointer;
+  color: #7f8c8d;
+  transition: color 0.2s;
+}
+
+.password-toggle:hover {
+  color: #ff7e42;
+}
+
 /* Form Controls */
 .form-control {
   width: 92%;
