@@ -115,7 +115,7 @@
 /* User Profile */
 .user-profile {
   position: relative;
-  display: none; /* Toggle this dynamically based on login status */
+  margin-left: auto;
 }
 .profile-container {
   display: flex;

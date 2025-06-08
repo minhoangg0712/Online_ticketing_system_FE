@@ -39,7 +39,7 @@
 }
 
 .main-content {
-  background-color: #F3F3E0;
+  background: linear-gradient(135deg, #fff6f2, #ffffff);
 }
 
 .carousel-item img {

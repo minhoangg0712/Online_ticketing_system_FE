@@ -9,7 +9,7 @@
       <i class="fas fa-search search-icon"></i>
     </div>
 
-    <nav class="nav-actions">
+    <nav class="nav-actions" *ngIf="!isLoggedIn()">
       <div class="auth-links">
         <a (click)="goToLogin()" class="auth-link login">Đăng nhập</a>
         <div class="divider"></div>
@@ -17,7 +17,7 @@
       </div>
     </nav>
 
-    <div class="user-profile">
+    <div class="user-profile" *ngIf="isLoggedIn()">
       <div class="profile-container">
         <img src="assets/user-avatar.png" alt="User Avatar" class="user-avatar" />
         <span class="account-label">Tài khoản</span>
@@ -27,7 +27,7 @@
         <a href="#" class="dropdown-item">Vé đã mua</a>
         <a href="#" class="dropdown-item">Sự kiện của tôi</a>
         <a href="#" class="dropdown-item">Tài khoản của tôi</a>
-        <a href="#" class="dropdown-item logout">Đăng xuất</a>
+        <a href="#" class="dropdown-item logout" (click)="logout()">Đăng xuất</a>
       </div>
     </div>
   </div>
