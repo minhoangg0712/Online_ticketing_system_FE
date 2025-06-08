@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -26,14 +27,19 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       code: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).*$/)
+      ]],
       confirmPassword: ['', [Validators.required]],
       fullName: ['', [Validators.required]]
     });
@@ -136,6 +142,7 @@ export class RegisterComponent implements OnInit {
         this.serverResponse = res;
         // Khi đăng ký thành công, server có thể trả về thông báo thành công dưới dạng text
         this.message = res || 'Đăng ký thành công!';
+        this.router.navigate(['/home']);
       },
       error: (err: any) => {
         this.isLoading = false;

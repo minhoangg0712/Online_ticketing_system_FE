@@ -15,6 +15,7 @@ import { DashboardComponent } from './admin/pages/dashboard/dashboard.component'
 import { UserManagementComponent } from './admin/pages/user-management/user-management.component';
 import { SelectTicketComponent } from './user/pages/select-ticket/select-ticket.component';
 import { NgModule } from '@angular/core';
+import { RoleGuard } from './auth/services/role.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
   {
     path: 'organizer',
     component: NavOrganizerComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'organizer' },
     children: [
       { path: '', redirectTo: 'events', pathMatch: 'full' },
       { path: 'events', component: HomeOrganizerComponent },

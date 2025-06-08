@@ -34,21 +34,25 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-
       this.authService.login(email, password).subscribe({
-        next: (res) => {
-          console.log('Login success:', res);
-          this.loginErrorMessage = null; // Xóa lỗi nếu đăng nhập thành công
-          this.router.navigate(['/home']);
+        next: (res: any) => {
+          if (res.token) {
+            this.authService.setToken(res.token);
+            
+            // Sau khi đăng nhập thành công, kiểm tra role và điều hướng
+            if (this.authService.isAdmin()) {
+              this.router.navigate(['/admin']);
+            } else if (this.authService.isSeller()) {
+              this.router.navigate(['/organizer']);
+            } else if (this.authService.isCustomer()) {
+              this.router.navigate(['/']);
+            } else {
+              this.router.navigate(['/']);
+            }
+          }
         },
-        error: (err) => {
-          console.error('Login failed:', err);
-          this.loginErrorMessage = err?.error?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.';
-          setTimeout(() => this.loginErrorMessage = null, 5000);
-        }
+        error: (err) => {}
       });
-    } else {
-      console.log('Form is invalid');
     }
   }
 
