@@ -40,10 +40,12 @@ export class RegisterComponent implements OnInit {
       password: ['', [
         Validators.required,
         Validators.minLength(10),
-        Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).*$/)
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)
       ]],
       confirmPassword: ['', [Validators.required]],
-      fullName: ['', [Validators.required]]
+      fullName: ['', [
+        Validators.required,
+        Validators.pattern(/^[a-zA-ZÀ-ỹ\s]+$/)]]
     });
   }
 
@@ -176,5 +178,9 @@ export class RegisterComponent implements OnInit {
 
   toggleValidatePasswordVisibility() {
     this.validatePassword = !this.validatePassword;
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
   }
 }
