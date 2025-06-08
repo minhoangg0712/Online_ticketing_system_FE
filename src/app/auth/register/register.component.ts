@@ -105,8 +105,7 @@ export class RegisterComponent implements OnInit {
         next: (res: any) => {
           this.isLoading = false;
           this.serverResponse = res;
-          // Kiểm tra nếu response có chứa key "error"
-          if (res.error) {
+          if (res.error) { // Kiểm tra nếu response có chứa key "error"
             this.message = res.error;
           } else {
             this.message = res.message || 'Code xác thực đúng, mời nhập mật khẩu!';
