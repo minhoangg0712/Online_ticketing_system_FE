@@ -1,3 +1,13 @@
+.background {
+  position: relative;
+  height: 94vh;
+  background: linear-gradient(135deg, #fff6f2, #ffffff);
+  font-family: 'Segoe UI', sans-serif;
+  padding-top: 40px;
+  overflow: hidden;
+}
+
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -7,13 +17,26 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
+.logo {
+  position: absolute;
+  top: 40px;
+  left: 60px;
+  z-index: 10;
+}
+
+.logo-badge {
+  width: 160px;
+  height: auto;
+}
+
+
 .login-card {
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 420px;
-  padding: 40px;
+  padding: 0 40px 40px 40px;
   transition: all 0.3s ease;
 }
 
