@@ -20,12 +20,12 @@ import { RoleGuard } from './auth/services/role.guard';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'reset-password', component: ForgotPasswordComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
 
   {
     path: 'organizer',
     component: NavOrganizerComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'organizer' },
+    //canActivate: [RoleGuard], data: { expectedRole: 'organizer' },
     children: [
       { path: '', redirectTo: 'events', pathMatch: 'full' },
       { path: 'events', component: HomeOrganizerComponent },

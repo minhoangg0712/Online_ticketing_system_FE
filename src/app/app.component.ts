@@ -21,7 +21,7 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         // Kiểm tra nếu trang hiện tại là trang đăng nhập hoặc đăng ký
         this.isAuthPage = event.url.includes('/login') || event.url.includes('/register')
-        || event.url.includes('/reset-password')
+        || event.url.includes('/forgot-password')
         || event.url.includes('/organizer');
       }
     });
