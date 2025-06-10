@@ -71,6 +71,16 @@ export class AuthService {
     );
   }
 
+  // Đặt lại mật khẩu B1 gửi code
+  sendCode(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/send-code`, { email }, { responseType: 'text' });
+  }
+
+  // Đặt lại mật khẩu B2 xác thực code và đổi mật khẩu
+  resetPassword(payload: { email: string, code: string, newPassword: string, confirmNewPassword: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password-by-code`, payload, { responseType: 'text' });
+  }
+
   // Lấy userid
   getUserId(): number | null { 
     const token = localStorage.getItem('access_token'); 
