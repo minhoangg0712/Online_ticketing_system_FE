@@ -1,0 +1,37 @@
+<div class="purchased-wrapper">
+    <div class="sidebar">
+        <app-nav-user></app-nav-user>
+    </div>
+
+    <div class="content"> 
+        <div class="container">
+            <h1 class="heading">Vé đã mua</h1>
+
+            <div class="filter-buttons">
+                <button class="filter-btn" (click)="setTab('all')" [class.active]="selectedTab === 'all'">Tất cả</button>
+                <button class="filter-btn" (click)="setTab('success')" [class.active]="selectedTab === 'success'">Thành công</button>
+                <button class="filter-btn" (click)="setTab('working')" [class.active]="selectedTab === 'working'">Đang xử lý</button>
+                <button class="filter-btn" (click)="setTab('cancel')" [class.active]="selectedTab === 'cancel'">Đã hủy</button>
+            </div>
+
+            <div class="status-toggle" *ngIf="selectedTab === 'all' || selectedTab === 'success'">
+                <button class="toggle-btn">Sắp diễn ra</button>
+                <button class="toggle-btn">Đã kết thúc</button>
+            </div>
+
+            <div class="no-ticket">
+                <img
+                src="https://storage.googleapis.com/a1aa/image/b4fbff74-75c2-4142-93e6-acdbad673655.jpg"
+                alt="Illustration"
+                width="200"
+                height="200"
+                />
+                <p class="no-ticket-msg">Bạn chưa có vé nào</p>
+
+                
+
+                <button class="buy-btn">Mua vé ngay</button>
+            </div>
+        </div>
+    </div>
+</div>
