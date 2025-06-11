@@ -16,6 +16,8 @@ import { UserManagementComponent } from './admin/pages/user-management/user-mana
 import { SelectTicketComponent } from './user/pages/select-ticket/select-ticket.component';
 import { NgModule } from '@angular/core';
 import { RoleGuard } from './auth/services/role.guard';
+import { UserProfileComponent } from './user/pages/user-profile/user-profile.component';
+import { PurchasedTicketComponent } from './user/pages/purchased-ticket/purchased-ticket.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -47,7 +49,14 @@ export const routes: Routes = [
     path: 'select-ticket',
     component: SelectTicketComponent
   },
-
+  {
+    path: 'user-profile',
+    component: UserProfileComponent
+  },
+  {
+    path: 'purchased-ticket',
+    component: PurchasedTicketComponent
+  },
   {
     path: 'admin',
     component: HomeAdminComponent,

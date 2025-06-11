@@ -1,0 +1,80 @@
+<div class="account-wrapper">
+
+    <div class="sidebar">
+        <app-nav-user></app-nav-user>
+    </div>
+     
+    <div class="content">
+        <div class="account-info-container">
+            <h1 class="account-info-title">Thông tin tài khoản</h1>
+
+            <div class="profile-section">
+                <div class="profile-img-wrapper">
+                <img
+                    src="https://storage.googleapis.com/a1aa/image/4bb8413b-7e14-4f32-68f8-96a805fbd2e0.jpg"
+                    alt="User profile photo showing a person taking a mirror selfie with a black t-shirt and short hair"
+                    width="100"
+                    height="100"
+                    class="profile-img"
+                />
+                <div class="camera-icon" title="Change photo">
+                    <i class="fas fa-camera"></i>
+                </div>
+                </div>
+                <p class="info-text">
+                    Cung cấp thông tin chính xác sẽ hỗ trợ bạn trong quá trình mua vé,
+                    hoặc khi cần xác thực vé
+                </p>
+            </div>
+
+            <form class="form-section">
+                <div class="form-group">
+                    <label for="fullname">Họ và tên</label>
+                    <input type="text" id="fullname" value="Trung Đức" />
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <div class="phone-group">
+                        <select id="phone">
+                        <option>+84</option>
+                        </select>
+                        <input type="text" placeholder="Nhập ở đây" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="readonly-label">Email</label>
+                    <div class="input-with-icon">
+                        <input
+                        type="email"
+                        id="email"
+                        value="ductrantrung10@gmail.com"
+                        readonly
+                        />
+                        <div class="icon-check">
+                        <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Địa chỉ</label>
+                    <input type="text" id="address" placeholder="Nhập ở đây" />
+                </div>
+
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <div class="gender-options">
+                        <label><input type="radio" name="gender" value="Nam" /> Nam</label>
+                        <label><input type="radio" name="gender" value="Nữ" /> Nữ</label>
+                        <label><input type="radio" name="gender" value="Khác" /> Khác</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="submit-btn">Hoàn thành</button>
+                </div>
+            </form>
+        </div>
+    </div>     
+</div>
