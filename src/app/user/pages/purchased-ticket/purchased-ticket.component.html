@@ -10,7 +10,7 @@
             <div class="filter-buttons">
                 <button class="filter-btn" (click)="setTab('all')" [class.active]="selectedTab === 'all'">Tất cả</button>
                 <button class="filter-btn" (click)="setTab('success')" [class.active]="selectedTab === 'success'">Thành công</button>
-                <button class="filter-btn" (click)="setTab('working')" [class.active]="selectedTab === 'working'">Đang xử lý</button>
+                <button class="filter-btn" (click)="setTab('processing')" [class.active]="selectedTab === 'processing'">Đang xử lý</button>
                 <button class="filter-btn" (click)="setTab('cancel')" [class.active]="selectedTab === 'cancel'">Đã hủy</button>
             </div>
 
@@ -20,15 +20,23 @@
             </div>
 
             <div class="no-ticket">
-                <img
-                src="https://storage.googleapis.com/a1aa/image/b4fbff74-75c2-4142-93e6-acdbad673655.jpg"
-                alt="Illustration"
-                width="200"
-                height="200"
-                />
-                <p class="no-ticket-msg">Bạn chưa có vé nào</p>
-
-                
+                <div class="events-list">
+                    <ng-container *ngIf="selectedTab === 'all'">
+                        <app-all></app-all>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="selectedTab === 'success'">
+                        <app-success></app-success>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="selectedTab === 'processing'">
+                        <app-processing></app-processing>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="selectedTab === 'cancel'">
+                        <app-cancel></app-cancel>
+                    </ng-container>
+                </div>
 
                 <button class="buy-btn">Mua vé ngay</button>
             </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../auth/services/auth.service';
@@ -10,7 +10,23 @@ import { AuthService } from '../../auth/services/auth.service';
   styleUrl: './header-user.component.css'
 })
 export class HeaderUserComponent {
-  constructor(private router: Router, private authService: AuthService) {}
+  isDropdownOpen = false;
+  private hideTimer: any;
+
+  constructor(private router: Router, private authService: AuthService,
+    private elementRef: ElementRef
+  ) {}
+
+  onMouseEnter() {
+    clearTimeout(this.hideTimer);
+    this.isDropdownOpen = true;
+  }
+
+  onMouseLeave() {
+    this.hideTimer = setTimeout(() => {
+      this.isDropdownOpen = false;
+    }, 5000);
+  }
 
   goToLogin() {
     this.router.navigate(['/login']);
