@@ -1,12 +1,8 @@
-body {
-  background: linear-gradient(135deg, #fff6f2, #ffffff);
-  font-family: Inter,sans-serif;
-}
-
 .account-wrapper {
   display: flex;
   background: linear-gradient(135deg, #fff6f2, #ffffff);
   color: white;
+  font-family: 'Inter',sans-serif;
 }
 
 .sidebar {
