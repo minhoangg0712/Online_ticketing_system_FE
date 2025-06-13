@@ -24,7 +24,7 @@
           <p class="price">299.500 đ</p>
           <i class="bi bi-chevron-compact-right price-icon"></i>
         </div>
-        <button class="buy-btn">Mua vé ngay</button>
+        <button class="buy-btn" (click)="needLoginToBuyTicket()">Mua vé ngay</button>
       </div>
 
       <div class="circle top-right"></div>
@@ -83,7 +83,7 @@
       </table>
       <div class="tp-fade-overlay" *ngIf="!expanded"></div>
       <div class="tp-toggle-btn" (click)="toggleRows()" tabindex="0" (keydown.enter)="toggleRows()" (keydown.space)="toggleRows()">
-        <i class="fas" [ngClass]="expanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        <i class="fas" [ngClass]="expanded ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
       </div>
     </div>
 
@@ -232,3 +232,8 @@
     </div>
   </div>
 </div>
+<!-- Thêm dòng này vào cuối file HTML -->
+<app-toast-notification 
+  #notification
+  (onClose)="onNotificationClose()">
+</app-toast-notification>

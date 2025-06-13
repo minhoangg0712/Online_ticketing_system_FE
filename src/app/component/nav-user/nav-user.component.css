@@ -5,6 +5,7 @@
   padding: 1.5rem;
   background: linear-gradient(135deg, #fff6f2, #ffffff);
   min-height: 100vh;
+  font-family: 'Inter', sans-serif;
 }
 
 .profile-img {
