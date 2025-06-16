@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="filter-bar">
+    <p class="search-title">Kết quả tìm kiếm:</p>
+    <button class="filter-btn">
+      <i class="far fa-calendar-alt"></i>
+      <span>Tất cả các ngày</span>
+      <i class="fas fa-chevron-down small-icon"></i>
+    </button>
+    <button class="filter-btn">
+      <i class="fas fa-filter"></i>
+      <span>Bộ lọc</span>
+      <i class="fas fa-chevron-down small-icon"></i>
+    </button>
+  </div>
+
+  <div class="grid">
+    <div class="event-card" *ngFor="let event of events">
+      <img [src]="event.image" [alt]="event.alt" />
+      <h3>{{ event.title }}</h3>
+      <p class="price">Từ {{ event.price }}</p>
+      <p class="date">
+        <i class="far fa-calendar-alt"></i>
+        {{ event.date }}
+      </p>
+    </div>
+  </div>
+</div>

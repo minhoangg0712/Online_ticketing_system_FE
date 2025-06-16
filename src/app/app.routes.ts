@@ -19,6 +19,8 @@ import { RoleGuard } from './auth/services/role.guard';
 import { UserProfileComponent } from './user/pages/user-profile/user-profile.component';
 import { PurchasedTicketComponent } from './user/pages/purchased-ticket/purchased-ticket.component';
 import { OrderTicketComponent } from './user/pages/order-ticket/order-ticket.component';
+import { SearchEventsComponent } from './user/pages/search-events/search-events.component';
+import { PaymentTicketsComponent } from './user/pages/payment-tickets/payment-tickets.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,7 +30,7 @@ export const routes: Routes = [
   {
     path: 'organizer',
     component: NavOrganizerComponent,
-    //canActivate: [RoleGuard], data: { expectedRole: 'organizer' },
+    canActivate: [RoleGuard], data: { expectedRole: 'organizer' },
     children: [
       { path: '', redirectTo: 'events', pathMatch: 'full' },
       { path: 'events', component: HomeOrganizerComponent },
@@ -61,6 +63,14 @@ export const routes: Routes = [
   {
     path: 'order-ticket',
     component: OrderTicketComponent
+  },
+  {
+    path: 'search-events',
+    component: SearchEventsComponent
+  },
+  {
+    path: 'payment-tickets',
+    component: PaymentTicketsComponent
   },
   {
     path: 'admin',
