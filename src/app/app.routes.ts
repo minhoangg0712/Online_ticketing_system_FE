@@ -18,6 +18,7 @@ import { NgModule } from '@angular/core';
 import { RoleGuard } from './auth/services/role.guard';
 import { UserProfileComponent } from './user/pages/user-profile/user-profile.component';
 import { PurchasedTicketComponent } from './user/pages/purchased-ticket/purchased-ticket.component';
+import { OrderTicketComponent } from './user/pages/order-ticket/order-ticket.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -56,6 +57,10 @@ export const routes: Routes = [
   {
     path: 'purchased-ticket',
     component: PurchasedTicketComponent
+  },
+  {
+    path: 'order-ticket',
+    component: OrderTicketComponent
   },
   {
     path: 'admin',

@@ -47,7 +47,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((res: any) => {
         if (res.token && this.isBrowser()) {
-          this.setToken(res.token);
+          this.setToken('token');
 
           try {
             // Giải mã token để lấy thông tin user
@@ -83,7 +83,7 @@ export class AuthService {
 
   // Lấy userid
   getUserId(): number | null { 
-    const token = localStorage.getItem('access_token'); 
+    const token = localStorage.getItem('token'); 
     if (!token) return null; 
 
     try { 
@@ -97,7 +97,7 @@ export class AuthService {
 
   /*Lưu token vào localStorage */
   setToken(token: string): void { 
-    localStorage.setItem('access_token', token); 
+    localStorage.setItem('token', token); 
     const decodedToken = this.decodeToken(token); 
     if (decodedToken) { 
       localStorage.setItem('user_role', JSON.stringify(decodedToken.user_role)); // Lưu role vào localStorage 
@@ -107,7 +107,7 @@ export class AuthService {
   /*Lấy token */
   getToken(): string | null {
     if (!this.isBrowser()) return null;
-    return localStorage.getItem('access_token'); 
+    return localStorage.getItem('token'); 
   } 
 
   /*Kiểm tra xem user có đăng nhập không */
