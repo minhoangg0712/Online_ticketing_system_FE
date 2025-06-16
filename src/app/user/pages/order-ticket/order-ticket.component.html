@@ -1,0 +1,77 @@
+<div class="header-border">
+  <div class="event-header">
+    <div class="event-details">
+      <h1 class="event-title">Tên sự kiện</h1>
+      <hr class="event-divider" />
+      <p class="event-address">Địa chỉ: Thiên Sơn Plaza</p>
+      <p class="event-time">Thời gian: 20:00 - 23:00, 16 tháng 5 năm 2025</p>
+    </div>
+    <div class="countdown-box">
+      <p class="countdown-title">Hoàn tất đặt vé trong</p>
+        <div class="timer-display">
+            <div class="time-unit">
+              <span class="time-value">{{ minutes }}</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-unit">
+              <span class="time-value">{{ seconds }}</span>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="payment-section">
+  <h2 class="section-title">Thanh toán</h2>
+    <div class="payment-container">
+        <div class="left-panel">
+            <div class="box">
+                <p class="box-title">Mã khuyến mãi</p>
+                <button class="promo-button" type="button">
+                <span class="promo-icon">+</span> Thêm khuyến mãi
+                </button>
+            </div>
+
+            <div class="box">
+                <p class="box-title">Phương thức thanh toán</p>
+                <ul class="payment-methods">
+                <li>VNPAY/Mobile Banking app</li>
+                <li>Viet QR</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="box">
+                <p class="box-order">Thông tin đặt vé</p>
+                <div class="info-row">
+                  <span>Loại vé</span>
+                  <span>Số lượng</span>
+                </div>
+                <div class="info-row">
+                  <span>GA</span>
+                  <span>02</span>
+                </div>
+                <div class="info-row">
+                  <span>330.000 ₫</span>
+                  <span>330.000 ₫</span>
+                </div>
+            </div>
+
+              <div class="box">
+                <div class="info-row">
+                  <span>Tạm tính</span>
+                  <span>660.000 ₫</span>
+                </div>
+                  <hr class="event-divider" />
+                <div class="total-row">
+                  <span>Tổng tiền</span>
+                  <span>660.000 ₫</span>
+                </div>
+                <button class="pay-button" type="button">
+                Thanh toán
+                </button>
+              </div>
+        </div>
+    </div>
+</div>
