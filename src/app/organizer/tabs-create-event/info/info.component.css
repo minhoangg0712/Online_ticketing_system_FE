@@ -11,9 +11,7 @@ body {
   line-height: 1.6;
 }
 
-/* Form container */
 .form-wrapper {
-  max-width: 100%;
   padding: 2rem;
   background-color: #1e1e1e;
   border-radius: 12px;
@@ -25,26 +23,20 @@ body {
   color: #e5e5e5;
   margin-bottom: 2rem;
   text-align: left;
-  position: relative;
 }
 
-/* Section spacing */
 .section-upload,
 .section-event-name,
-.section-event-type,
 .section-venue,
-.section-online,
 .section-category,
-.section-description,
-.section-organization {
+.section-description {
   margin-bottom: 2rem;
-  padding: 1.5rem;
+  padding: 2rem;
   background: #252525;
   border-radius: 8px;
   border: 1px solid #333;
 }
 
-/* Labels */
 label {
   display: block;
   font-size: 1rem;
@@ -53,34 +45,28 @@ label {
   margin-bottom: 0.75rem;
 }
 
-/* Upload image */
 .image-upload-row {
   display: flex;
-  gap: 2rem;
+  gap: 4rem;
   margin-top: 1rem;
+  align-items: flex-start;
 }
 
-/* Bên trái: 1 phần (1/3) */
 .image-upload-row .image-box:first-child {
-  flex: 0.5;           /* 1 phần */
-  max-width: 30%;
-  aspect-ratio: 3 / 2; /* giữ tỉ lệ chiều cao cho logo */
+  max-width: 360px;
+  height: 420px;
 }
 
-/* Bên phải: 2 phần (2/3) */
 .image-upload-row .image-box:last-child {
-  flex: 2.5;           /* 2 phần */
-  max-width: 66.66%;
-  aspect-ratio: 16 / 9; /* giữ tỉ lệ chiều cao cho ảnh nền */
+  height: 420px;
+  max-width: 1080px;
 }
 
-/* Các box ảnh chung */
 .image-box {
-  height: 180px;
   border: 2px dashed #4b5563;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
   background-color: #2c2c2c;
   position: relative;
   display: flex;
@@ -89,12 +75,17 @@ label {
   overflow: hidden;
 }
 
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .image-box:hover {
-  border-color: #3b82f6;
+  border-color: #ff7e42;
   background-color: #2a2a2a;
 }
 
-/* Placeholder */
 .upload-placeholder {
   display: flex;
   flex-direction: column;
@@ -113,22 +104,6 @@ label {
   opacity: 0.8;
 }
 
-/* Image preview */
-.image-preview {
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-}
-
-.image-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Overlay khi hover */
 .image-overlay {
   position: absolute;
   top: 0;
@@ -143,19 +118,16 @@ label {
   font-size: 0.9rem;
   opacity: 0;
   transition: opacity 0.3s ease;
-  user-select: none;
 }
 
 .image-preview:hover .image-overlay {
   opacity: 1;
 }
 
-/* Form group */
 .form-group {
   margin-bottom: 1rem;
 }
 
-/* Inputs */
 .input-field,
 .input-textarea {
   width: 100%;
@@ -165,7 +137,7 @@ label {
   border-radius: 8px;
   font-size: 1rem;
   color: #f9fafb;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input-field:hover,
@@ -185,7 +157,6 @@ label {
   min-height: 120px;
 }
 
-/* Char count */
 .char-count {
   font-size: 0.85rem;
   color: #9ca3af;
@@ -193,36 +164,6 @@ label {
   margin-top: 0.5rem;
 }
 
-/* Radio buttons */
-.radio-group {
-  display: flex;
-  gap: 2.5rem;
-  padding: 0.5rem 0;
-}
-
-.radio-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1rem;
-  color: #d1d5db;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-
-.radio-group label:hover {
-  background-color: #2a2a2a;
-}
-
-.radio-group input[type="radio"] {
-  width: 1.25rem;
-  height: 1.25rem;
-  accent-color: #3b82f6;
-}
-
-/* Address layout */
 .address-grid {
   display: flex;
   flex-direction: column;
@@ -241,84 +182,42 @@ label {
   min-width: 150px;
 }
 
-/* Section tổ chức */
-.section-organization {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: #252525;
-  border-radius: 8px;
-  border: 1px solid #333;
-}
-
-.section-organization label {
-  font-size: 1.1rem;
-  margin-bottom: 1.25rem;
-  color: #e5e5e5;
-}
-
-.organization-content {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-.org-logo-section {
-  flex-shrink: 0;
-}
-
-.org-logo-section .image-box {
-  width: 275px;
-  height: 275px;
-  border: 2px dashed #4b5563;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: #2c2c2c;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.org-logo-section .image-box:hover {
-  border-color: #3b82f6;
-  background-color: #2a2a2a;
-}
-
-.org-info-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.org-name-field,
-.org-description-field {
-  width: 100%;
-}
-
-.org-name-field label,
-.org-description-field label {
-  font-size: 0.95rem;
-  margin-bottom: 0.75rem;
-  color: #d1d5db;
-}
-
-.org-description-field .input-textarea {
-  min-height: 140px;
-  resize: vertical;
-}
-
-/* Select styles */
 select.input-field {
-  appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   padding-right: 2.5rem;
 }
 
-/* Responsive */
+.cropper-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1300;
+}
+
+.cropper-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  width: 800px;
+}
+
+.cropper-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+  color: #ff7e42;
+}
+
 @media (max-width: 768px) {
   .form-wrapper {
     padding: 1rem;
@@ -347,29 +246,6 @@ select.input-field {
   }
 
   .address-row > div {
-    width: 100%;
-  }
-
-  .radio-group {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .organization-content {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .org-logo-section {
-    width: 100%;
-  }
-
-  .org-logo-section .image-box {
-    width: 100%;
-    height: 200px;
-  }
-
-  .org-info-section {
     width: 100%;
   }
 }
