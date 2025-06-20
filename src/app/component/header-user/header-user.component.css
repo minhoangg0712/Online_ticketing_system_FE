@@ -70,27 +70,12 @@
   margin-left: auto;
 }
 
-.tickets-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s ease;
-}
-.tickets-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
 .auth-links {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .auth-link {
   color: white;
   text-decoration: none;
@@ -102,6 +87,7 @@
   margin-left: auto;
   transition: background 0.3s ease, transform 0.2s ease;
 }
+
 .auth-link:hover {
   transform: translateY(-2px);
 }

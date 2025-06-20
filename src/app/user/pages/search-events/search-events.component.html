@@ -1,17 +1,47 @@
 <div class="container">
   <div class="filter-bar">
     <p class="search-title">Kết quả tìm kiếm:</p>
-    <button class="filter-btn">
-      <i class="far fa-calendar-alt"></i>
-      <span>Tất cả các ngày</span>
-      <i class="fas fa-chevron-down small-icon"></i>
-    </button>
-    <button class="filter-btn">
-      <i class="fas fa-filter"></i>
-      <span>Bộ lọc</span>
-      <i class="fas fa-chevron-down small-icon"></i>
-    </button>
+    
+    <div class="filter-dropdown-wrapper">
+      <button class="filter-btn">
+        <i class="far fa-calendar-alt"></i>
+        <span>Tất cả các ngày</span>
+        <i class="fas fa-chevron-down small-icon"></i>
+      </button>
+      <button class="filter-btn" (click)="toggleFilter()">
+        <i class="fas fa-filter"></i>
+        <span>Bộ lọc</span>
+        <i class="fas fa-chevron-down small-icon" *ngIf="!showFilter"></i>
+        <i class="fas fa-times small-icon" *ngIf="showFilter"></i>
+      </button>
+
+      <div class="filter-popup" *ngIf="showFilter">
+        <!-- Nội dung bộ lọc -->
+        <div class="section">
+          <p class="section-title">Vị trí</p>
+          <label *ngFor="let location of locations">
+            <input type="radio" name="location" [value]="location" [(ngModel)]="selectedLocation" />
+              {{ location }}
+          </label>
+      </div>
+
+      <div class="section">
+        <p class="section-title">Thể loại</p>
+        <button *ngFor="let category of categories"
+          (click)="toggleCategory(category)"
+          [class.active]="selectedCategories.includes(category)">
+          {{ category }}
+        </button>
+      </div>
+
+      <div class="action-buttons">
+        <button class="reset-btn" (click)="resetFilter()">Thiết lập lại</button>
+        <button class="apply-btn" (click)="applyFilter()">Áp dụng</button>
+      </div>
+    </div>
   </div>
+</div>
+
 
   <div class="grid">
     <div class="event-card" *ngFor="let event of events">

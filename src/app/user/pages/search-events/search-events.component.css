@@ -22,6 +22,7 @@ body {
   display: flex;
   justify-content: end;
   gap: 1rem;
+  position: relative;
   margin-bottom: 1.5rem;
 }
 
@@ -80,4 +81,90 @@ body {
 
 .small-icon {
   font-size: 0.75rem;
+}
+
+/* Bọc riêng nút bộ lọc */
+.filter-dropdown-wrapper {
+  position: relative;
+  display: flex;
+}
+
+/* Pop-up nổi dưới nút */
+.filter-popup {
+  position: absolute;
+  top: 110%; /* xuất hiện dưới nút */
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  width: 410px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+}
+
+/* Nội dung popup */
+.section {
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.section label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.section button {
+  margin: 4px 6px 4px 0;
+  padding: 4px 14px;
+  border-radius: 20px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.section button.active {
+  background-color: #ff7e42;
+  color: white;
+  border-color: #ff7e42;
+}
+
+.action-buttons {
+  display: flex;
+  margin-top: 12px;
+  gap:10px;
+  justify-content: center;
+}
+
+
+
+.reset-btn,
+.apply-btn {
+  padding: 10px 65px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  
+  border: none;
+  font-size: 0.875rem;
+}
+
+.reset-btn:hover,
+.apply-btn:hover {
+  transform: translateY(-2px);
+}
+
+.reset-btn {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.apply-btn {
+  background-color: #ff7e42;
+  color: white;
 }
