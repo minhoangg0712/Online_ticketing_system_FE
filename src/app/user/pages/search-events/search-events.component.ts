@@ -1,13 +1,21 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search-events',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './search-events.component.html',
   styleUrl: './search-events.component.css'
 })
 export class SearchEventsComponent {
+  showFilter = false;
+
+  locations = ['Toàn quốc', 'Hồ Chí Minh', 'Hà Nội', 'Đà Lạt', 'Vị trí khác'];
+  selectedLocation = 'Toàn quốc';
+  categories = ['Nhạc sống', 'Sân khấu & Nghệ thuật', 'Thể Thao', 'Khác'];
+  selectedCategories: string[] = [];
+
   events = [
     {
       title: 'VIỆT NAM BÁCH NGHỆ',
@@ -66,4 +74,29 @@ export class SearchEventsComponent {
       date: '16 tháng 06, 2025'
     }
   ];
+
+  toggleFilter() {
+    this.showFilter = !this.showFilter;
+  }
+
+  toggleCategory(category: string) {
+    const index = this.selectedCategories.indexOf(category);
+    if (index === -1) {
+      this.selectedCategories.push(category);
+    } else {
+      this.selectedCategories.splice(index, 1);
+    }
+  }
+
+  resetFilter() {
+    this.selectedLocation = 'Toàn quốc';
+    this.selectedCategories = [];
+  }
+
+  applyFilter() {
+    console.log({
+      location: this.selectedLocation,
+      categories: this.selectedCategories
+    });
+  }
 }
