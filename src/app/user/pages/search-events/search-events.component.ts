@@ -13,7 +13,6 @@ export class SearchEventsComponent {
 
   locations = ['Toàn quốc', 'Hồ Chí Minh', 'Hà Nội', 'Đà Lạt', 'Vị trí khác'];
   selectedLocation = 'Toàn quốc';
-
   categories = ['Nhạc sống', 'Sân khấu & Nghệ thuật', 'Thể Thao', 'Khác'];
   selectedCategories: string[] = [];
 
