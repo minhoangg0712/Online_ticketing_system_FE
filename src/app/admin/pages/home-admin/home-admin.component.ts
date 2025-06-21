@@ -29,6 +29,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     'plugins/icheck-bootstrap/icheck-bootstrap.min.css',
     'plugins/jqvmap/jqvmap.min.css',
     'dist/css/adminlte.min.css',
+    'dist/css/style.css',
     'plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
     'plugins/daterangepicker/daterangepicker.css',
     'plugins/summernote/summernote-bs4.min.css',

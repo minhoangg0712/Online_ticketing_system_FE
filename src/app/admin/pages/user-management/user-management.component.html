@@ -16,7 +16,6 @@
 </section>
 
 <!-- Main content -->
-<!-- src/app/user-list/user-list.component.html -->
 <section class="content">
   <div class="card">
     <div class="card-header">
@@ -31,6 +30,11 @@
       </div>
     </div>
     <div class="card-body p-0">
+      <!-- Hiển thị loading khi đang xóa -->
+      <div *ngIf="isDeleting" class="text-center p-3">
+        <i class="fas fa-spinner fa-spin"></i> Đang xử lý...
+      </div>
+
       <table class="table table-striped projects">
         <thead>
           <tr>
@@ -67,13 +71,124 @@
               <a class="btn btn-info btn-sm" href="#">
                 <i class="fas fa-pencil-alt"></i> Sửa
               </a>
-              <a class="btn btn-danger btn-sm" href="#">
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="confirmDeleteUser(user.id, user.fullName)"
+                [disabled]="isDeleting"
+                title="Xóa người dùng">
                 <i class="fas fa-trash"></i> Xóa
-              </a>
+              </button>
             </td>
+          </tr>
+
+          <!-- Hiển thị message khi không có dữ liệu -->
+          <tr *ngIf="users.length === 0 && !isDeleting">
+            <td colspan="6" class="text-center">Không có người dùng nào</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
+
+<!-- Modal xác nhận xóa -->
+<div class="modal fade" [class.show]="showConfirmModal" [style.display]="showConfirmModal ? 'block' : 'none'"
+     tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="confirmModalLabel">
+          <i class="fas fa-exclamation-triangle mr-2"></i>Xác nhận xóa
+        </h5>
+        <button type="button" class="close text-dark" (click)="cancelDelete()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-question-circle text-warning" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <h6 class="mb-3">Bạn có chắc chắn muốn thực hiện hành động này?</h6>
+
+        <!-- Hiển thị thông tin xóa 1 user -->
+        <p *ngIf="userToDelete" class="mb-0">
+          Xóa người dùng: <strong>"{{ userToDelete.name }}"</strong>
+        </p>
+
+        <!-- Hiển thị thông tin xóa nhiều user -->
+        <p *ngIf="usersToDelete.length > 0" class="mb-0">
+          Xóa <strong>{{ usersToDelete.length }}</strong> người dùng đã chọn
+        </p>
+
+        <small class="text-muted d-block mt-2">
+          <i class="fas fa-info-circle mr-1"></i>
+          Dữ liệu sẽ không thể khôi phục sau khi xóa
+        </small>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-secondary mr-2" (click)="cancelDelete()">
+          <i class="fas fa-times mr-1"></i>Hủy
+        </button>
+        <button type="button" class="btn btn-danger" (click)="proceedWithDelete()">
+          <i class="fas fa-trash mr-1"></i>Xác nhận xóa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal thành công -->
+<div class="modal fade" [class.show]="showSuccessModal" [style.display]="showSuccessModal ? 'block' : 'none'"
+     tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="successModalLabel">
+          <i class="fas fa-check-circle mr-2"></i>Thành công
+        </h5>
+        <button type="button" class="close text-white" (click)="closeSuccessModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-check-circle text-success" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <p class="mb-0">{{ modalMessage }}</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-success" (click)="closeSuccessModal()">
+          <i class="fas fa-check mr-1"></i>Đồng ý
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal lỗi -->
+<div class="modal fade" [class.show]="showErrorModal" [style.display]="showErrorModal ? 'block' : 'none'"
+     tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="errorModalLabel">
+          <i class="fas fa-exclamation-triangle mr-2"></i>Lỗi
+        </h5>
+        <button type="button" class="close text-white" (click)="closeErrorModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-exclamation-triangle text-danger" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <p class="mb-0">{{ modalMessage }}</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-danger" (click)="closeErrorModal()">
+          <i class="fas fa-times mr-1"></i>Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop cho modal -->
+<div class="modal-backdrop fade" [class.show]="showSuccessModal || showErrorModal || showConfirmModal"
+     [style.display]="(showSuccessModal || showErrorModal || showConfirmModal) ? 'block' : 'none'"
+     (click)="closeSuccessModal(); closeErrorModal(); cancelDelete()">
+</div>
