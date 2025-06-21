@@ -30,7 +30,7 @@ export const routes: Routes = [
   {
     path: 'organizer',
     component: NavOrganizerComponent,
-    canActivate: [RoleGuard], data: { expectedRole: 'organizer' },
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_organizer' },
     children: [
       { path: '', redirectTo: 'events', pathMatch: 'full' },
       { path: 'events', component: HomeOrganizerComponent },
@@ -75,6 +75,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: HomeAdminComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_admin' },
     children: [
       { path: '', component: DashboardComponent },
       { path: 'approval-request', component: ApprovalRequestComponent },

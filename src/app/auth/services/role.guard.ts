@@ -10,9 +10,9 @@ export class RoleGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRole = route.data['expectedRole']; // Lấy role từ route
-    const user_role = this.authService.getRole(); // Lấy role từ JWT
+    const role = this.authService.getRole(); // Lấy role từ JWT
 
-    if (user_role === expectedRole || (Array.isArray(user_role) && user_role.includes(expectedRole))) {
+    if (role === expectedRole || (Array.isArray(role) && role.includes(expectedRole))) {
       return true;
     }
 
