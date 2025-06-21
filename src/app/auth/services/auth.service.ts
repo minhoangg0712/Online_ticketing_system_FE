@@ -29,25 +29,25 @@ export class AuthService {
 
   /** Gửi mã xác minh đến email */
   sendVerificationCode(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/sendVerificationCode`, { email }, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/auth/sendVerificationCode`, { email }, { responseType: 'text' });
   }
 
   /** Kiểm tra mã xác minh */
   verifyCode(email: string, code: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/verifyCode`, { email, code }, { responseType: 'json' });
+    return this.http.post(`${this.apiUrl}/auth/verifyCode`, { email, code }, { responseType: 'json' });
   }
 
   /** Đăng ký tài khoản mới */
   register(email: string, password: string, confirmPassword: string, fullName: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { email, password, confirmPassword, fullName }, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/auth/register`, { email, password, confirmPassword, fullName }, { responseType: 'text' });
   }
 
   /** Đăng nhập */
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
+    return this.http.post(`${this.apiUrl}/auth/login`, { email, password }).pipe(
       tap((res: any) => {
         if (res.token && this.isBrowser()) {
-          this.setToken('token');
+          this.setToken(res.token);
 
           try {
             // Giải mã token để lấy thông tin user
@@ -58,8 +58,8 @@ export class AuthService {
                 storage.setItem('userId', decodedToken.sub);
               }
               
-              if (decodedToken.user_fullName) {
-                storage.setItem('fullName',decodedToken.user_fullName);
+              if (decodedToken.full_name) {
+                storage.setItem('fullName',decodedToken.full_name);
               }
             }
 
@@ -73,12 +73,12 @@ export class AuthService {
 
   // Đặt lại mật khẩu B1 gửi code
   sendCode(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/send-code`, { email }, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/auth/send-code`, { email }, { responseType: 'text' });
   }
 
   // Đặt lại mật khẩu B2 xác thực code và đổi mật khẩu
   resetPassword(payload: { email: string, code: string, newPassword: string, confirmNewPassword: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reset-password-by-code`, payload, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/auth/reset-password-by-code`, payload, { responseType: 'text' });
   }
 
   // Lấy userid
@@ -100,7 +100,7 @@ export class AuthService {
     localStorage.setItem('token', token); 
     const decodedToken = this.decodeToken(token); 
     if (decodedToken) { 
-      localStorage.setItem('user_role', JSON.stringify(decodedToken.user_role)); // Lưu role vào localStorage 
+      localStorage.setItem('role', JSON.stringify(decodedToken.role)); // Lưu role vào localStorage 
     } 
   } 
 
@@ -149,7 +149,7 @@ export class AuthService {
 
     try { 
       const decodedToken: any = jwtDecode(token); 
-      return decodedToken.user_role || null; // Lấy role từ JWT 
+      return decodedToken.role || null; // Lấy role từ JWT 
     } catch (error) { 
       console.error('Invalid token:', error); 
       return null; 
@@ -158,16 +158,16 @@ export class AuthService {
 
   isAdmin(): boolean {
     const role = this.getRole();
-    return role === 'admin' || role === 'ADMIN';
+    return role === 'ROLE_admin' || role === 'ROLE_ADMIN';
   }
 
   isSeller(): boolean {
     const role = this.getRole();
-    return role === 'organizer' || role === 'ORGANIZER';
+    return role === 'ROLE_organizer' || role === 'ROLE_ORGANIZER';
   }
 
   isCustomer(): boolean {
     const role = this.getRole();
-    return role === 'customer' || role === 'CUSTOMER';
+    return role === 'ROLE_customer' || role === 'ROLE_CUSTOMER';
   }
 }
