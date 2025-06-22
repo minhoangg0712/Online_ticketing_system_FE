@@ -35,4 +35,26 @@ export class AdminService {
   deleteUser(userId: number): Observable<any> {
     return this.deleteUsers([userId]);
   }
+
+  // Vô hiệu hóa người dùng
+  disableUsers(userIds: number[]): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    const body = {
+      ids: userIds
+    };
+
+    return this.http.delete<any>(`${this.apiUrl}/disable`, {
+      headers: headers,
+      body: body
+    });
+  }
+
+  // Vô hiệu hóa một người dùng (helper method)
+  disableUser(userId: number): Observable<any> {
+    return this.disableUsers([userId]);
+  }
+
 }
