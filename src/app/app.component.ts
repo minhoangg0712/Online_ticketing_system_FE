@@ -22,7 +22,8 @@ export class AppComponent {
         // Kiểm tra nếu trang hiện tại là trang đăng nhập hoặc đăng ký
         this.isAuthPage = event.url.includes('/login') || event.url.includes('/register')
         || event.url.includes('/forgot-password')
-        || event.url.includes('/organizer');
+        || event.url.includes('/organizer')
+        || event.url.includes('/admin');
       }
     });
   }

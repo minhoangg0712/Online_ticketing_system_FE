@@ -8,14 +8,16 @@ body {
 
 .header-border {
   border-bottom: 1px solid black;
+  background-color: #c9c9c9;
 }
 
 .event-header {
-  background-color: #c9c9c9;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 1.5rem;
+  max-width: 1500px;
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
@@ -101,7 +103,9 @@ body {
 }
 
 .payment-section {
-  padding: 1rem 8rem;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .section-title {
@@ -119,6 +123,29 @@ body {
 @media (min-width: 768px) {
   .payment-container {
     flex-direction: row;
+  }
+  
+  .payment-section {
+    padding: 1rem 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .payment-section {
+    padding: 1rem 6rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .payment-section {
+    padding: 1rem 8rem;
+  }
+}
+
+/* Cho màn hình rất lớn */
+@media (min-width: 1400px) {
+  .payment-section {
+    padding: 1rem 10rem;
   }
 }
 
