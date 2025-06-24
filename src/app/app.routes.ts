@@ -75,6 +75,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: HomeAdminComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_admin' },
     children: [
       { path: '', component: DashboardComponent },
       { path: 'approval-request', component: ApprovalRequestComponent },

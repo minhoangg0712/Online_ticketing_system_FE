@@ -16,7 +16,6 @@
 </section>
 
 <!-- Main content -->
-<!-- src/app/user-list/user-list.component.html -->
 <section class="content">
   <div class="card">
     <div class="card-header">
@@ -31,6 +30,13 @@
       </div>
     </div>
     <div class="card-body p-0">
+      <!-- Hiển thị loading khi đang xóa hoặc vô hiệu hóa -->
+      <div *ngIf="isDeleting || isDisabling" class="text-center p-3">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span *ngIf="isDeleting">Đang xóa...</span>
+        <span *ngIf="isDisabling">Đang vô hiệu hóa...</span>
+      </div>
+
       <table class="table table-striped projects">
         <thead>
           <tr>
@@ -55,25 +61,190 @@
             <td class="project-state">
               <span class="badge" [ngClass]="{
                 'badge-success': user.status === 'active',
-                'badge-danger': user.status !== 'active'
+                'badge-warning': user.status === 'disabled',
+                'badge-danger': user.status !== 'active' && user.status !== 'disabled'
               }">
                 {{ user.status }}
               </span>
             </td>
             <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
+              <a class="btn btn-primary btn-sm" href="#" title="Xem chi tiết">
                 <i class="fas fa-folder"></i> Xem
               </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt"></i> Sửa
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
+
+              <!-- Nút vô hiệu hóa chỉ hiện khi user đang active -->
+              <button
+                *ngIf="user.status === 'active'"
+                class="btn btn-warning btn-sm"
+                (click)="confirmDisableUser(user.id, user.fullName)"
+                [disabled]="isDeleting || isDisabling"
+                title="Vô hiệu hóa tài khoản">
+                <i class="fas fa-ban"></i> Vô hiệu hóa
+              </button>
+
+              <!-- Nút kích hoạt lại chỉ hiện khi user bị disabled -->
+              <button
+                *ngIf="user.status === 'disabled'"
+                class="btn btn-success btn-sm"
+                title="Kích hoạt lại tài khoản"
+                disabled>
+                <i class="fas fa-check"></i> Kích hoạt
+              </button>
+
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="confirmDeleteUser(user.id, user.fullName)"
+                [disabled]="isDeleting || isDisabling"
+                title="Xóa người dùng">
                 <i class="fas fa-trash"></i> Xóa
-              </a>
+              </button>
             </td>
+          </tr>
+
+          <!-- Hiển thị message khi không có dữ liệu -->
+          <tr *ngIf="users.length === 0 && !isDeleting && !isDisabling">
+            <td colspan="6" class="text-center">Không có người dùng nào</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
+
+<!-- Modal xác nhận (cho cả xóa và vô hiệu hóa) -->
+<div class="modal fade" [class.show]="showConfirmModal" [style.display]="showConfirmModal ? 'block' : 'none'"
+     tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" [ngClass]="{
+        'bg-warning text-dark': actionType === 'delete',
+        'bg-info text-white': actionType === 'disable'
+      }">
+        <h5 class="modal-title" id="confirmModalLabel">
+          <i class="fas" [ngClass]="{
+            'fa-exclamation-triangle': actionType === 'delete',
+            'fa-ban': actionType === 'disable'
+          }" style="margin-right: 8px;"></i>
+          <span *ngIf="actionType === 'delete'">Xác nhận xóa</span>
+          <span *ngIf="actionType === 'disable'">Xác nhận vô hiệu hóa</span>
+        </h5>
+        <button type="button" class="close" [class.text-dark]="actionType === 'delete'" [class.text-white]="actionType === 'disable'" (click)="cancelAction()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas" [ngClass]="{
+          'fa-question-circle text-warning': actionType === 'delete',
+          'fa-ban text-info': actionType === 'disable'
+        }" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <h6 class="mb-3">Bạn có chắc chắn muốn thực hiện hành động này?</h6>
+
+        <!-- Hiển thị thông tin cho hành động đơn lẻ -->
+        <div *ngIf="userToDelete && actionType === 'delete'">
+          <p class="mb-0">
+            Xóa người dùng: <strong>"{{ userToDelete.name }}"</strong>
+          </p>
+        </div>
+
+        <div *ngIf="userToDisable && actionType === 'disable'">
+          <p class="mb-0">
+            Vô hiệu hóa người dùng: <strong>"{{ userToDisable.name }}"</strong>
+          </p>
+        </div>
+
+        <!-- Hiển thị thông tin cho hành động nhiều user -->
+        <div *ngIf="usersToDelete.length > 0 && actionType === 'delete'">
+          <p class="mb-0">
+            Xóa <strong>{{ usersToDelete.length }}</strong> người dùng đã chọn
+          </p>
+        </div>
+
+        <div *ngIf="usersToDisable.length > 0 && actionType === 'disable'">
+          <p class="mb-0">
+            Vô hiệu hóa <strong>{{ usersToDisable.length }}</strong> người dùng đã chọn
+          </p>
+        </div>
+
+        <small class="text-muted d-block mt-2">
+          <i class="fas fa-info-circle mr-1"></i>
+          <span *ngIf="actionType === 'delete'">Dữ liệu sẽ không thể khôi phục sau khi xóa</span>
+          <span *ngIf="actionType === 'disable'">Người dùng sẽ không thể đăng nhập sau khi vô hiệu hóa</span>
+        </small>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-secondary mr-2" (click)="cancelAction()">
+          <i class="fas fa-times mr-1"></i>Hủy
+        </button>
+        <button type="button" class="btn" [ngClass]="{
+          'btn-danger': actionType === 'delete',
+          'btn-warning': actionType === 'disable'
+        }" (click)="proceedWithAction()">
+          <i class="fas" [ngClass]="{
+            'fa-trash': actionType === 'delete',
+            'fa-ban': actionType === 'disable'
+          }" style="margin-right: 4px;"></i>
+          <span *ngIf="actionType === 'delete'">Xác nhận xóa</span>
+          <span *ngIf="actionType === 'disable'">Xác nhận vô hiệu hóa</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal thành công -->
+<div class="modal fade" [class.show]="showSuccessModal" [style.display]="showSuccessModal ? 'block' : 'none'"
+     tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="successModalLabel">
+          <i class="fas fa-check-circle mr-2"></i>Thành công
+        </h5>
+        <button type="button" class="close text-white" (click)="closeSuccessModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-check-circle text-success" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <p class="mb-0">{{ modalMessage }}</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-success" (click)="closeSuccessModal()">
+          <i class="fas fa-check mr-1"></i>Đồng ý
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal lỗi -->
+<div class="modal fade" [class.show]="showErrorModal" [style.display]="showErrorModal ? 'block' : 'none'"
+     tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="errorModalLabel">
+          <i class="fas fa-exclamation-triangle mr-2"></i>Lỗi
+        </h5>
+        <button type="button" class="close text-white" (click)="closeErrorModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-exclamation-triangle text-danger" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <p class="mb-0">{{ modalMessage }}</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-danger" (click)="closeErrorModal()">
+          <i class="fas fa-times mr-1"></i>Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop cho modal -->
+<div class="modal-backdrop fade" [class.show]="showSuccessModal || showErrorModal || showConfirmModal"
+     [style.display]="(showSuccessModal || showErrorModal || showConfirmModal) ? 'block' : 'none'"
+     (click)="closeSuccessModal(); closeErrorModal(); cancelAction()">
+</div>
