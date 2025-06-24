@@ -48,18 +48,21 @@ label {
 .image-upload-row {
   display: flex;
   gap: 4rem;
-  margin-top: 1rem;
+  width: 100%; /* hoặc 960px, hoặc 90vw */
+  max-width: 1200px;
+  margin: 0 auto; /* canh giữa nếu muốn */
   align-items: flex-start;
+  margin-top: 20px;
 }
 
 .image-upload-row .image-box:first-child {
-  max-width: 360px;
+  flex: 0.9;
   height: 420px;
 }
 
 .image-upload-row .image-box:last-child {
   height: 420px;
-  max-width: 1080px;
+  flex: 2.1;
 }
 
 .image-box {
@@ -148,7 +151,7 @@ label {
 .input-field:focus,
 .input-textarea:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #ff7e42;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 

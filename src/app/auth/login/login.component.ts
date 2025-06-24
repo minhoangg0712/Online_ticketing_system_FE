@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service'; 
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-
+import { ToastNotificationComponent } from '../../user/pop-up/toast-notification/toast-notification.component';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ToastNotificationComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   hidePassword = true;
   loginErrorMessage: string | null = null;
+  errorMessage: string = '';
+  @ViewChild('notification') notification!: ToastNotificationComponent;
 
   constructor(
     private fb: FormBuilder,
@@ -38,7 +40,7 @@ export class LoginComponent implements OnInit {
         next: (res: any) => {
           if (res.token) {
             this.authService.setToken(res.token);
-            
+
             // Sau khi đăng nhập thành công, kiểm tra role và điều hướng
             if (this.authService.isAdmin()) {
               this.router.navigate(['/admin']);
@@ -51,10 +53,13 @@ export class LoginComponent implements OnInit {
             }
           }
         },
-        error: (err) => {}
+        error: (err) => {
+          this.notification.showNotification(this.errorMessage, 5000, 'warning');
+        }
       });
     }
   }
+
 
   togglePasswordVisibility() {
     this.hidePassword = !this.hidePassword;
@@ -70,10 +75,12 @@ export class LoginComponent implements OnInit {
   }
 
   createAccount() {
-    this.router.navigate(['/register']); 
+    this.router.navigate(['/register']);
   }
 
   goToHome() {
-    this.router.navigate(['/']);  
+    this.router.navigate(['/']);
   }
+
+  onNotificationClose() {}
 }

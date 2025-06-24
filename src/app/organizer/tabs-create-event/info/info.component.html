@@ -50,7 +50,7 @@
       </image-cropper>
 
       <div class="cropper-actions">
-        <button type="button" (click)="saveCroppedImage()">Lưu</button>
+        <button type="button" class="" (click)="saveCroppedImage()">Lưu</button>
         <button type="button" (click)="cancelCrop()">Hủy</button>
       </div>
     </div>
@@ -112,6 +112,7 @@
   <section class="section-category form-group">
     <label>Thể loại sự kiện</label>
     <select class="input-field" [(ngModel)]="eventForm.category">
+      <option value="" disabled selected hidden>Thể loại sự kiện</option>
       <option value="conference">Âm nhạc</option>
       <option value="workshop">Sân khấu & nghệ thuật</option>
       <option value="seminar">Workshop</option>
