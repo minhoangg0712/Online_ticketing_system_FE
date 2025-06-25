@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class DateComponent {
   ticketForm: FormGroup;
+  @Output() formChange = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder) {
     this.ticketForm = this.fb.group({
@@ -20,6 +21,8 @@ export class DateComponent {
       endTime: ['', Validators.required],
       eventDate: ['', Validators.required],
       eventTime: ['', Validators.required],
+      eventEndDate: ['', Validators.required],
+      eventEndTime: ['', Validators.required],
       tickets: this.fb.array([this.createTicketGroup()])
     });
   }
@@ -47,6 +50,16 @@ export class DateComponent {
     return end > start;
   }
 
+  get isEventEndTimeAfterStart(): boolean {
+    const formValue = this.ticketForm.value;
+    if (!formValue.eventDate || !formValue.eventTime || !formValue.eventEndDate || !formValue.eventEndTime) {
+      return true;
+    }
+    const start = new Date(`${formValue.eventDate}T${formValue.eventTime}`);
+    const end = new Date(`${formValue.eventEndDate}T${formValue.eventEndTime}`);
+    return end > start;
+  }
+
   get isEventDateValid(): boolean {
     const formValue = this.ticketForm.value;
     if (!formValue.startDate || !formValue.eventDate) return true;
@@ -57,16 +70,24 @@ export class DateComponent {
   }
 
   get isFormValid(): boolean {
-    return this.ticketForm.valid && this.isEndTimeAfterStart && this.isEventDateValid;
+    return this.ticketForm.valid && this.isEndTimeAfterStart && this.isEventDateValid && this.isEventEndTimeAfterStart;
   }
 
+  // Emit dữ liệu mỗi khi form thay đổi
+  emitFormChange() {
+    this.formChange.emit(this.ticketForm.value);
+  }
+
+  // Gọi emitFormChange ở các chỗ thay đổi dữ liệu
   addTicket(): void {
     this.tickets.push(this.createTicketGroup());
+    this.emitFormChange();
   }
 
   removeTicket(index: number): void {
     if (this.tickets.length > 1) {
       this.tickets.removeAt(index);
+      this.emitFormChange();
     }
   }
 
@@ -76,8 +97,23 @@ export class DateComponent {
 
   onSubmit(): void {
     if (this.isFormValid) {
-      console.log('Form submitted:', this.ticketForm.value);
-      // Submit logic here
+      const formValue = this.ticketForm.value;
+
+      const payload = {
+        startTime: `${formValue.eventDate}T${formValue.eventTime}:00`,
+        endTime: `${formValue.eventEndDate}T${formValue.eventEndTime}:00`,
+        saleStart: `${formValue.startDate}T${formValue.startTime}:00`,
+        saleEnd: `${formValue.endDate}T${formValue.endTime}:00`,
+        tickets: formValue.tickets.map((ticket: any) => ({
+          ticketType: ticket.name,
+          quantityTotal: ticket.quantity,
+          price: ticket.price
+        }))
+      };
+
+      console.log('Form submitted with API payload:', payload);
+      // Logic để gửi payload đi sẽ được thêm ở đây
+      this.emitFormChange();
     } else {
       console.log('Form is invalid');
       this.markFormGroupTouched();

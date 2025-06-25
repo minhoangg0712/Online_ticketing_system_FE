@@ -11,6 +11,14 @@ body {
   line-height: 1.6;
 }
 
+.form-wrapper h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #e5e5e5;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
 .ticket-sale-container {
   max-width: 100%;
   padding: 1.5rem;
@@ -19,16 +27,21 @@ body {
 }
 
 .ticket-sale-container h2 {
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.75rem;
+  font-weight: 600;
   color: #e5e5e5;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: left;
-  position: relative;
+}
+
+.form-wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   margin-left: 4rem;
 }
 
@@ -88,6 +101,22 @@ body {
   font-weight: 400;
 }
 
+.input-field {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #222;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
 .form-group input[type="date"],
 .form-group input[type="time"] {
   width: 70%;
@@ -111,25 +140,6 @@ body {
   font-size: 1rem;
   color: #f9fafb;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Input field class for ticket type inputs */
-.input-field {
-  width: 100% !important;
-  padding: 0.75rem;
-  background-color: #2a2a2a;
-  border: 1px solid #374151;
-  border-radius: 6px;
-  font-size: 1rem;
-  color: #f9fafb;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Error state styling */
-.input-field.error,
-.form-group input.error {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
 
 .form-group input[type="date"]:focus,
@@ -188,7 +198,6 @@ body {
   color: #f9fafb;
 }
 
-/* Style for character count display */
 .char-count {
   font-size: 0.85rem;
   color: #9ca3af;
@@ -196,7 +205,6 @@ body {
   margin-top: 0.25rem;
 }
 
-/* Error message styling */
 .error-message {
   color: #ef4444;
   font-size: 0.8rem;
@@ -204,7 +212,6 @@ body {
   display: block;
 }
 
-/* Button styling */
 .btn-add {
   background-color: #ff7e42;
   color: white;
@@ -219,7 +226,6 @@ body {
   align-items: center;
   gap: 0.5rem;
   margin-top: 1rem;
-  margin-left: 4rem;
 }
 
 .btn-add:hover {
@@ -231,37 +237,35 @@ body {
   transform: translateY(0);
 }
 
+.remove-btn-row {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .btn-remove {
+  position: static;
+  margin: 0;
   background-color: #ef4444;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  display: inline-flex;
+  transition: background-color 0.2s;
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
 }
 
 .btn-remove:hover {
   background-color: #dc2626;
-  transform: translateY(-1px);
 }
 
-.btn-remove:active {
-  transform: translateY(0);
-}
-
-/* Form actions styling */
 .form-actions {
   margin-top: 2rem;
-  margin-left: 4rem;
   display: flex;
   gap: 1rem;
 }
@@ -364,4 +368,16 @@ label i {
     width: 100%;
     justify-content: center;
   }
+}
+
+.ticket-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+.ticket-box > div {
+  margin-bottom: 1rem;
 }

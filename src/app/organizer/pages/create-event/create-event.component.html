@@ -1,33 +1,17 @@
-<div class="main-content">
-  <nav class="nav-header">
-    <div class="nav-buttons">
-      <button class="nav-item" (click)="setTab('info')" [class.active]="selectedTab === 'info'">
-        <i class="bi bi-calendar-fill"></i>
-        <span>Thông tin sự kiện</span>
-      </button>
-      <button class="nav-item" (click)="setTab('date')" [class.active]="selectedTab === 'date'">
-        <i class="bi bi-folder-fill"></i>
-        <span>Thời gian & loại vé</span>
-      </button>
-      <button class="nav-item" (click)="setTab('pay')" [class.active]="selectedTab === 'pay'">
-        <i class="bi bi-credit-card-fill"></i>
-        <span>Thanh toán</span>
-      </button>
-    </div>
-    <button class="btn btn-continue" (click)="onContinue()" [disabled]="selectedTab === 'pay'">
-      <span>Tiếp tục</span>
-    </button>
-  </nav>
+<div class="steps-nav">
+  <button [class.active]="currentStep === 1" (click)="goToStep(1)">1. Thông tin</button>
+  <button [class.active]="currentStep === 2" (click)="goToStep(2)">2. Thời gian & Vé</button>
+  <button [class.active]="currentStep === 3" (click)="goToStep(3)">3. Thanh toán</button>
+</div>
 
-  <div class="content">
-    <ng-container *ngIf="selectedTab === 'info'">
-      <app-info></app-info>
-    </ng-container>
-    <ng-container *ngIf="selectedTab === 'date'">
-      <app-date></app-date>
-    </ng-container>
-    <ng-container *ngIf="selectedTab === 'pay'">
-      <app-pay></app-pay>
-    </ng-container>
-  </div>
+<div class="step-content">
+  <app-info *ngIf="currentStep === 1" (formChange)="onInfoChange($event)"></app-info>
+  <app-date *ngIf="currentStep === 2" (formChange)="onDateChange($event)"></app-date>
+  <app-pay *ngIf="currentStep === 3"></app-pay>
+</div>
+
+<div class="actions">
+  <button (click)="prevStep()" [disabled]="currentStep === 1">Quay lại</button>
+  <button (click)="nextStep()" [disabled]="currentStep === maxStep">Tiếp tục</button>
+  <button *ngIf="currentStep === maxStep" (click)="submitAll()" class="btn-submit">Tạo sự kiện</button>
 </div>

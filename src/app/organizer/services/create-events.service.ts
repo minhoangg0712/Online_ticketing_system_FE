@@ -17,16 +17,21 @@ export class CreateEventsService {
   ): Observable<any> {
     const formData = new FormData();
 
-    // Gửi JSON dưới dạng "data" (phải match @RequestPart("data"))
+    // Gửi phần dữ liệu JSON
     formData.append('data', new Blob(
       [JSON.stringify(eventData)],
       { type: 'application/json' }
     ));
 
-    // Gửi ảnh logo & background
-    formData.append('logo', logo);
-    formData.append('background', background);
+    // Gửi các file ảnh
+    if (logo) {
+      formData.append('logo', logo);
+    }
+    if (background) {
+      formData.append('background', background);
+    }
 
+    // Gửi đến API
     return this.http.post(this.apiUrl, formData);
   }
 }

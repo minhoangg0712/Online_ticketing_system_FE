@@ -77,23 +77,23 @@
   <div class="address-row">
     <div>
       <label>Tỉnh/Thành</label>
-      <select class="input-field" [(ngModel)]="eventForm.province">
-        <option value="">Tỉnh/Thành</option>
-        <option *ngFor="let province of provinces" [value]="province.code">{{province.name}}</option>
+      <select class="input-field" [(ngModel)]="eventForm.province" (change)="onProvinceChange()" name="province">
+        <option value="" disabled>Chọn Tỉnh/Thành</option>
+        <option *ngFor="let province of provinces" [value]="province.id">{{province.name}}</option>
       </select>
     </div>
     <div>
       <label>Quận/Huyện</label>
-      <select class="input-field" [(ngModel)]="eventForm.district">
-        <option value="">Quận/Huyện</option>
-        <option *ngFor="let district of districts" [value]="district.code">{{district.name}}</option>
+      <select class="input-field" [(ngModel)]="eventForm.district" (change)="onDistrictChange()" name="district">
+        <option value="" disabled>Chọn Quận/Huyện</option>
+        <option *ngFor="let district of districts" [value]="district.id">{{district.name}}</option>
       </select>
     </div>
     <div>
       <label>Phường/Xã</label>
-      <select class="input-field" [(ngModel)]="eventForm.ward">
-        <option value="">Phường/Xã</option>
-        <option *ngFor="let ward of wards" [value]="ward.code">{{ward.name}}</option>
+      <select class="input-field" [(ngModel)]="eventForm.ward" name="ward">
+        <option value="" disabled>Chọn Phường/Xã</option>
+        <option *ngFor="let ward of wards" [value]="ward.id">{{ward.name}}</option>
       </select>
     </div>
   </div>
