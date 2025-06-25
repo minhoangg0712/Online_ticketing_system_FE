@@ -56,4 +56,12 @@ export class UserService {
     if (!this.isBrowser()) return null;
     return localStorage.getItem('token'); 
   } 
+
+  isUserLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  updateUserProfile(profileData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update-profile`, profileData);
+  }
 }

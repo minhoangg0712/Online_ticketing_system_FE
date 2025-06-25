@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-toast-notification',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './toast-notification.component.html',
   styleUrls: ['./toast-notification.component.css']
@@ -17,9 +18,9 @@ export class ToastNotificationComponent implements OnInit, OnDestroy {
   @Input() message: string = 'Bạn phải đăng nhập để sử dụng chức năng này.';
   @Input() autoHideTime: number = 5000; // 5 giây
   @Input() show: boolean = false;
-  @Input() progressBarType: string = 'default'; // default, thick, success, warning, glow, pulse, rounded, striped, rainbow
   @Input() showProgressBar: boolean = true; // Cho phép ẩn/hiện progress bar
   @Output() onClose = new EventEmitter<void>();
+  progressBarType?: string;
 
   private timeoutId: any;
 

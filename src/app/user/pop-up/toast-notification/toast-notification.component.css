@@ -67,18 +67,36 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Base */
 .notification-progress {
   position: absolute;
   bottom: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(90deg, #ff4444, #ff6666);
   width: 100%;
   transform-origin: left;
   animation: progress-bar linear forwards;
-  display: block; /* Đảm bảo hiển thị */
-  z-index: 1; /* Đảm bảo nằm trên các element khác */
+  display: block;
+  z-index: 1;
 }
+
+/* Gradient theo loại */
+.notification-progress.success {
+  background: linear-gradient(90deg, #4caf50, #66bb6a);
+}
+
+.notification-progress.error {
+  background: linear-gradient(90deg, #f44336, #e57373);
+}
+
+.notification-progress.warning {
+  background: linear-gradient(90deg, #ff9800, #ffb74d);
+}
+
+.notification-progress.default {
+  background: linear-gradient(90deg, #2196f3, #64b5f6);
+}
+
 
 @keyframes progress-bar {
   from {

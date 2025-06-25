@@ -72,9 +72,13 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="submit-btn">Hoàn thành</button>
+                    <button type="submit" class="submit-btn" (click)="onSubmit()">Hoàn thành</button>
                 </div>
             </form>
         </div>
     </div>     
 </div>
+<app-toast-notification 
+  #notification
+  (onClose)="onNotificationClose()">
+</app-toast-notification>
