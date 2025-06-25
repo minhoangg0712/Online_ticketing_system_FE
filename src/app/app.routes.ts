@@ -15,15 +15,22 @@ import { DashboardComponent } from './admin/pages/dashboard/dashboard.component'
 import { UserManagementComponent } from './admin/pages/user-management/user-management.component';
 import { SelectTicketComponent } from './user/pages/select-ticket/select-ticket.component';
 import { NgModule } from '@angular/core';
+import { RoleGuard } from './auth/services/role.guard';
+import { UserProfileComponent } from './user/pages/user-profile/user-profile.component';
+import { PurchasedTicketComponent } from './user/pages/purchased-ticket/purchased-ticket.component';
+import { OrderTicketComponent } from './user/pages/order-ticket/order-ticket.component';
+import { SearchEventsComponent } from './user/pages/search-events/search-events.component';
+import { PaymentTicketsComponent } from './user/pages/payment-tickets/payment-tickets.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'reset-password', component: ForgotPasswordComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
 
   {
     path: 'organizer',
     component: NavOrganizerComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'organizer' },
     children: [
       { path: '', redirectTo: 'events', pathMatch: 'full' },
       { path: 'events', component: HomeOrganizerComponent },
@@ -45,10 +52,30 @@ export const routes: Routes = [
     path: 'select-ticket',
     component: SelectTicketComponent
   },
-
+  {
+    path: 'user-profile',
+    component: UserProfileComponent
+  },
+  {
+    path: 'purchased-ticket',
+    component: PurchasedTicketComponent
+  },
+  {
+    path: 'order-ticket',
+    component: OrderTicketComponent
+  },
+  {
+    path: 'search-events',
+    component: SearchEventsComponent
+  },
+  {
+    path: 'payment-tickets',
+    component: PaymentTicketsComponent
+  },
   {
     path: 'admin',
     component: HomeAdminComponent,
+    canActivate: [RoleGuard], data: { expectedRole: 'ROLE_admin' },
     children: [
       { path: '', component: DashboardComponent },
       { path: 'approval-request', component: ApprovalRequestComponent },

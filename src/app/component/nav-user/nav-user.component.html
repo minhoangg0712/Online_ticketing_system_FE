@@ -1,0 +1,29 @@
+<div class="account-sidebar-container">
+  <img
+    src="https://storage.googleapis.com/a1aa/image/8c95feca-1b7a-4366-7f25-fbbfa8d9aad7.jpg"
+    alt="User profile photo of a person in casual clothes"
+    width="50"
+    height="50"
+    class="profile-img"
+  />
+
+  <div class="account-info">
+    <p class="account-label">Tài khoản của <strong>Trung Đức</strong></p>
+    <p class="account-name"></p>
+
+    <ul class="account-links">
+      <li>
+        <a class="link" (click)="navigateToProfile()">
+          <i class="fas fa-user icon invisible"></i>
+          Thông tin tài khoản
+        </a>
+      </li>
+      <li>
+        <a class="link" (click)="navigateToPurchasedTickets()">
+          <i class="fas fa-ticket-alt icon"></i>
+          Vé đã mua
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

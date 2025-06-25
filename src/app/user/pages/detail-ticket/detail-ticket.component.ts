@@ -1,9 +1,11 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import { Component, OnInit, HostListener,ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule, NgIf } from '@angular/common';
+import { AuthService } from '../../../auth/services/auth.service';
+import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
 @Component({
   selector: 'app-detail-ticket',
-  imports: [CommonModule],
+  imports: [CommonModule, ToastNotificationComponent],
   templateUrl: './detail-ticket.component.html',
   styleUrl: './detail-ticket.component.css'
 })
@@ -11,6 +13,10 @@ export class DetailTicketComponent implements OnInit {
   expanded = false;
   showHeader = false;
   isMainExpanded: boolean = true;
+  @ViewChild('notification') notification!: ToastNotificationComponent;
+  
+  showNotification = false;
+  notificationMessage = 'Bạn phải đăng nhập để sử dụng chức năng này.';
 
   headerData = {
     title: 'VBA 2025 - Saigon Heat vs CT Catfish',
@@ -58,7 +64,7 @@ export class DetailTicketComponent implements OnInit {
     description: 'LENOM INTERGRATED COMMUNICATION GROUP'
   };
 
-  constructor() { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {}
 
@@ -181,5 +187,27 @@ export class DetailTicketComponent implements OnInit {
 
   toggleMainSection(): void {
     this.isMainExpanded = !this.isMainExpanded;
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  needLoginToBuyTicket() {
+    if (this.isLoggedIn()) {
+      // Thực hiện hành động khi đã đăng nhập
+      console.log('Thực hiện hành động...');
+      // Thêm logic của bạn ở đây
+    } else {
+      // Hiển thị thông báo yêu cầu đăng nhập
+      this.notification.showNotification(
+        'Bạn phải đăng nhập để sử dụng chức năng này.',
+        5000
+      );
+    }
+  }
+
+  onNotificationClose() {
+    console.log('Notification đã đóng');
   }
 }

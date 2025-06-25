@@ -9,7 +9,7 @@
       <i class="fas fa-search search-icon"></i>
     </div>
 
-    <nav class="nav-actions">
+    <nav class="nav-actions" *ngIf="!isLoggedIn()">
       <div class="auth-links">
         <a (click)="goToLogin()" class="auth-link login">Đăng nhập</a>
         <div class="divider"></div>
@@ -17,17 +17,24 @@
       </div>
     </nav>
 
-    <div class="user-profile">
+    <div class="user-profile" *ngIf="isLoggedIn()">
       <div class="profile-container">
-        <img src="assets/user-avatar.png" alt="User Avatar" class="user-avatar" />
+        <img [src]="avatarUrl" *ngIf="avatarUrl" alt="User Avatar" class="user-avatar" />
         <span class="account-label">Tài khoản</span>
         <span class="dropdown-icon">▼</span>
       </div>
-      <div class="dropdown-menu">
-        <a href="#" class="dropdown-item">Vé đã mua</a>
-        <a href="#" class="dropdown-item">Sự kiện của tôi</a>
-        <a href="#" class="dropdown-item">Tài khoản của tôi</a>
-        <a href="#" class="dropdown-item logout">Đăng xuất</a>
+      <div class="dropdown" 
+        (mouseenter)="onMouseEnter()" 
+        (mouseleave)="onMouseLeave()">
+          <div class="dropdown-menu" 
+            [class.show]="isDropdownOpen"
+            (mouseenter)="onMouseEnter()"
+            (mouseleave)="onMouseLeave()">
+            <a href="#" class="dropdown-item">Vé đã mua</a>
+            <a href="#" class="dropdown-item">Sự kiện của tôi</a>
+            <a href="/user-profile" class="dropdown-item">Tài khoản của tôi</a>
+            <a href="#" class="dropdown-item logout" (click)="logout()">Đăng xuất</a>
+          </div>
       </div>
     </div>
   </div>

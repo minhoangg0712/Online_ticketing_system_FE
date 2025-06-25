@@ -24,7 +24,7 @@
           <p class="price">299.500 đ</p>
           <i class="bi bi-chevron-compact-right price-icon"></i>
         </div>
-        <button class="buy-btn">Mua vé ngay</button>
+        <button class="buy-btn" (click)="needLoginToBuyTicket()">Mua vé ngay</button>
       </div>
 
       <div class="circle top-right"></div>
@@ -50,99 +50,100 @@
   <button> <i class="bi bi-ticket-detailed"></i> Mua vé ngay</button>
 </div>
 
-<div class="tp-content"> 
-  <!-- Giới thiệu -->
-  <div class="left-container">
-    <div class="tp-container">
-      <h2 class="tp-title">Giới thiệu</h2>
-      <div class="tp-intro-text">
-        <p>GIÁ VÉ HIỂN THỊ TRÊN HỆ THỐNG ĐÃ LÀ GIÁ EARLY BIRD</p>
-        <p>
-          Thời gian áp dụng (Từ 20:00 ngày 30/05/2025 đến 19:59 ngày
-          01/06/2025 hoặc đến khi hết số lượng vé ưu đãi)
-        </p>
-      </div>
-
-      <table class="tp-table">
-        <thead>
-          <tr>
-            <th>HẠNG VÉ</th>
-            <th>GIÁ GỐC</th>
-            <th>GIÁ EARLY BIRD</th>
-            <th>ĐÃ GIẢM</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let ticket of displayedTickets">
-            <td>{{ ticket.zone }}</td>
-            <td>{{ ticket.originalPrice }}</td>
-            <td>{{ ticket.discountedPrice }}</td>
-            <td>{{ ticket.discount }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="tp-fade-overlay" *ngIf="!expanded"></div>
-      <div class="tp-toggle-btn" (click)="toggleRows()" tabindex="0" (keydown.enter)="toggleRows()" (keydown.space)="toggleRows()">
-        <i class="fas" [ngClass]="expanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-      </div>
-    </div>
-
-    <!-- Thông tin vé -->
-    <div class="ticket-container">
-      <div class="ticket-header">
-        Thông tin vé
-      </div>
-
-      <div class="ticket-event">
-        <div class="ticket-event-info" (click)="toggleMainSection()">
-          <i [ngClass]="isMainExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
-          <span>15:00 - 23:00, 28 Tháng 06, 2025</span>
+<div class="main-content">
+  <div class="tp-content"> 
+    <!-- Giới thiệu -->
+    <div class="left-container">
+      <div class="tp-container">
+        <h2 class="tp-title">Giới thiệu</h2>
+        <div class="tp-intro-text">
+          <p>GIÁ VÉ HIỂN THỊ TRÊN HỆ THỐNG ĐÃ LÀ GIÁ EARLY BIRD</p>
+          <p>
+            Thời gian áp dụng (Từ 20:00 ngày 30/05/2025 đến 19:59 ngày
+            01/06/2025 hoặc đến khi hết số lượng vé ưu đãi)
+          </p>
         </div>
-          <button type="button" class="buy-now-button">Mua vé ngay</button>
+
+        <table class="tp-table">
+          <thead>
+            <tr>
+              <th>HẠNG VÉ</th>
+              <th>GIÁ GỐC</th>
+              <th>GIÁ EARLY BIRD</th>
+              <th>ĐÃ GIẢM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ticket of displayedTickets">
+              <td>{{ ticket.zone }}</td>
+              <td>{{ ticket.originalPrice }}</td>
+              <td>{{ ticket.discountedPrice }}</td>
+              <td>{{ ticket.discount }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="tp-fade-overlay" *ngIf="!expanded"></div>
+        <div class="tp-toggle-btn" (click)="toggleRows()" tabindex="0" (keydown.enter)="toggleRows()" (keydown.space)="toggleRows()">
+          <i class="fas" [ngClass]="expanded ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+        </div>
       </div>
 
-      <div class="ticket-section" *ngIf="isMainExpanded">
-        <div class="ticket-item" *ngFor="let ticket of ticketList; let i = index">
-          <div class="ticket-item-header" (click)="toggleTicket(i)">
-            <div class="ticket-title">
-              <i [ngClass]="ticket.isExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
-              <span>{{ ticket.name }}</span>
+      <!-- Thông tin vé -->
+      <div class="ticket-container">
+        <div class="ticket-header">
+          Thông tin vé
+        </div>
+
+        <div class="ticket-event">
+          <div class="ticket-event-info" (click)="toggleMainSection()">
+            <i [ngClass]="isMainExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
+            <span>15:00 - 23:00, 28 Tháng 06, 2025</span>
+          </div>
+            <button type="button" class="buy-now-button">Mua vé ngay</button>
+        </div>
+
+        <div class="ticket-section" *ngIf="isMainExpanded">
+          <div class="ticket-item" *ngFor="let ticket of ticketList; let i = index">
+            <div class="ticket-item-header" (click)="toggleTicket(i)">
+              <div class="ticket-title">
+                <i [ngClass]="ticket.isExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
+                <span>{{ ticket.name }}</span>
+              </div>
+              <span class="ticket-price">{{ ticket.price }}</span>
             </div>
-            <span class="ticket-price">{{ ticket.price }}</span>
-          </div>
 
-          <div class="ticket-details" *ngIf="ticket.isExpanded">
-            <p>Mô tả chi tiết cho vé "{{ ticket.name }}".</p>
+            <div class="ticket-details" *ngIf="ticket.isExpanded">
+              <p>Mô tả chi tiết cho vé "{{ ticket.name }}".</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="organizer-wrapper">
+        <h2 class="organizer-title">Ban tổ chức</h2>
+        <div class="organizer-content">
+          <img
+            [src]="organizer.image"
+            [alt]="organizer.alt"
+            class="organizer-image"
+          />
+          <div>
+            <p class="organizer-name">
+              {{ organizer.name }}
+            </p>
+            <p class="organizer-description">
+              {{ organizer.description }}
+            </p>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="organizer-wrapper">
-      <h2 class="organizer-title">Ban tổ chức</h2>
-      <div class="organizer-content">
-        <img
-          [src]="organizer.image"
-          [alt]="organizer.alt"
-          class="organizer-image"
-        />
-        <div>
-          <p class="organizer-name">
-            {{ organizer.name }}
-          </p>
-          <p class="organizer-description">
-            {{ organizer.description }}
-          </p>
-        </div>
-      </div>
+    
+    <div class="side-banner">
+      <img src="assets/imgside.webp" alt="Banner quảng cáo" />
     </div>
-  </div>
-  
-  <div class="side-banner">
-    <img src="assets/imgside.webp" alt="Banner quảng cáo" />
   </div>
 </div>
-
 <div class="another-container">
   <div class="event-listing-container">
     <h2 class="section-title">Có thể bạn cũng thích</h2>
@@ -232,3 +233,8 @@
     </div>
   </div>
 </div>
+<!-- Thêm dòng này vào cuối file HTML -->
+<app-toast-notification 
+  #notification
+  (onClose)="onNotificationClose()">
+</app-toast-notification>

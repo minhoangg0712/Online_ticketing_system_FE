@@ -1,0 +1,53 @@
+<!-- ticket-list.component.html -->
+<div class="page-container">
+  <div class="status-toggle">
+      <button class="toggle-btn" 
+      (click)="setTab('coming')" 
+      [class.active]="selectedTab === 'coming'"
+      [attr.aria-selected]="selectedTab === 'coming'">Sắp diễn ra</button>
+      <button class="toggle-btn"
+      (click)="setTab('ended')"
+      [class.active]="selectedTab === 'ended'"
+      [attr.aria-selected]="selectedTab === 'ended'" 
+      >Đã kết thúc</button>
+  </div>
+  <!-- Ticket list -->
+  <div class="ticket-list">
+    <div class="horizontal-ticket" *ngFor="let ticket of tickets">
+      <!-- Left stub -->
+      <div class="left">
+        <div class="stub-circle"></div>
+        <div class="stub-line1">{{ ticket.type }}</div>
+        <div class="stub-line2">{{ ticket.status }}</div>
+      </div>
+
+      <!-- Dashed separator -->
+      <div class="dashed-line"></div>
+
+      <!-- Ticket perforations -->
+      <div class="ticket-perforation top"></div>
+      <div class="ticket-perforation bottom"></div>
+
+      <!-- Main ticket content -->
+      <div class="main">
+        <div class="ticket-left-content">
+          <div class="ticket-icon"></div>
+          <div class="ticket-column">
+            <div class="ticket-text-line1">{{ ticket.eventName }}</div>
+            <div class="ticket-text-line2">{{ ticket.eventDate }}</div>
+            <div class="ticket-text-line3">{{ ticket.price }}</div>
+          </div>
+        </div>
+
+        <div class="ticket-column">
+          <div class="middle-line1">{{ ticket.seatInfo }}</div>
+          
+        </div>
+
+        <div class="ticket-column right-content">
+          <div class="right-line1">{{ ticket.location}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

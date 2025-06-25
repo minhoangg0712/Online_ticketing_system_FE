@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  currentPassword = true;
+  validatePassword = true;
 
   // Quản lý bước hiện tại: 1(email), 2(code), 3(password)
   currentStep = 1;
@@ -26,16 +29,23 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       code: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)
+      ]],
       confirmPassword: ['', [Validators.required]],
-      fullName: ['', [Validators.required]]
+      fullName: ['', [
+        Validators.required,
+        Validators.pattern(/^[a-zA-ZÀ-ỹ\s]+$/)]]
     });
   }
 
@@ -95,8 +105,7 @@ export class RegisterComponent implements OnInit {
         next: (res: any) => {
           this.isLoading = false;
           this.serverResponse = res;
-          // Kiểm tra nếu response có chứa key "error"
-          if (res.error) {
+          if (res.error) { // Kiểm tra nếu response có chứa key "error"
             this.message = res.error;
           } else {
             this.message = res.message || 'Code xác thực đúng, mời nhập mật khẩu!';
@@ -136,6 +145,7 @@ export class RegisterComponent implements OnInit {
         this.serverResponse = res;
         // Khi đăng ký thành công, server có thể trả về thông báo thành công dưới dạng text
         this.message = res || 'Đăng ký thành công!';
+        this.router.navigate(['/login']);
       },
       error: (err: any) => {
         this.isLoading = false;
@@ -161,4 +171,15 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  toggleCurrentPasswordVisibility() {
+    this.currentPassword = !this.currentPassword;
+  }
+
+  toggleValidatePasswordVisibility() {
+    this.validatePassword = !this.validatePassword;
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
+  }
 }

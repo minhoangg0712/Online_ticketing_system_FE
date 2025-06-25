@@ -1,32 +1,25 @@
-body {
-  background: black;
-  color: #F3F3E0;
-  font-family: Inter,sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
 .container {
   display: flex;
   flex-direction: row;
-  min-height: 100vh;
+  min-height: 89vh;
 }
 
 .left-panel {
   flex: 1;
   padding: 20px;
   background-color: #F3F3E0;
+  font-family: 'Inter',sans-serif;
 }
 
 .right-panel {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 89vh;
   background-color: rgb(56, 56, 61);
   color: #fff;
   box-sizing: border-box;
-  font-family: Inter, sans-serif;
-  width: 400px;
+  font-family: 'Inter', sans-serif;
+  width: 450px;
 }
 
 .header {
@@ -45,7 +38,7 @@ body {
 }
 
 .back-btn {
-  color: #22c55e;
+  color: black;
   font-weight: bold;
   background: none;
   border: none;
@@ -188,7 +181,7 @@ body {
   background-color: rgb(39, 39, 42);
   overflow: hidden;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
 }
 
 .ticket-icon-wrapper {
@@ -198,6 +191,7 @@ body {
   background-color: rgb(39, 39, 42);
   font-size: 18px;
   box-sizing: border-box;
+  margin-left: 15px;
 }
 
 .ticket-icon-wrapper .icon {
@@ -215,15 +209,17 @@ body {
 .checkout-btn {
   border: none;
   padding: 16px 20px;
-  width: 80%;
+  width: 100%;
+  max-width: 400px;
   font-size: 16px;
   font-weight: 600;
-  border-radius: 5px;
+  border-radius: 15px;
   transition: all 0.3s ease;
-  margin-left: 15px;
+  margin-left: 30px;
   margin-bottom: 10px;
   box-sizing: border-box;
   text-align: center;
+  align-items: center;
 }
 
 .checkout-btn:disabled {
