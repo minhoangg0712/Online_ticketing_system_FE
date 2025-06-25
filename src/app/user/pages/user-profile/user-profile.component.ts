@@ -42,7 +42,7 @@ export class UserProfileComponent {
         });
       },
       error: (err) => {
-        console.error('Lỗi khi lấy thông tin người dùng:', err);
+        // console.error('Lỗi khi lấy thông tin người dùng:', err);
       }
     });
   }

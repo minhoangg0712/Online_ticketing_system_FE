@@ -20,11 +20,12 @@ export class HeaderUserComponent {
     private userService: UserService
   ) {}
 
-  ngOnInit(): void {
-    this.userService.getAvatar().subscribe({
-      next: url => this.avatarUrl = url,
-      error: err => console.error('Lỗi khi tải avatar:', err)
-    });
+  ngOnInit() {
+    if (this.authService.isLoggedIn()) {
+      this.userService.getAvatar().subscribe(url => {
+        this.avatarUrl = url;
+      });
+    } else {}
   }
 
   onMouseEnter() {
