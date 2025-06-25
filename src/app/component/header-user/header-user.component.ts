@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../auth/services/auth.service';
+import { UserService } from '../../user/services/user.service';
 
 @Component({
   selector: 'app-header-user',
@@ -12,10 +13,19 @@ import { AuthService } from '../../auth/services/auth.service';
 export class HeaderUserComponent {
   isDropdownOpen = false;
   private hideTimer: any;
+  avatarUrl: string = '';
 
   constructor(private router: Router, private authService: AuthService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private userService: UserService
   ) {}
+
+  ngOnInit(): void {
+    this.userService.getAvatar().subscribe({
+      next: url => this.avatarUrl = url,
+      error: err => console.error('Lỗi khi tải avatar:', err)
+    });
+  }
 
   onMouseEnter() {
     clearTimeout(this.hideTimer);
@@ -48,4 +58,5 @@ export class HeaderUserComponent {
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
+
 }

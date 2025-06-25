@@ -19,7 +19,7 @@
 
     <div class="user-profile" *ngIf="isLoggedIn()">
       <div class="profile-container">
-        <img src="assets/user-avatar.png" alt="User Avatar" class="user-avatar" />
+        <img [src]="avatarUrl" *ngIf="avatarUrl" alt="User Avatar" class="user-avatar" />
         <span class="account-label">Tài khoản</span>
         <span class="dropdown-icon">▼</span>
       </div>
