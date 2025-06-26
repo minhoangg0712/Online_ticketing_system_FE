@@ -36,7 +36,7 @@ export const routes: Routes = [
       { path: 'events', component: HomeOrganizerComponent },
       { path: 'export-file', component: ExportFileComponent },
       { path: 'create-event', component: CreateEventComponent },
-      { path: 'profile', component: ProfileComponent },
+      { path: 'organizer-profile', component: ProfileComponent },
     ]
   },
 

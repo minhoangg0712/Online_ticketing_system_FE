@@ -56,6 +56,6 @@ export class NavOrganizerComponent implements OnInit {
   }
 
   goToProfile(): void {
-    this.router.navigate(['/organizer/profile']);
+    this.router.navigate(['/organizer/organizer-profile']);
   }
 }
