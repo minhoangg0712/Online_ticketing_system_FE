@@ -106,9 +106,9 @@ export class AuthService {
 
   /*Lấy token */
   getToken(): string | null {
-    if (!this.isBrowser()) return null;
-    return localStorage.getItem('token'); 
-  } 
+    return typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  }
+
 
   /*Kiểm tra xem user có đăng nhập không */
   isLoggedIn(): boolean {
@@ -118,13 +118,8 @@ export class AuthService {
 
   /*Đăng xuất */
   logout(): void {
-    if (!this.isBrowser()) return;
-    
-    const storage = this.getLocalStorage();
-    if (storage) {
-      storage.clear();
-    }
-    
+    if (!this.isBrowser()) return; 
+    localStorage.clear();
     // Clear sessionStorage if available
     if (typeof sessionStorage !== 'undefined') {
       sessionStorage.clear();

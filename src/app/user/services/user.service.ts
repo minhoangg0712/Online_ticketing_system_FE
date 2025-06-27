@@ -35,6 +35,15 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/current-profile`);
   }
 
+  getToken(): string | null {
+    if (!this.isBrowser()) return null;
+    return localStorage.getItem('token'); 
+  } 
+
+  isUserLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
   /** Lấy ảnh đại diện của người dùng */
   getAvatar(): Observable<string> {
     return this.http.get<{ data: string; message: string; status: number }>(
@@ -52,16 +61,16 @@ export class UserService {
     );
   }
 
-  getToken(): string | null {
-    if (!this.isBrowser()) return null;
-    return localStorage.getItem('token'); 
-  } 
-
-  isUserLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
-  }
 
   updateUserProfile(profileData: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/update-profile`, profileData);
+  }
+
+
+  uploadAvatar(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file); // key là 'file'
+
+    return this.http.post(`${this.apiUrl}/upload-profile-picture`, formData);
   }
 }

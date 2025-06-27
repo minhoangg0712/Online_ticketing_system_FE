@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,6 +17,7 @@ import { ToastNotificationComponent } from '../../pop-up/toast-notification/toas
 export class UserProfileComponent {
   profileForm!: FormGroup;
   originalProfileData: any;
+  selectedFile: File | null = null;
   @ViewChild('notification') notification!: ToastNotificationComponent;
   
   showNotification = false;
@@ -23,7 +25,7 @@ export class UserProfileComponent {
 
   constructor(private fb: FormBuilder,private userService: UserService, private authService: AuthService ) {}
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.profileForm = this.fb.group({
       fullName: [''],
       email: [''],
@@ -45,8 +47,7 @@ export class UserProfileComponent {
           fullName: data.fullName,
           phoneNumber: data.phoneNumber,
           gender: data.gender,
-          address: data.address,
-          bio: data.bio || ''
+          address: data.address
         };
 
         this.profileForm.patchValue({
@@ -59,42 +60,108 @@ export class UserProfileComponent {
         });
       },
       error: (err) => {
-      //  console.error('Lỗi khi lấy thông tin người dùng:', err);
+        //console.error('Lỗi khi lấy thông tin người dùng:', err);
       }
     });
   }
 
-   onSubmit(): void {
-    if (this.profileForm.valid) {
-      const profileData = {
-        fullName: this.profileForm.value.fullName,
-        phoneNumber: this.profileForm.value.phoneNumber,
-        gender: this.profileForm.value.gender,
-        address: this.profileForm.value.address,
-        bio: this.profileForm.value.bio || ''
-      };
+  onSubmit(): void {
+    const profileData = {
+      fullName: this.profileForm.value.fullName,
+      phoneNumber: this.profileForm.value.phoneNumber,
+      gender: this.profileForm.value.gender,
+      address: this.profileForm.value.address
+    };
 
-      // So sánh dữ liệu hiện tại với dữ liệu gốc
-      const isChanged = Object.entries(profileData).some(
-        ([key, value]) => value !== this.originalProfileData[key as keyof typeof this.originalProfileData]
-      );
+    const isProfileChanged = Object.entries(profileData).some(
+      ([key, value]) => value !== this.originalProfileData[key as keyof typeof this.originalProfileData]
+    );
 
-      if (!isChanged) {
-        this.notification.showNotification('Không có thay đổi nào để cập nhật', 5000, 'warning');
-        return;
-      }
-      
+    const isAvatarChanged = !!this.selectedFile;
+
+    if (!isProfileChanged && !isAvatarChanged) {
+      this.notification.showNotification('Không có thay đổi nào để cập nhật', 5000, 'warning');
+      return;
+    }
+
+    // Nếu chỉ đổi avatar
+    if (isAvatarChanged && !isProfileChanged) {
+      this.uploadAvatarOnly();
+    }
+
+    // Nếu chỉ đổi profile
+    if (isProfileChanged && !isAvatarChanged) {
+      this.updateProfileOnly(profileData);
+    }
+
+    // Nếu đổi cả hai
+    if (isProfileChanged && isAvatarChanged) {
       this.userService.updateUserProfile(profileData).subscribe({
-        next: (res) => {
-          this.notification.showNotification('Cập nhật profile thành công', 5000, 'success');
-          this.originalProfileData = { ...profileData }; // cập nhật bản gốc
+        next: () => {
+          this.originalProfileData = { ...profileData };
+          this.uploadAvatarOnly();
+          this.notification.showNotification('Cập nhật thông tin thành công', 5000, 'success');
         },
         error: (err) => {
-          console.error('Lỗi khi cập nhật thông tin:', err);
+          this.notification.showNotification('Cập nhật thông tin thất bại!', 5000, 'error');
+          console.error(err);
         }
       });
     }
   }
+
+    
+  onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+      if (!allowedTypes.includes(file.type)) {
+        this.notification.showNotification('Chỉ chấp nhận các định dạng ảnh JPG, JPEG, PNG!', 5000, 'warning');
+        this.selectedFile = null;
+        return;
+      }
+
+      this.selectedFile = file;
+
+      // ✅ Tạo ảnh preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Cập nhật giá trị avatarUrl trong form để hiển thị
+        this.profileForm.get('avatarUrl')?.setValue(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  updateProfileOnly(profileData: any) {
+    this.userService.updateUserProfile(profileData).subscribe({
+      next: () => {
+        this.notification.showNotification('Cập nhật thông tin thành công', 5000, 'success');
+        this.originalProfileData = { ...profileData };
+      },
+      error: (err) => {
+        this.notification.showNotification('Cập nhật thông tin thất bại!', 5000, 'error');
+        console.error(err);
+      }
+    });
+  }
+
+  uploadAvatarOnly() {
+    this.userService.uploadAvatar(this.selectedFile!).subscribe({
+      next: (res) => {
+        this.notification.showNotification('Cập nhật ảnh đại diện thành công', 5000, 'success');
+        console.log(res);
+        this.selectedFile = null; // reset sau khi upload
+      },
+      error: (err: HttpErrorResponse) => {
+        this.notification.showNotification('Không upload được ảnh đại diện!', 5000, 'error');
+        console.error(err);
+      }
+    });
+  }
+
 
   onNotificationClose() {}
 }
