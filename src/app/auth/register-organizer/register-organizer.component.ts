@@ -1,35 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-register-organizer',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  templateUrl: './register-organizer.component.html',
+  styleUrls: ['./register-organizer.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterOrganizerComponent implements OnInit {
   registerForm!: FormGroup;
-  currentPassword = true;
-  validatePassword = true;
 
   currentStep = 1;
-  // Biến hiển thị thông báo ngắn
   message: string = '';
-  // Biến quản lý trạng thái chờ
   isLoading = false;
-  // Biến lưu email sau bước 1
   registeredEmail: string = '';
   serverResponse: any = null;
+
+  profilePicturePreview: string | null = null;
+  @ViewChild('profilePictureInput') profilePictureInputRef!: ElementRef<HTMLInputElement>;
+
+  currentPassword = true;
+  validatePassword = true;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -40,21 +41,20 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(10),
         Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)
       ]],
-      confirmPassword: ['', [Validators.required]],
-      fullName: ['', [
-        Validators.required,
-        Validators.pattern(/^[a-zA-ZÀ-ỹ\s]+$/)]]
+      confirmPassword: ['', Validators.required],
+      name: ['', [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ỹ\s]+$/)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10,11}$/)]],
+      bio: ['', Validators.required],
+      profilePicture: ['']
     });
   }
 
-  // STEP 1: Gửi code xác thực đến email
   onSendVerification() {
     if (this.currentStep !== 1) return;
     const emailControl = this.registerForm.get('email');
 
     if (emailControl?.valid) {
       const emailValue = emailControl.value;
-
       this.isLoading = true;
       this.message = 'Đang gửi code...';
 
@@ -82,53 +82,48 @@ export class RegisterComponent implements OnInit {
         }
       });
     } else {
-      // Form email chưa valid
       this.message = 'Email không hợp lệ!';
     }
   }
 
-  // STEP 2: Kiểm tra code
   onVerifyCode() {
     if (this.currentStep !== 2) return;
     const codeControl = this.registerForm.get('code');
 
     if (codeControl?.valid) {
-      const codeValue = codeControl.value;
-
+      const code = codeControl.value;
       this.isLoading = true;
       this.message = 'Đang kiểm tra mã xác thực...';
 
-      // Chỉ truyền 2 tham số: email và code
-      this.authService.verifyCode(this.registeredEmail, codeValue).subscribe({
-        next: (res: any) => {
+      this.authService.verifyCode(this.registeredEmail, code).subscribe({
+        next: res => {
           this.isLoading = false;
           this.serverResponse = res;
-          if (res.error) { // Kiểm tra nếu response có chứa key "error"
+          if (res.error) {
             this.message = res.error;
           } else {
-            this.message = res.message || 'Code xác thực đúng, mời nhập mật khẩu!';
+            this.message = res.message || 'Mã chính xác!';
             this.currentStep = 3;
           }
         },
-        error: (err: any) => {
-          // Nếu xảy ra lỗi ngoài dự kiến (ví dụ lỗi parse JSON)
+        error: () => {
           this.isLoading = false;
-          this.serverResponse = err;
-          this.message = 'Có lỗi xảy ra, vui lòng thử lại sau.';
+          this.message = 'Xác minh thất bại!';
         }
       });
     } else {
-      // Form code chưa valid
-      this.message = 'Vui lòng nhập mã code!';
+      this.message = 'Mã xác thực không hợp lệ!';
     }
   }
 
-  // STEP 3: Đăng ký tài khoản
   onRegister() {
     if (this.currentStep !== 3) return;
     const password = this.registerForm.get('password')?.value;
-    const confirmPassword = this.registerForm.get('confirmPassword')?.value;
-    const fullName = this.registerForm.get('fullName')?.value;
+    const confirmPassword = this.registerForm.get('confirmPassword')?.value; 
+    const name = this.registerForm.get('name')?.value;
+    const phoneNumber = this.registerForm.get('phoneNumber')?.value;
+    const bio = this.registerForm.get('bio')?.value;
+    const profilePicture = this.registerForm.get('profilePicture')?.value;
     if (password !== confirmPassword) {
       this.message = 'Mật khẩu không trùng khớp!';
       return;
@@ -137,11 +132,11 @@ export class RegisterComponent implements OnInit {
     this.isLoading = true;
     this.message = 'Đang đăng ký...';
 
-    this.authService.register(this.registeredEmail, password, confirmPassword, fullName).subscribe({
+    this.authService.registerOrganizer(this.registeredEmail, name, bio, password, confirmPassword, phoneNumber, profilePicture).subscribe({
       next: (res: any) => {
         this.isLoading = false;
         this.serverResponse = res;
-        this.message = res || 'Đăng ký thành công!';
+        this.message = res?.message || 'Đăng ký thành công!';
         this.router.navigate(['/login']);
       },
       error: (err: any) => {
@@ -166,6 +161,44 @@ export class RegisterComponent implements OnInit {
         this.message = errorMsg;
       }
     });
+  }
+
+  triggerFileInput(inputType: string): void {
+  if (inputType === 'profilePicture') {
+    this.profilePictureInputRef.nativeElement.click();
+  }
+  }
+
+
+  onImageSelected(event: Event, type: string): void {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    alert('Vui lòng chọn file hình ảnh!');
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Kích thước ảnh không được vượt quá 5MB!');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const imageDataUrl = reader.result as string;
+
+    if (type === 'profilePicture') {
+      this.profilePicturePreview = imageDataUrl;
+      this.registerForm.patchValue({ profilePicture: imageDataUrl });
+    }
+
+    // Nếu có thêm loại ảnh khác, xử lý tại đây
+  };
+
+  reader.readAsDataURL(file);
   }
 
   toggleCurrentPasswordVisibility() {

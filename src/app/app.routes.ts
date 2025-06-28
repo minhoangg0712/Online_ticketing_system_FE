@@ -21,12 +21,14 @@ import { PurchasedTicketComponent } from './user/pages/purchased-ticket/purchase
 import { OrderTicketComponent } from './user/pages/order-ticket/order-ticket.component';
 import { SearchEventsComponent } from './user/pages/search-events/search-events.component';
 import { PaymentTicketsComponent } from './user/pages/payment-tickets/payment-tickets.component';
+import { RegisterOrganizerComponent } from './auth/register-organizer/register-organizer.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-
+  { path: 'register-organizer', component: RegisterOrganizerComponent },
+  
   {
     path: 'organizer',
     component: NavOrganizerComponent,

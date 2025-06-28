@@ -42,6 +42,18 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/register`, { email, password, confirmPassword, fullName }, { responseType: 'text' });
   }
 
+  registerOrganizer(
+  email: string,
+  name: string,
+  bio: string,
+  password: string,
+  confirmPassword: string,
+  phoneNumber: string,
+  profilePicture: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/register-organizer`, { email,name, bio, password, confirmPassword, phoneNumber, profilePicture}, { responseType: 'text' });
+}
+
+
   /** Đăng nhập */
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/login`, { email, password }).pipe(
