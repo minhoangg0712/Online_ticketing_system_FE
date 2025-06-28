@@ -1,1 +1,13 @@
-<p>upcoming works!</p>
+<div *ngIf="upcomingEvents.length === 0">
+  <p>Không có sự kiện sắp tới.</p>
+</div>
+
+<div class="event-list">
+  <div class="event-card" *ngFor="let event of upcomingEvents">
+    <h3>{{ event.eventName }}</h3>
+    <p>Bắt đầu: {{ event.startTime | date:'short' }}</p>
+    <p>Kết thúc: {{ event.endTime | date:'short' }}</p>
+    <p>Cập nhật: {{ event.updateAt | date:'short' }}</p>
+    <p>Trạng thái duyệt: {{ event.approvalStatus }}</p>
+  </div>
+</div>

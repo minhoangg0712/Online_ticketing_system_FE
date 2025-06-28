@@ -1,54 +1,55 @@
 <div class="content">
-    <div class="search-filter-section">
-        <div class="search-section">
-            <div class="search-input-wrapper">
-                <i class="bi bi-search search-icon"></i>
-                <input
-                    type="text"
-                    placeholder="Tìm kiếm sự kiện..."
-                    class="search-input"
-                />
-            </div>
-        </div>
-        <div class="filter-tab">
-            <button class="filter-btn" (click)="setTab('upcoming')" [class.active]="selectedTab === 'upcoming'">
-                <i class="bi bi-calendar-event"></i>
-                <span>Sắp tới</span>
-            </button>
-            
-            <button class="filter-btn" (click)="setTab('past')" [class.active]="selectedTab === 'past'">
-                <i class="bi bi-clock-history"></i>
-                <span>Đã qua</span>
-            </button>
-            
-            <button class="filter-btn" (click)="setTab('pending')" [class.active]="selectedTab === 'pending'">
-                <i class="bi bi-hourglass-split"></i>
-                <span>Chờ duyệt</span>
-            </button>
-            
-            <button class="filter-btn" (click)="setTab('draft')" [class.active]="selectedTab === 'draft'">
-                <i class="bi bi-file-earmark-text"></i>
-                <span>Nháp</span>
-            </button>
-        </div>
+  <div class="search-filter-section">
+    <!-- Ô tìm kiếm -->
+    <div class="search-section">
+      <div class="search-input-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input
+          type="text"
+          placeholder="Tìm kiếm sự kiện..."
+          class="search-input"
+        />
+      </div>
     </div>
 
-    <!-- Nội dung động -->
-    <div class="events-list">
-        <ng-container *ngIf="selectedTab === 'upcoming'">
-            <app-upcoming></app-upcoming>
-        </ng-container>
-        
-        <ng-container *ngIf="selectedTab === 'past'">
-            <app-past></app-past>
-        </ng-container>
-        
-        <ng-container *ngIf="selectedTab === 'pending'">
-            <app-pending></app-pending>
-        </ng-container>
-        
-        <ng-container *ngIf="selectedTab === 'draft'">
-            <app-draft></app-draft>
-        </ng-container>
+    <!-- Tabs lọc -->
+    <div class="filter-tab">
+      <button 
+        class="filter-btn" 
+        [ngClass]="{ 'active': selectedTab === 'upcoming' }"
+        (click)="setTab('upcoming')">
+        Sắp tới
+      </button>
+      <button 
+        class="filter-btn" 
+        [ngClass]="{ 'active': selectedTab === 'past' }"
+        (click)="setTab('past')">
+        Đã qua
+      </button>
+      <button 
+        class="filter-btn" 
+        [ngClass]="{ 'active': selectedTab === 'pending' }"
+        (click)="setTab('pending')">
+        Chờ duyệt
+      </button>
     </div>
+  </div>
+
+  <!-- Nội dung động -->
+  <div class="events-list">
+    <app-upcoming 
+      *ngIf="selectedTab === 'upcoming'" 
+      [events]="events">
+    </app-upcoming>
+
+    <app-past 
+      *ngIf="selectedTab === 'past'" 
+      [events]="events">
+    </app-past>
+
+    <app-pending 
+      *ngIf="selectedTab === 'pending'" 
+      [events]="events">
+    </app-pending>
+  </div>
 </div>

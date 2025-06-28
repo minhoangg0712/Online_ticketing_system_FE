@@ -1,1 +1,9 @@
-<p>pending works!</p>
+<ng-container *ngIf="pendingEvents?.length; else noData">
+  <div *ngFor="let event of pendingEvents">
+    <p>{{ event.eventName }} - Trạng thái: {{ event.approvalStatus }}</p>
+  </div>
+</ng-container>
+
+<ng-template #noData>
+  <p>Không có sự kiện chờ duyệt.</p>
+</ng-template>

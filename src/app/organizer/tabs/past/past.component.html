@@ -1,1 +1,3 @@
-<p>past works!</p>
+<div *ngFor="let event of pastEvents">
+  <p>{{ event.eventName }} - Kết thúc: {{ event.endTime }}</p>
+</div>
