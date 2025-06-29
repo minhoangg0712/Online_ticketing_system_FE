@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { UpcomingComponent } from '../../tabs/upcoming/upcoming.component';
 import { PastComponent } from '../../tabs/past/past.component';
 import { PendingComponent } from '../../tabs/pending/pending.component';
@@ -23,9 +23,13 @@ import { ListEventsService } from '../../services/list-events.service';
 export class HomeOrganizerComponent implements OnInit {
   selectedTab: string = 'upcoming';
   events: any[] = [];
+  eventId!: number;
+  eventData: any;
+  selectedEvent: any = null;
 
   constructor(
     private http: HttpClient,
+    private route: ActivatedRoute,
     private listEventsService: ListEventsService
   ) {}
 
@@ -40,19 +44,40 @@ export class HomeOrganizerComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
+    // 1. Gọi API lấy danh sách sự kiện
     this.http.get<any>('http://localhost:8080/api/events/by-organizer', { headers })
-      .subscribe(
-        res => {
+      .subscribe({
+        next: res => {
           this.events = res.data.listEvents;
           console.log("Danh sách sự kiện:", this.events);
         },
-        err => {
+        error: err => {
           console.error('Lỗi khi tải danh sách sự kiện:', err);
         }
-      );
+      });
+
+    // 2. Gọi API lấy sự kiện theo ID nếu cần
+    const idFromUrl = this.route.snapshot.paramMap.get('id');
+    if (idFromUrl) {
+      this.eventId = Number(idFromUrl);
+      this.listEventsService.getEventById(this.eventId).subscribe({
+        next: data => {
+          this.eventData = data.data;
+          this.selectedEvent = this.eventData;
+          console.log("Chi tiết sự kiện:", this.eventData);
+        },
+        error: err => {
+          console.error('Lỗi khi lấy chi tiết sự kiện:', err);
+        }
+      });
+    }
   }
 
   setTab(tab: string) {
     this.selectedTab = tab;
+  }
+
+  onEventSelected(event: any) {
+    this.selectedEvent = event;
   }
 }

@@ -18,8 +18,27 @@
         </p>
       </div>
       <div class="event-actions">
-        <button class="btn btn-view">Xem chi tiết</button>
+        <button class="btn btn-view" (click)="openDetail(event)">Xem chi tiết</button>
       </div>
     </div>
   </div>
+
+  <div class="event-detail-modal" *ngIf="selectedEvent">
+    <div class="modal-content">
+      <span class="close-button" (click)="closeDetail()">&times;</span>
+      <h2>{{ selectedEvent.eventName }}</h2>
+  
+      <div class="modal-images">
+        <img *ngIf="selectedEvent.logoUrl" [src]="selectedEvent.logoUrl" alt="Logo" class="modal-logo" />
+        <img *ngIf="selectedEvent.backgroundUrl" [src]="selectedEvent.backgroundUrl" alt="Background" class="modal-background" />
+      </div>
+  
+      <p><strong>Thời gian:</strong> {{ selectedEvent.startTime | date:'dd/MM/yyyy, HH:mm' }} - {{ selectedEvent.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
+      <p><strong>Địa điểm:</strong> {{ selectedEvent.address }}</p>
+      <p><strong>Danh mục:</strong> {{ selectedEvent.category }}</p>
+      <p><strong>Mô tả:</strong> {{ selectedEvent.description }}</p>
+      <p><strong>Trạng thái duyệt:</strong> {{ selectedEvent.approvalStatus | statusTranslate }}</p>
+      <p><strong>Đơn vị tổ chức:</strong> {{ selectedEvent.organizerName }} - {{ selectedEvent.organizerEmail }}</p>
+    </div>
+  </div>  
 </div>

@@ -39,17 +39,20 @@
   <div class="events-list">
     <app-upcoming 
       *ngIf="selectedTab === 'upcoming'" 
-      [events]="events">
+      [events]="events"
+      (eventsSelected)="onEventSelected($event)">
     </app-upcoming>
 
     <app-past 
       *ngIf="selectedTab === 'past'" 
-      [events]="events">
+      [events]="events"
+      (eventsSelected)="onEventSelected($event)">
     </app-past>
 
     <app-pending 
       *ngIf="selectedTab === 'pending'" 
-      [events]="events">
+      [events]="events"
+      (eventsSelected)="onEventSelected($event)">
     </app-pending>
   </div>
 </div>
