@@ -1,9 +1,25 @@
-<ng-container *ngIf="pendingEvents?.length; else noData">
-  <div *ngFor="let event of pendingEvents">
-    <p>{{ event.eventName }} - Trạng thái: {{ event.approvalStatus }}</p>
+<div class="event-container">
+  <div *ngIf="pendingEvents.length === 0" class="no-events">
+    <p>Không có sự kiện sắp chờ duyệt.</p>
   </div>
-</ng-container>
 
-<ng-template #noData>
-  <p>Không có sự kiện chờ duyệt.</p>
-</ng-template>
+  <div class="event-list">
+    <div class="event-card" *ngFor="let event of pendingEvents">
+      <div class="event-details">
+        <h3 class="event-name">{{ event.eventName }}</h3>
+        <p class="event-info"><span class="label">Bắt đầu:</span> {{ event.startTime | date:'dd/MM/yyyy, HH:mm' }}</p>
+        <p class="event-info"><span class="label">Kết thúc:</span> {{ event.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
+        <p class="event-info"><span class="label">Trạng thái duyệt:</span> 
+          <span class="status" [ngClass]="{
+            'status-approved': event.approvalStatus === 'approved',
+            'status-pending': event.approvalStatus === 'pending',
+            'status-rejected': event.approvalStatus === 'rejected'
+          }">{{ event.approvalStatus | statusTranslate }}</span>
+        </p>
+      </div>
+      <div class="event-actions">
+        <button class="btn btn-view">Xem chi tiết</button>
+      </div>
+    </div>
+  </div>
+</div>

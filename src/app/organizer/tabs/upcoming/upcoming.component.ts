@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StatusTranslatePipe } from '../../../status-translate.pipe';
 
 @Component({
   selector: 'app-upcoming',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, StatusTranslatePipe],
   templateUrl: './upcoming.component.html',
   styleUrl: './upcoming.component.css'
 })

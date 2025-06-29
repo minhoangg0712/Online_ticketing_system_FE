@@ -1,0 +1,123 @@
+.event-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+}
+
+.no-events {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 16px;
+  backdrop-filter: blur(5px);
+}
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.event-details {
+  flex: 1;
+}
+
+.event-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.event-info {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #d0d0d0;
+}
+
+.event-info .label {
+  font-weight: 600;
+  color: #fff;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.status-approved {
+  background-color: #2e7d32;
+  color: #fff;
+}
+
+.status-pending {
+  background-color: #ff7e42;
+  color: #fff;
+}
+
+.status-rejected {
+  background-color: #c62828;
+  color: #fff;
+}
+
+.event-actions {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-view {
+  background-color: #ff7e42;
+  color: #fff;
+}
+
+.btn-view:hover {
+  background-color: #e06c38;
+}
+
+@media (max-width: 768px) {
+  .event-container {
+    padding: 10px;
+  }
+
+  .event-card {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .event-actions,
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

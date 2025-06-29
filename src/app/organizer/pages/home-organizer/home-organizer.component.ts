@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { UpcomingComponent } from '../../tabs/upcoming/upcoming.component';
 import { PastComponent } from '../../tabs/past/past.component';
 import { PendingComponent } from '../../tabs/pending/pending.component';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // <-- Thêm HttpHeaders
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ListEventsService } from '../../services/list-events.service';
 
 @Component({
