@@ -133,11 +133,6 @@ select {
   color: #22c55e;
 }
 
-.gender-options input[type="radio"]:checked {
-    accent-color: #ff7e42;
-    transform: scale(1.2);
-}
-
 .submit-btn {
   background-color: #ff7e42;
   color: white;

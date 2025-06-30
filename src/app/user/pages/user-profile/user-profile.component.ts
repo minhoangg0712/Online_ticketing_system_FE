@@ -90,6 +90,7 @@ export class UserProfileComponent {
 
     // Nếu chỉ đổi profile
     if (isProfileChanged && !isAvatarChanged) {
+      console.log('Dữ liệu gửi:', profileData);
       this.updateProfileOnly(profileData);
     }
 

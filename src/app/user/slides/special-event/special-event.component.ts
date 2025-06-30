@@ -1,33 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../services/events.service';
 
 @Component({
-  selector: 'app-trending-event',
+  selector: 'app-special-event',
   imports: [CommonModule],
-  templateUrl: './trending-event.component.html',
-  styleUrl: './trending-event.component.css'
+  templateUrl: './special-event.component.html',
+  styleUrl: './special-event.component.css'
 })
-export class TrendingEventComponent implements OnInit {
+export class SpecialEventComponent {
   events: any[] = [];
   visibleItems: any[] = [];
   startIndex: number = 0;
-  readonly ITEMS_PER_PAGE = 3;
+  readonly ITEMS_PER_PAGE = 4;
 
   constructor(private eventService: EventsService) {}
 
   ngOnInit(): void {
-    this.loadTrendingEvents();
+    this.loadSpecialEvents();
   }
 
-  loadTrendingEvents(): void {
-    this.eventService.getRecommendedEvents('trending').subscribe(res => {
-      const events = res?.data?.listEvents || [];
+  loadSpecialEvents() {
+    this.eventService.getRecommendedEvents('special-event').subscribe(res => {
+      this.events = res?.data?.listEvents || [];
+      
 
-      this.events = events.map((event: any) => ({
+      // Map lại nếu cần, đảm bảo có đủ các trường
+      this.events = this.events.map((event: any) => ({
         backgroundUrl: event.backgroundUrl,
       }));
-
+      
       this.startIndex = 0;
       this.updateVisibleItems();
     });

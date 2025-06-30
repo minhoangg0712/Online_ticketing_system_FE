@@ -9,12 +9,12 @@
   </nav>
   <div class="carousel-container">
     <div class="carousel-wrapper" [style.transition]="transitionStyle">
-      <div class="carousel-item" *ngFor="let image of visibleImages">
-        <div class="image-wrapper">
-          <img [src]="image.src" [alt]="image.alt" />
-          <button class="detail-button" (click)="viewDetails(image)">Xem chi tiết</button>
-        </div>
+      <div class="carousel-item" *ngFor="let item of visibleImages">
+      <div class="image-wrapper">
+        <img [src]="item.backgroundUrl || '/assets/default.jpg'" />
+        <button class="detail-button" (click)="viewDetails(item)">Xem chi tiết</button>
       </div>
+    </div>
     </div>
 
     <button class="arrow left" (click)="prevSlide()">&#10094;</button>
@@ -27,53 +27,7 @@
       ></span>
     </div>
   </div>
-  
-  <div class="event-carousel-section">
-    <p class="event-carousel-title">Sự kiện đặc biệt</p>
-    
-    <div class="event-carousel-container">
-      <!-- Left Arrow -->
-      <button 
-        class="event-carousel-arrow event-carousel-arrow-left"
-        [class.hidden]="!canSlideLeft"
-        (click)="slideLeft()"
-        *ngIf="canSlideLeft">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15,18 9,12 15,6"></polyline>
-        </svg>
-      </button>
-
-      <!-- Carousel Track -->
-      <div class="event-carousel-track-container">
-        <div 
-          class="event-carousel-track"
-          [style.transform]="'translateX(' + translateX + 'px)'">
-          
-          <div 
-            class="event-carousel-item"
-            *ngFor="let image of slideImages; let i = index"
-            [class.partial-visible]="i === 4 && slideCurrentIndex === 0">
-            <img 
-              [src]="image.src" 
-              [alt]="image.alt"
-              class="event-carousel-image">
-          </div>
-          
-        </div>
-      </div>
-
-      <!-- Right Arrow -->
-      <button 
-        class="event-carousel-arrow event-carousel-arrow-right"
-        [class.hidden]="!canSlideRight"
-        (click)="slideRight()"
-        *ngIf="canSlideRight">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9,18 15,12 9,6"></polyline>
-        </svg>
-      </button>
-    </div>
-  </div>
+  <app-special-event></app-special-event>
   <app-trending-event></app-trending-event>
   <app-foryou-event></app-foryou-event>
   <app-timeline-event></app-timeline-event>
