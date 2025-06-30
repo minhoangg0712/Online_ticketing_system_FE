@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, HostListener, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../auth/services/auth.service';
@@ -28,17 +28,6 @@ export class HeaderUserComponent {
     } else {}
   }
 
-  onMouseEnter() {
-    clearTimeout(this.hideTimer);
-    this.isDropdownOpen = true;
-  }
-
-  onMouseLeave() {
-    this.hideTimer = setTimeout(() => {
-      this.isDropdownOpen = false;
-    }, 5000);
-  }
-
   goToLogin() {
     this.router.navigate(['/login']);
   }
@@ -60,4 +49,17 @@ export class HeaderUserComponent {
     return this.authService.isLoggedIn();
   }
 
+  toggleDropdown() {
+  this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  //Đóng dropdown khi nhấn ra ngoài 
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event) {
+    const target = event.target as HTMLElement;
+    const clickedInside = target.closest('.user-profile');
+    if (!clickedInside) {
+      this.isDropdownOpen = false;
+    }
+  }
 }

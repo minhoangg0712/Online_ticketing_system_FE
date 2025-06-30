@@ -141,12 +141,14 @@
   transform: translateY(10px);
   pointer-events: none;
 }
-.user-profile:hover .dropdown-menu {
+
+.dropdown-menu.show {
   display: flex;
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
+
 .dropdown-item {
   padding: 12px 16px;
   font-size: 14px;

@@ -17,24 +17,17 @@
       </div>
     </nav>
 
-    <div class="user-profile" *ngIf="isLoggedIn()">
+    <div class="user-profile" *ngIf="isLoggedIn()" (click)="toggleDropdown()" [class.active]="isDropdownOpen">
       <div class="profile-container">
         <img [src]="avatarUrl" *ngIf="avatarUrl" alt="User Avatar" class="user-avatar" />
         <span class="account-label">Tài khoản</span>
-        <span class="dropdown-icon">▼</span>
+        <i class="bi bi-caret-down-fill"></i>
       </div>
-      <div class="dropdown" 
-        (mouseenter)="onMouseEnter()" 
-        (mouseleave)="onMouseLeave()">
-          <div class="dropdown-menu" 
-            [class.show]="isDropdownOpen"
-            (mouseenter)="onMouseEnter()"
-            (mouseleave)="onMouseLeave()">
-            <a href="#" class="dropdown-item">Vé đã mua</a>
-            <a href="#" class="dropdown-item">Sự kiện của tôi</a>
-            <a href="/user-profile" class="dropdown-item">Tài khoản của tôi</a>
-            <a href="#" class="dropdown-item logout" (click)="logout()">Đăng xuất</a>
-          </div>
+      <div class="dropdown-menu" [class.show]="isDropdownOpen">
+        <a href="#" class="dropdown-item">Vé đã mua</a>
+        <a href="#" class="dropdown-item">Sự kiện của tôi</a>
+        <a href="/user-profile" class="dropdown-item">Tài khoản của tôi</a>
+        <a href="#" class="dropdown-item logout" (click)="logout()">Đăng xuất</a>
       </div>
     </div>
   </div>
