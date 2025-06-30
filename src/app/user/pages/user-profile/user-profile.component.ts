@@ -65,6 +65,15 @@ export class UserProfileComponent {
   }
 
   onSubmit(): void {
+    const phoneNumber = this.profileForm.value.phoneNumber;
+
+    const phoneRegex = /^\d{10}$/;
+
+    if (!phoneRegex.test(phoneNumber)) {
+      this.notification.showNotification('Số điện thoại phải gồm đúng 10 chữ số và không chứa ký tự đặc biệt!', 5000, 'warning');
+      return;
+    }
+
     const profileData = {
       fullName: this.profileForm.value.fullName,
       phoneNumber: this.profileForm.value.phoneNumber,
