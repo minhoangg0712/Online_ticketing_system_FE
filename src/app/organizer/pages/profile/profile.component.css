@@ -49,8 +49,8 @@
 }
 
 .profile-img {
-  width: 230px;
-  height: 280px;
+  width: 275px;
+  height: 275px;
   border-radius: 10%;
   object-fit: cover;
   border: 2px solid white;
@@ -72,11 +72,6 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.25s ease;
-}
-
-.camera-icon:hover {
-  background: #e65b20;
-  transform: scale(1.15);
 }
 
 .camera-icon i {
