@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventsService } from '../../../../services/events.service';
 
 @Component({
   selector: 'app-thismonth-event',
@@ -13,62 +14,44 @@ export class ThismonthEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
+  constructor(private eventsService: EventsService){}
+
   ngOnInit(): void {
-    this.loadMockData();
+    this.loadEventsThisMonth();
   }
 
-  loadMockData() {
-    this.items = [
-      {
-        imageUrl: '/assets/img1.jpg',
-        title: '[FLOWER 1969’s] ROLLERBALL PERFUME WORKSHOP – NƯỚC HOA LĂN',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img2.jpg',
-        title: 'SÂN KHẤU THIÊN LONG – LƯU KIM ĐÍNH – GIỖ TỔ NGÀNH SÂN KHẤU',
-        price: '150.000đ',
-        date: '27 tháng 09, 2025'
-      },
-      {
-        imageUrl: '/assets/img3.jpg',
-        title: 'SKNT TRƯỜNG HÙNG MINH : TRUY LÙNG THÁI TỬ',
-        price: '300.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img4.jpg',
-        title: '[FLOWER 1969’s] WORKSHOP SOLID PERFUME – NƯỚC HOA KHÔ',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '',
-        title: 'dfgdfgdfgdgdfgdfgdfg',
-        price: '579.000đ',
-        date: '28 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img4.jpg',
-        title: '[FLOWER 1969’s] WORKSHOP SOLID PERFUME – NƯỚC HOA KHÔ',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img4.jpg',
-        title: '[FLOWER 1969’s] WORKSHOP SOLID PERFUME – NƯỚC HOA KHÔ',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img4.jpg',
-        title: '[FLOWER 1969’s] WORKSHOP SOLID PERFUME – NƯỚC HOA KHÔ',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-    ];
-    this.updateVisibleItems();
+  loadEventsThisMonth() {
+    const now = new Date();
+
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+    this.eventsService.getRecommendedEvents(
+      '',               // category (rỗng hoặc truyền tên nếu muốn)
+      undefined,        // address
+      startOfMonth,
+      endOfMonth
+    ).subscribe(res => {
+      const events = res?.data?.listEvents || [];
+
+      this.items = events.map((event: any) => ({
+        imageUrl: event.backgroundUrl || '/assets/default.jpg',
+        title: event.eventName,
+        price: event.minPrice,
+        date: this.formatDate(event.startTime)
+      }));
+
+      this.startIndex = 0;
+      this.updateVisibleItems();
+    });
+  }
+
+  formatDate(isoDate: string): string {
+    const date = new Date(isoDate);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day} tháng ${month}, ${year}`;
   }
 
   updateVisibleItems() {

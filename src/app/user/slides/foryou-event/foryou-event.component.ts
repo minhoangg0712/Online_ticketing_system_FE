@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventsService } from '../../services/events.service';
 
 @Component({
   selector: 'app-foryou-event',
@@ -9,71 +10,45 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./foryou-event.component.css']
 })
 export class ForyouEventComponent implements OnInit {
-  items: any[] = [];
+  events: any[] = [];
   visibleItems: any[] = [];
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
+  constructor(private eventService: EventsService) {}
+
   ngOnInit(): void {
-    this.loadMockData();
+    this.loadForYouEvents();
   }
 
-  loadMockData() {
-    this.items = [
-      {
-        imageUrl: '/assets/img1.jpg',
-        title: '[FLOWER 1969’s] ROLLERBALL PERFUME WORKSHOP – NƯỚC HOA LĂN',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img2.jpg',
-        title: 'SÂN KHẤU THIÊN LONG – LƯU KIM ĐÍNH – GIỖ TỔ NGÀNH SÂN KHẤU',
-        price: '150.000đ',
-        date: '27 tháng 09, 2025'
-      },
-      {
-        imageUrl: '/assets/img3.jpg',
-        title: 'SKNT TRƯỜNG HÙNG MINH : TRUY LÙNG THÁI TỬ',
-        price: '300.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img4.jpg',
-        title: '[FLOWER 1969’s] WORKSHOP SOLID PERFUME – NƯỚC HOA KHÔ',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '',
-        title: 'dfgdfgdfgdgdfgdfgdfg',
-        price: '579.000đ',
-        date: '28 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img4.jpg',
-        title: '[FLOWER 1969’s] WORKSHOP SOLID PERFUME – NƯỚC HOA KHÔ',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img4.jpg',
-        title: '[FLOWER 1969’s] WORKSHOP SOLID PERFUME – NƯỚC HOA KHÔ',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-      {
-        imageUrl: '/assets/img4.jpg',
-        title: '[FLOWER 1969’s] WORKSHOP SOLID PERFUME – NƯỚC HOA KHÔ',
-        price: '279.000đ',
-        date: '24 tháng 05, 2025'
-      },
-    ];
-    this.updateVisibleItems();
+  loadForYouEvents() {
+    this.eventService.getRecommendedEvents('foryou').subscribe(res => {
+      this.events = res?.data?.listEvents || [];
+      
+
+      // Map lại nếu cần, đảm bảo có đủ các trường
+      this.events = this.events.map((event: any) => ({
+        id: event.id,
+        eventName: event.eventName,
+        description: event.description,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        category: event.category,
+        status: event.status,
+        approval_status: event.approval_status,
+        backgroundUrl: event.backgroundUrl,
+        address: event.address || event.addressName,
+        addressDetail: event.addressDetail,
+        price: event.minPrice
+      }));
+      
+      this.startIndex = 0;
+      this.updateVisibleItems();
+    });
   }
 
   updateVisibleItems() {
-    this.visibleItems = this.items.slice(this.startIndex, this.startIndex + this.ITEMS_PER_PAGE);
+    this.visibleItems = this.events.slice(this.startIndex, this.startIndex + this.ITEMS_PER_PAGE);
   }
 
   scrollLeft() {
@@ -95,6 +70,6 @@ export class ForyouEventComponent implements OnInit {
   }
 
   get canScrollRight(): boolean {
-    return this.startIndex + this.ITEMS_PER_PAGE < this.items.length;
+    return this.startIndex + this.ITEMS_PER_PAGE < this.events.length;
   }
 }

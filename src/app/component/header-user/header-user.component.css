@@ -111,13 +111,13 @@
   color: white;
 }
 .user-avatar {
-  width: 28px;
-  height: 28px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   border: 2px solid white;
 }
 .account-label {
-  font-size: 14px;
+  font-size: 16px;
 }
 .icon {
   font-size: 12px;

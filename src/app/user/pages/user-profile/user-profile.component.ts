@@ -4,7 +4,6 @@ import { UserService } from '../../services/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../../auth/services/auth.service';
 import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -23,7 +22,7 @@ export class UserProfileComponent {
   showNotification = false;
   
 
-  constructor(private fb: FormBuilder,private userService: UserService, private authService: AuthService ) {}
+  constructor(private fb: FormBuilder,private userService: UserService) {}
 
   ngOnInit(): void {
     this.profileForm = this.fb.group({
@@ -60,7 +59,7 @@ export class UserProfileComponent {
         });
       },
       error: (err) => {
-        //console.error('Lỗi khi lấy thông tin người dùng:', err);
+        // console.error('Lỗi khi lấy thông tin người dùng:', err);
       }
     });
   }

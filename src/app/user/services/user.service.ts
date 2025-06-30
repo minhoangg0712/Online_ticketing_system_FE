@@ -66,6 +66,11 @@ export class UserService {
     return this.http.put(`${this.apiUrl}/update-profile`, profileData);
   }
 
+  // Lấy fullname kiểm tra người dùng đã đăng nhập hay chưa
+  getFullName(): string | null {
+    if (!this.isBrowser()) return null;
+    return localStorage.getItem('fullName');
+  }
 
   uploadAvatar(file: File): Observable<any> {
     const formData = new FormData();

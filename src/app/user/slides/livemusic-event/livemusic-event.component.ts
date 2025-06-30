@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventsService } from '../../services/events.service';
 
 @Component({
   selector: 'app-livemusic-event',
@@ -8,47 +9,43 @@ import { CommonModule } from '@angular/common';
   styleUrl: './livemusic-event.component.css'
 })
 export class LivemusicEventComponent implements OnInit {
-  items: any[] = [];
+  events: any[] = [];
   visibleItems: any[] = [];
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
+  constructor(private eventService: EventsService) {}
+
   ngOnInit(): void {
-    this.loadMockData();
+    this.loadLiveMusicEvents();
   }
 
-  loadMockData() {
-    this.items = [
-      {
-    imageUrl: '/assets/img_bach_cong_khanh.jpg',
-    title: '[BẾN THÀNH] Đêm nhạc Bạch Công Khanh - Chu Thúy Quỳnh',
-    price: 'Từ 500.000đ',
-    date: '30 tháng 05, 2025'
-  },
-  {
-    imageUrl: '/assets/img_la_vie_en_rose.jpg',
-    title: 'LIVESHOW "LA VIE EN ROSE" - Quốc Thiên & Hà Nhi',
-    price: 'Từ 800.000đ',
-    date: '03 tháng 06, 2025'
-  },
-  {
-    imageUrl: '/assets/img1.jpg',
-    title: '(S)TRONG TRỌNG HIẾU - CƯỜNG SEVEN',
-    price: 'Từ 975.000đ',
-    date: '31 tháng 05, 2025'
-  },
-  {
-    imageUrl: '/assets/img1.jpg',
-    title: 'EXID 2025 FANCON IN VIET NAM',
-    price: 'Từ 1.500.000đ',
-    date: '31 tháng 05, 2025'
-  },
-    ];
-    this.updateVisibleItems();
+  loadLiveMusicEvents() {
+    this.eventService.getRecommendedEvents('livemusic').subscribe(res => {
+      this.events = res?.data?.listEvents || [];
+      
+      this.events = this.events.map((event: any) => ({
+        id: event.id,
+        eventName: event.eventName,
+        description: event.description,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        category: event.category,
+        status: event.status,
+        approval_status: event.approval_status,
+        backgroundUrl: event.backgroundUrl,
+        address: event.address || event.addressName,
+        addressDetail: event.addressDetail,
+        price: event.minPrice
+      }));
+      
+      this.startIndex = 0;
+      this.updateVisibleItems();
+    });
   }
 
   updateVisibleItems() {
-    this.visibleItems = this.items.slice(this.startIndex, this.startIndex + this.ITEMS_PER_PAGE);
+    this.visibleItems = this.events.slice(this.startIndex, this.startIndex + this.ITEMS_PER_PAGE);
   }
 
   onSeeMore() {

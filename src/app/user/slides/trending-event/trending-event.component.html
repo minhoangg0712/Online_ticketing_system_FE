@@ -5,25 +5,24 @@
   </div>
   
   <div class="carousel-container">
-    <div class="carousel-wrapper" [style.transform]="getTransformStyle()">
-      <div class="carousel-item" *ngFor="let item of items; let i = index">
-        <p class="item-number">{{ i + 1 }}</p>
+    <div class="carousel-wrapper" >
+      <div class="carousel-item" *ngFor="let item of visibleItems">
         <div class="item-content">
-          <img [src]="item.image" [alt]="item.title" />
+          <img [src]="item.backgroundUrl || '/assets/default.jpg'" [alt]="item.title" />
         </div>
       </div>
     </div>
     
     <button 
       class="nav-btn prev-btn" 
-      (click)="prevSlide()" 
-      [disabled]="isPrevDisabled()">
+      (click)="scrollLeft()"
+      >
       ‹
     </button>
     <button 
       class="nav-btn next-btn" 
-      (click)="nextSlide()" 
-      [disabled]="isNextDisabled()">
+      (click)="scrollRight()" 
+      >
       ›
     </button>
   </div>

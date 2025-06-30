@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventsService } from '../../../../services/events.service';
 
 @Component({
   selector: 'app-thisweekend-event',
@@ -13,63 +14,53 @@ export class ThisweekendEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
+  constructor(private eventsService: EventsService){}
+
   ngOnInit(): void {
-    this.loadMockData();
+    this.loadWeekendEventsThisWeek();
   }
 
-  loadMockData() {
-    this.items = [
-      {
-    imageUrl: '/assets/concert1.jpg',
-    title: 'ĐÊM NHẠC TRỊNH CÔNG SƠN – HOÀI NIỆM VÀ YÊU THƯƠNG',
-    price: '450.000đ',
-    date: '15 tháng 06, 2025'
-  },
-  {
-    imageUrl: '/assets/exhibition1.jpg',
-    title: 'TRIỂN LÃM NGHỆ THUẬT ĐƯƠNG ĐẠI – “SẮC MÀU THỜI GIAN”',
-    price: 'Miễn phí',
-    date: '12 tháng 07, 2025'
-  },
-  {
-    imageUrl: '/assets/workshop1.jpg',
-    title: 'WORKSHOP VẼ MÀU NƯỚC – “THẢ HỒN VÀO PHONG CẢNH”',
-    price: '320.000đ',
-    date: '22 tháng 06, 2025'
-  },
-  {
-    imageUrl: '/assets/theater1.jpg',
-    title: 'KỊCH NÓI “MẸ ƠI! CON NHỚ” – NHÀ HÁT TUỔI TRẺ',
-    price: '200.000đ',
-    date: '29 tháng 06, 2025'
-  },
-  {
-    imageUrl: '/assets/dance1.jpg',
-    title: 'ĐÊM NHẢY ĐƯỜNG PHỐ – HIPHOP VÀ VĂN HOÁ URBAN',
-    price: '100.000đ',
-    date: '05 tháng 07, 2025'
-  },
-  {
-    imageUrl: '/assets/talk1.jpg',
-    title: 'TALKSHOW: “KHỞI NGHIỆP SÁNG TẠO – TỪ ĐAM MÊ ĐẾN HIỆN THỰC”',
-    price: 'Miễn phí',
-    date: '10 tháng 07, 2025'
-  },
-  {
-    imageUrl: '/assets/film1.jpg',
-    title: 'CHIẾU PHIM NGOÀI TRỜI: “KÝ ỨC MÙA HÈ”',
-    price: '80.000đ',
-    date: '17 tháng 06, 2025'
-  },
-  {
-    imageUrl: '/assets/charity1.jpg',
-    title: 'ĐÊM NHẠC TỪ THIỆN – “TRAO YÊU THƯƠNG”',
-    price: 'Tuỳ tâm',
-    date: '20 tháng 07, 2025'
+  loadWeekendEventsThisWeek() {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+
+    const saturday = new Date(today);
+    saturday.setDate(today.getDate() + (6 - dayOfWeek));
+    saturday.setHours(0, 0, 0, 0);
+
+    const sunday = new Date(today);
+    sunday.setDate(today.getDate() + (7 - dayOfWeek));
+    sunday.setHours(23, 59, 59, 999);
+
+    this.eventsService.getRecommendedEvents(
+      '',
+      undefined,
+      saturday,
+      sunday
+    ).subscribe(res => {
+      const events = res?.data?.listEvents || [];
+
+      this.items = events.map((event: any) => ({
+        backgroundUrl: event.backgroundUrl,
+        startTime: event.startTime,
+        eventName: event.eventName,
+        price: event.minPrice,
+        date: this.formatDate(event.startTime)
+      }));
+
+      this.startIndex = 0;
+      this.updateVisibleItems();
+    });
   }
-    ];
-    this.updateVisibleItems();
+
+  formatDate(isoDate: string): string {
+    const date = new Date(isoDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day} tháng ${month < 10 ? '0' + month : month}, ${year}`;
   }
+
 
   updateVisibleItems() {
     this.visibleItems = this.items.slice(this.startIndex, this.startIndex + this.ITEMS_PER_PAGE);

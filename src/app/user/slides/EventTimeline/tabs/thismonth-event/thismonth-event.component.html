@@ -8,13 +8,13 @@
     <!-- Danh sách sự kiện -->
     <div class="event-list">
       <div class="event-card" *ngFor="let item of visibleItems">
-        <img [src]="item.imageUrl" class="event-image" />
+        <img [src]="item.backgroundUrl || '/assets/default.jpg'" class="event-image" />
         <div class="event-details">
-          <div class="event-title">{{ item.title }}</div>
-          <div class="event-price">Từ {{ item.price }}</div>
+          <div class="event-title">{{ item.eventName  }}</div>
+          <div class="event-price">Từ {{ item.price * 1000 | number:'1.0-3' }}</div>
           <div class="event-date">
             <span class="material-icons">calendar_today</span>
-            <span>{{ item.date }}</span>
+            <span>{{ item.startTime | date: 'dd/MM/yyyy' }}</span>
           </div>
         </div>
       </div>
