@@ -48,7 +48,7 @@ export const routes: Routes = [
     path: 'home', component: HomeUserComponent
   },
   {
-    path: 'detail-ticket',
+    path: 'detail-ticket/:id',
     component: DetailTicketComponent
   },
   {

@@ -3,17 +3,17 @@
     <!-- Left Panel -->
     <div class="left-panel">
       <div>
-        <h2 class="title">{{ headerData.title }}</h2>
+        <h2 class="title">{{ eventData.eventName }}</h2>
         <div class="info">
           <i class="bi bi-calendar4 icon"></i>
-          <p class="text-green">15:00 - 23:00, 28 Tháng 06, 2025</p>
+          <p class="text-green">{{ eventData.startTime | date:'HH:mm dd-MM-yyyy' }}</p>
         </div>
         <div class="info">
           <i class="bi bi-geo-alt icon"></i>
-          <p class="text-green">{{ headerData.location }}</p>
+          <p class="text-green">{{ eventData.addressDetail }}</p>
         </div>
         <p class="address">
-          59 Thủ Thiêm, Phường Thủ Thiêm, Quận 2, Thành Phố Hồ Chí Minh
+          {{ eventData.addressName }}
         </p>
       </div>
 
@@ -21,7 +21,7 @@
         <hr class="divider" />
         <div class="price-section">
           <h3 class="price-label">Giá từ</h3>
-          <p class="price">299.500 đ</p>
+          <p class="price">{{ eventData.price | number:'1.0-3' }} VNĐ</p>
           <i class="bi bi-chevron-compact-right price-icon"></i>
         </div>
         <button class="buy-btn" (click)="needLoginToBuyTicket()">Mua vé ngay</button>
@@ -34,7 +34,7 @@
     <!-- Right Panel -->
     <div class="right-panel">
       <img
-        src="https://storage.googleapis.com/a1aa/image/bf1fee74-add0-42d3-3b2c-05479be248ed.jpg"
+        [src]="eventData.backgroundUrl"
         alt="Festival poster"
         class="poster"
       />
@@ -45,8 +45,8 @@
 </div>
 
 <div *ngIf="showHeader" class="sticky-header">
-  <span>{{ headerData.title }}</span>
-  <span> <i class="bi bi-geo-alt"></i> {{ headerData.location }} </span>
+  <span>{{ eventData.eventName }}</span>
+  <span> <i class="bi bi-geo-alt"></i> {{ eventData.addressDetail }} </span>
   <button> <i class="bi bi-ticket-detailed"></i> Mua vé ngay</button>
 </div>
 
@@ -97,19 +97,19 @@
         <div class="ticket-event">
           <div class="ticket-event-info" (click)="toggleMainSection()">
             <i [ngClass]="isMainExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
-            <span>15:00 - 23:00, 28 Tháng 06, 2025</span>
+            <span>{{ eventData.startTime | date:'HH:mm dd-MM-yyyy' }}</span>
           </div>
             <button type="button" class="buy-now-button">Mua vé ngay</button>
         </div>
 
         <div class="ticket-section" *ngIf="isMainExpanded">
-          <div class="ticket-item" *ngFor="let ticket of ticketList; let i = index">
+          <div class="ticket-item" *ngFor="let ticket of eventData.ticketPrices; let i = index">
             <div class="ticket-item-header" (click)="toggleTicket(i)">
               <div class="ticket-title">
                 <i [ngClass]="ticket.isExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
-                <span>{{ ticket.name }}</span>
+                <span>{{ ticket.type }}</span>
               </div>
-              <span class="ticket-price">{{ ticket.price }}</span>
+              <span class="ticket-price">{{ ticket.price | number:'1.0-0' }} VNĐ</span>
             </div>
 
             <div class="ticket-details" *ngIf="ticket.isExpanded">
@@ -123,16 +123,16 @@
         <h2 class="organizer-title">Ban tổ chức</h2>
         <div class="organizer-content">
           <img
-            [src]="organizer.image"
-            [alt]="organizer.alt"
+            [src]="eventData.organizerAvatarUrl"
+            alt = "Ảnh đại diện của ban tổ chức"
             class="organizer-image"
           />
           <div>
             <p class="organizer-name">
-              {{ organizer.name }}
+              {{ eventData.organizerName }}
             </p>
             <p class="organizer-description">
-              {{ organizer.description }}
+              {{ eventData.organizerBio }}
             </p>
           </div>
         </div>

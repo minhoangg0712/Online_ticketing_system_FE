@@ -7,6 +7,7 @@
 .container {
   padding: 24px;
   background-color: #1f2024;
+  font-family: 'Inter', sans-serif;
 }
 
 .card {
@@ -58,6 +59,7 @@
   color: white;
   font-weight: 800;
   font-size: 24px;
+  font-family: 'Inter', sans-serif;
 }
 
 .info {
@@ -333,12 +335,12 @@ body {
   align-items: center;
   gap: 0.5rem;
   color: white;
-  font-size: 0.75rem;
+  font-size: 16px;
   font-weight: 600;
 }
 
 .buy-now-button {
-  background-color: #2ecc71;
+  background-color: #ff7e42;
   color: white;
   font-size: 0.75rem;
   font-weight: 600;
@@ -350,7 +352,7 @@ body {
 }
 
 .buy-now-button:hover {
-  background-color: #27ae60;
+  background-color: #ec7943;
 }
 
 .ticket-section {
@@ -376,10 +378,12 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 16px;
 }
 
 .ticket-price {
-  color: #2ecc71;
+  color: #ff7e42;
+  font-size: 14px;
 }
 
 .ticket-details {

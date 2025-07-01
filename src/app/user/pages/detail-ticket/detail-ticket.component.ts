@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
+import { ActivatedRoute } from '@angular/router';
+import { EventsService } from '../../services/events.service';
+
 @Component({
   selector: 'app-detail-ticket',
   imports: [CommonModule, ToastNotificationComponent],
@@ -10,6 +13,10 @@ import { ToastNotificationComponent } from '../../pop-up/toast-notification/toas
   styleUrl: './detail-ticket.component.css'
 })
 export class DetailTicketComponent implements OnInit {
+  eventId!: number;
+  eventData: any = {};
+  ticketList: any[] = [];
+
   expanded = false;
   showHeader = false;
   isMainExpanded: boolean = true;
@@ -17,11 +24,6 @@ export class DetailTicketComponent implements OnInit {
   
   showNotification = false;
   notificationMessage = 'Bạn phải đăng nhập để sử dụng chức năng này.';
-
-  headerData = {
-    title: 'VBA 2025 - Saigon Heat vs CT Catfish',
-    location: 'Nhà Thi Đấu CIS'
-  };
 
   tickets = [
     { zone: 'Zone - GA B2', originalPrice: '899,000 đ', discountedPrice: '449,500 đ', discount: '50%' },
@@ -40,33 +42,74 @@ export class DetailTicketComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  ticketList = [
-    { name: 'EARLY BIRD - Zone - GA A1', price: '950.000 đ', isExpanded: false },
-    { name: 'EARLY BIRD - Zone - GA A2', price: '950.000 đ', isExpanded: false },
-    { name: 'EARLY BIRD - Zone - GA B1', price: '449.500 đ', isExpanded: false },
-    { name: 'EARLY BIRD - Zone - GA C1', price: '299.500 đ', isExpanded: false },
-    { name: 'EARLY BIRD - VIP A Seating + Table - A1', price: '4.800.000 đ', isExpanded: false },
-    { name: 'EARLY BIRD - VIP A Seating + Table - A2', price: '4.800.000 đ', isExpanded: false },
-    { name: 'EARLY BIRD - VIP B Seating Chairs - B1', price: '2.000.000 đ', isExpanded: false },
-    { name: 'EARLY BIRD - VIP B Seating Chairs - B2', price: '2.000.000 đ', isExpanded: false },
-    { name: 'EARLY BIRD - Zone - GA B2', price: '449.500 đ', isExpanded: false },
-    { name: 'EARLY BIRD - Zone - GA C2', price: '299.500 đ', isExpanded: false }
-  ];
-
   toggleTicket(index: number): void {
     this.ticketList[index].isExpanded = !this.ticketList[index].isExpanded;
   }
 
-  organizer = {
-    image: 'https://storage.googleapis.com/a1aa/image/4381ee43-14c4-4793-40a7-c8d81c45bd65.jpg',
-    alt: 'LE NOM logo black and white with text LENOM INTERGRATED COMMUNICATION GROUP',
-    name: 'LE NOM',
-    description: 'LENOM INTERGRATED COMMUNICATION GROUP'
-  };
+  constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute,
+    private eventsService: EventsService) { }
 
-  constructor(private router: Router, private authService: AuthService) { }
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.eventId = +params['id']; // lấy từ URL
+      this.loadEventDetail(this.eventId);
+    });
+  }
 
-  ngOnInit(): void {}
+  loadEventDetail(id: number): void {
+    this.eventsService.getEventById(id).subscribe({
+      next: (res) => {
+        const event = res?.data;
+
+        // Lấy giá đầu tiên từ ticketPrices
+        const ticketPricesObj = event.ticketPrices || {};
+        const price = Object.values(ticketPricesObj)[0] || 0;
+
+        // Chuyển ticketPrices object thành mảng để hiển thị danh sách
+        const ticketPrices = Object.entries(ticketPricesObj).map(([type, price]) => ({
+          type,
+          price
+        }));
+
+        const fullAddress = event.address || event.addressName || '';
+
+        const parts = fullAddress.split(',').map((part: string) => part.trim());
+
+        // Đảm bảo có ít nhất 3 phần để lấy SECC - Q7
+        let addressDetail = '';
+        let addressName = '';
+
+        if (parts.length >= 3) {
+          addressDetail = parts[1]; // phần SECC - Q7
+          // ghép lại Quận 7 + từ Ward 8 trở đi
+          addressName = [parts[0], ...parts.slice(2)].join(', ');
+        } else {
+          addressName = fullAddress; // fallback
+        }
+
+        this.eventData = {
+          id: event.eventId,
+          eventName: event.eventName,
+          description: event.description,
+          startTime: event.startTime,
+          backgroundUrl: event.backgroundUrl,
+          organizerName: event.organizerName,
+          organizerBio: event.organizerBio,
+          organizerAvatarUrl: event.organizerAvatarUrl,
+
+          // ✅ Tách theo yêu cầu
+          addressDetail: addressDetail,
+          addressName: addressName,
+
+          price,
+          ticketPrices,
+        };
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy chi tiết sự kiện:', err);
+      }
+    });
+  }
 
   events = [
     {

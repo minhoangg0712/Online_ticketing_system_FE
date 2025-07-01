@@ -34,5 +34,7 @@ export class EventsService {
     return this.http.get(`${this.apiUrl}/recommend`, { params });
   }
 
-  
+  getEventById(eventId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${eventId}`);
+  }
 }
