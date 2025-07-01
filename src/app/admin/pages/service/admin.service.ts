@@ -15,6 +15,10 @@ export class AdminService {
   getUsers(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
+  // Lấy thông tin chi tiết người dùng
+  getUserById(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${userId}`);
+  }
     // Lấy số lượng người dùng
   // Lấy số lượng người dùng
   getUserCount(): Observable<number> {

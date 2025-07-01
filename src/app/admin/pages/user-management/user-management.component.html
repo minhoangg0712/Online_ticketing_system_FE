@@ -68,7 +68,7 @@
               </span>
             </td>
             <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#" title="Xem chi tiết">
+              <a class="btn btn-primary btn-sm" (click)="showUserDetails(user)" title="Xem chi tiết">
                 <i class="fas fa-folder"></i> Xem
               </a>
 
@@ -242,6 +242,59 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" [class.show]="showDetailModal" [style.display]="showDetailModal ? 'block' : 'none'"
+       tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="detailModalLabel">
+            <i class="fas fa-user mr-2"></i>Thông tin chi tiết người dùng
+          </h5>
+          <button type="button" class="close text-white" (click)="closeDetailModal()" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="selectedUser" class="row">
+            <div class="col-md-4 text-center">
+             <img [src]="getSafeImageUrl(selectedUser.avatarUrl) || 'assets/default-profile.png'"
+                   class="img-fluid rounded-circle mb-3"
+                   style="width: 150px; height: 150px; object-fit: cover;"
+                   alt="Profile Picture"
+                   (error)="handleImageError($event)">
+            </div>
+            <div class="col-md-8">
+              <h5>{{ selectedUser.full_name }}</h5>
+              <hr>
+              <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+              <p><strong>Số điện thoại:</strong> {{ selectedUser.phoneNumber || 'Chưa cung cấp' }}</p>
+              <p><strong>Giới tính:</strong> {{ selectedUser.gender || 'Chưa cung cấp' }}</p>
+              <p><strong>Địa chỉ:</strong> {{ selectedUser.address || 'Chưa cung cấp' }}</p>
+              <p><strong>Vai trò:</strong> {{ selectedUser.role }}</p>
+              <p><strong>Trạng thái:</strong>
+                <span class="badge" [ngClass]="{
+                  'badge-success': selectedUser.status === 'active',
+                  'badge-warning': selectedUser.status === 'inactive'
+                }">
+                  {{ selectedUser.status }}
+                </span>
+              </p>
+              <p><strong>Tiểu sử:</strong> {{ selectedUser.bio || 'Chưa có tiểu sử' }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" (click)="closeDetailModal()">
+            <i class="fas fa-times mr-1"></i>Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 <!-- Backdrop cho modal -->
 <div class="modal-backdrop fade" [class.show]="showSuccessModal || showErrorModal || showConfirmModal"
