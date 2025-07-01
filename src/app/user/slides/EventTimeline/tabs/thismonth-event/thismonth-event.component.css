@@ -57,7 +57,7 @@
 }
 
 .event-price {
-  color: #00ff00;
+  color: #ff7e42;
   font-weight: 500;
   font-size: clamp(12px, 3.2vw, 14px);
   margin-bottom: 4px;
@@ -65,7 +65,7 @@
 
 .event-date {
   font-size: clamp(11px, 3vw, 13px);
-  color: #ccc;
+  color: black;
   display: flex;
   align-items: center;
 }
