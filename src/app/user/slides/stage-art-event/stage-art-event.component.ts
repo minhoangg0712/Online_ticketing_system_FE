@@ -52,8 +52,9 @@ export class StageArtEventComponent implements OnInit {
   }
 
   onSeeMore() {
-    // điều hướng hoặc hiển thị thêm nội dung
-    console.log('Xem thêm được bấm');
+    this.router.navigate(['/search-events'], {
+      queryParams: { category: 'stage-art' }
+    });
   }
 
   goToEventDetail(eventId: number) {

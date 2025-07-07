@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-livemusic-event',
@@ -14,7 +15,7 @@ export class LivemusicEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
-  constructor(private eventService: EventsService) {}
+  constructor(private eventService: EventsService,private router: Router) {}
 
   ngOnInit(): void {
     this.loadLiveMusicEvents();
@@ -25,7 +26,7 @@ export class LivemusicEventComponent implements OnInit {
       this.events = res?.data?.listEvents || [];
       
       this.events = this.events.map((event: any) => ({
-        id: event.id,
+        id: event.eventId,
         eventName: event.eventName,
         description: event.description,
         startTime: event.startTime,
@@ -49,7 +50,12 @@ export class LivemusicEventComponent implements OnInit {
   }
 
   onSeeMore() {
-    // điều hướng hoặc hiển thị thêm nội dung
-    console.log('Xem thêm được bấm');
+    this.router.navigate(['/search-events'], {
+      queryParams: { category: 'livemusic' }
+    });
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }
