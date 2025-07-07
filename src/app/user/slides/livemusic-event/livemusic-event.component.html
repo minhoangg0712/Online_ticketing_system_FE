@@ -10,7 +10,7 @@
     <!-- Danh sách sự kiện -->
     <div class="event-list">
       <div class="event-card" *ngFor="let item of visibleItems">
-        <img [src]="item.backgroundUrl || '/assets/default.jpg'" class="event-image" />
+        <img [src]="item.backgroundUrl || '/assets/default.jpg'" class="event-image" (click)="goToEventDetail(item.id)"/>
         <div class="event-details">
           <div class="event-title">{{ item.eventName  }}</div>
           <div class="event-price">{{ item.price * 1000 | number:'1.0-3' }}</div>

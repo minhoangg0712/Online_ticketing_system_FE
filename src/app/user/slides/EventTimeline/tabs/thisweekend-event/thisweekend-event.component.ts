@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thisweekend-event',
@@ -14,7 +15,7 @@ export class ThisweekendEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
-  constructor(private eventsService: EventsService){}
+  constructor(private eventsService: EventsService,private router: Router){}
 
   ngOnInit(): void {
     this.loadWeekendEventsThisWeek();
@@ -41,6 +42,7 @@ export class ThisweekendEventComponent implements OnInit {
       const events = res?.data?.listEvents || [];
 
       this.items = events.map((event: any) => ({
+        id: event.eventId,
         backgroundUrl: event.backgroundUrl,
         startTime: event.startTime,
         eventName: event.eventName,
@@ -86,5 +88,9 @@ export class ThisweekendEventComponent implements OnInit {
 
   get canScrollRight(): boolean {
     return this.startIndex + this.ITEMS_PER_PAGE < this.items.length;
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }

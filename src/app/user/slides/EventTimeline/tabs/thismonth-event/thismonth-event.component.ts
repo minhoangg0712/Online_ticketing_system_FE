@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thismonth-event',
@@ -14,7 +15,7 @@ export class ThismonthEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
-  constructor(private eventsService: EventsService){}
+  constructor(private eventsService: EventsService,private router: Router){}
 
   ngOnInit(): void {
     this.loadEventsThisMonth();
@@ -35,6 +36,8 @@ export class ThismonthEventComponent implements OnInit {
       const events = res?.data?.listEvents || [];
 
       this.items = events.map((event: any) => ({
+        id: event.eventId,
+        eventName: event.eventName,
         imageUrl: event.backgroundUrl || '/assets/default.jpg',
         startTime: event.startTime,
         title: event.eventName,
@@ -79,5 +82,9 @@ export class ThismonthEventComponent implements OnInit {
 
   get canScrollRight(): boolean {
     return this.startIndex + this.ITEMS_PER_PAGE < this.items.length;
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }

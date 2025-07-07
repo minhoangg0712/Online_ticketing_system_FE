@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stage-art-event',
@@ -14,7 +15,7 @@ export class StageArtEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
-  constructor(private eventService: EventsService) {}
+  constructor(private eventService: EventsService,private router: Router) {}
 
   ngOnInit(): void {
     this.loadStageArtEvents();
@@ -27,7 +28,7 @@ export class StageArtEventComponent implements OnInit {
 
       // Map lại nếu cần, đảm bảo có đủ các trường
       this.events = this.events.map((event: any) => ({
-        id: event.id,
+        id: event.eventId,
         eventName: event.eventName,
         description: event.description,
         startTime: event.startTime,
@@ -53,5 +54,9 @@ export class StageArtEventComponent implements OnInit {
   onSeeMore() {
     // điều hướng hoặc hiển thị thêm nội dung
     console.log('Xem thêm được bấm');
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }

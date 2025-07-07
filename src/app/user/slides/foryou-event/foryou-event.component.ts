@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-foryou-event',
@@ -15,7 +16,7 @@ export class ForyouEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
-  constructor(private eventService: EventsService) {}
+  constructor(private eventService: EventsService,private router: Router) {}
 
   ngOnInit(): void {
     this.loadForYouEvents();
@@ -28,7 +29,7 @@ export class ForyouEventComponent implements OnInit {
 
       // Map lại nếu cần, đảm bảo có đủ các trường
       this.events = this.events.map((event: any) => ({
-        id: event.id,
+        id: event.eventId,
         eventName: event.eventName,
         description: event.description,
         startTime: event.startTime,
@@ -71,5 +72,9 @@ export class ForyouEventComponent implements OnInit {
 
   get canScrollRight(): boolean {
     return this.startIndex + this.ITEMS_PER_PAGE < this.events.length;
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }

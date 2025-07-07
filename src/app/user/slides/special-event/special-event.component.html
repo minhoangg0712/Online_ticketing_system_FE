@@ -1,5 +1,5 @@
 <div class="event-section">
-  <h2 class="section-title">Dành cho bạn</h2>
+  <h2 class="section-title">Sự kiện đặc biệt</h2>
   <div class="event-carousel">
     <!-- Nút trái -->
     <button *ngIf="canScrollLeft" class="scroll-btn left" (click)="scrollLeft()">
@@ -9,7 +9,7 @@
     <!-- Danh sách sự kiện -->
     <div class="event-list">
       <div class="event-card" *ngFor="let item of visibleItems">
-        <img [src]="item.backgroundUrl || '/assets/default.jpg'" class="event-image" />
+        <img [src]="item.backgroundUrl || '/assets/default.jpg'" class="event-image" (click)="goToEventDetail(item.id)"/>
       </div>
 
       <!-- Nút phải -->

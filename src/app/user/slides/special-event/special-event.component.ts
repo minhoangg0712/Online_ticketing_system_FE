@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-special-event',
@@ -14,7 +15,7 @@ export class SpecialEventComponent {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
-  constructor(private eventService: EventsService) {}
+  constructor(private eventService: EventsService,private router: Router) {}
 
   ngOnInit(): void {
     this.loadSpecialEvents();
@@ -27,6 +28,7 @@ export class SpecialEventComponent {
 
       // Map lại nếu cần, đảm bảo có đủ các trường
       this.events = this.events.map((event: any) => ({
+        id: event.eventId,
         backgroundUrl: event.backgroundUrl,
       }));
       
@@ -59,5 +61,9 @@ export class SpecialEventComponent {
 
   get canScrollRight(): boolean {
     return this.startIndex + this.ITEMS_PER_PAGE < this.events.length;
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }
