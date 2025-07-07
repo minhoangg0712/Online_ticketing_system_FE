@@ -9,6 +9,7 @@ import { StageArtEventComponent } from "../../slides/stage-art-event/stage-art-e
 import { InterestPlaceComponent } from "../../slides/interest-place/interest-place.component";
 import { SpecialEventComponent } from '../../slides/special-event/special-event.component';
 import { EventsService } from '../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-user',
@@ -23,7 +24,7 @@ export class HomeUserComponent implements OnInit {
   transitionStyle = 'transform 0.5s ease-in-out';
   
 
-  constructor(private http: HttpClient, private eventService: EventsService) {}
+  constructor(private http: HttpClient, private eventService: EventsService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadHotTrendingEvents()
@@ -31,14 +32,15 @@ export class HomeUserComponent implements OnInit {
 
 
   loadHotTrendingEvents() {
-  this.eventService.getRecommendedEvents('hot-trending').subscribe(res => {
-    this.events = res?.data?.listEvents || [];
+    this.eventService.getRecommendedEvents('hot-trending').subscribe(res => {
+      this.events = res?.data?.listEvents || [];
 
-    this.events = this.events.map((event: any) => ({
-      backgroundUrl: event.backgroundUrl
-    }));
-  });
-}
+      this.events = this.events.map((event: any) => ({
+        id: event.eventId,
+        backgroundUrl: event.backgroundUrl
+      }));
+    });
+  }
 
   get visibleImages() {
     const total = this.events.length;
@@ -66,8 +68,7 @@ export class HomeUserComponent implements OnInit {
     this.currentIndex = (this.currentIndex - 1 + this.events.length) % this.events.length;
   }
 
-
-  viewDetails(event: any): void {
-    alert('Chi tiết: ' + (event?.backgroundUrl || 'Không có thông tin'));
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }
