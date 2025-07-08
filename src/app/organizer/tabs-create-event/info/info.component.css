@@ -37,6 +37,23 @@ body {
   border: 1px solid #333;
 }
 
+.section-group {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: #252525;
+  border-radius: 12px;
+  border: 1px solid #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ff7e42;
+  margin-bottom: 1.2rem;
+  display: block;
+}
+
 label {
   display: block;
   font-size: 1rem;
@@ -250,5 +267,9 @@ select.input-field {
 
   .address-row > div {
     width: 100%;
+  }
+
+  .section-group {
+    padding: 1rem;
   }
 }
