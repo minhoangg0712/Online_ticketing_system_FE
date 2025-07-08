@@ -22,26 +22,28 @@ export class ThisweekendEventComponent implements OnInit {
     this.loadWeekendEventsThisWeek();
   }
 
+  
   loadWeekendEventsThisWeek() {
-    const { startTimeISO, endTimeISO, startDate, endDate } = this.getVietnamWeekTimeRange();
+    const { startTimeISO, endTimeISO, startDate, endDate } = this.getWeekendTimeRange();
 
     this.eventsService.getRecommendedEvents(
-      '', // category
-      undefined,
+      '', 
+      undefined, 
       startTimeISO,
-      endTimeISO
+      endTimeISO,
+      undefined, 
+      1,
+      50
     ).subscribe(res => {
       const allEvents = res?.data?.listEvents || [];
-
-      // Lọc lại ở frontend để chắc chắn đúng mốc thời gian
+      
       const filteredEvents = allEvents.filter((event: any) => {
-        // Giả định event.startTime là '2025-07-12 08:00:00' không có Z
-        const raw = event.startTime.replace(' ', 'T') + '+07:00'; // ép format
-        const eventTime = new Date(raw).getTime(); // dùng đúng timezone
-
-        return eventTime >= startDate.getTime() && eventTime <= endDate.getTime();
-        });
-
+        const raw = event.startTime.replace(' ', 'T') + '+07:00';
+        const eventTime = new Date(raw);
+        
+        const isInWeekend = eventTime.getTime() >= startDate.getTime() && eventTime.getTime() <= endDate.getTime();
+        return isInWeekend;
+      });
 
       this.items = filteredEvents.map((event: any) => ({
         id: event.eventId,
@@ -57,32 +59,47 @@ export class ThisweekendEventComponent implements OnInit {
     });
   }
 
-  // ✅ Lấy khung giờ từ 00:00 hôm nay đến hết Chủ nhật theo giờ Việt Nam (UTC+7)
-  getVietnamWeekTimeRange(): { startTimeISO: string, endTimeISO: string, startDate: Date, endDate: Date } {
+  getWeekendTimeRange(): { startTimeISO: string, endTimeISO: string, startDate: Date, endDate: Date } {
     const now = new Date();
-
+    const currentDayOfWeek = now.getDay();
+    
+    let daysToSaturday: number;
+    if (currentDayOfWeek === 0) { 
+      daysToSaturday = 6; 
+    } else {
+      daysToSaturday = 6 - currentDayOfWeek; 
+    }
+    
     const startDate = new Date(now);
-    startDate.setHours(0, 0, 0, 0); // 00:00 hôm nay
-
-    const dayOfWeek = startDate.getDay(); // 0 (CN) -> 6 (T7)
-
+    startDate.setDate(now.getDate() + daysToSaturday);
+    startDate.setHours(0, 0, 0, 0);
+    
     const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + (7 - dayOfWeek));
-    endDate.setHours(23, 59, 59, 999); // Cuối CN
-
+    endDate.setDate(startDate.getDate() + 1);
+    endDate.setHours(23, 59, 59, 999);
+    
     const startTimeISO = this.toISOWithTimezoneOffset(startDate, 7);
     const endTimeISO = this.toISOWithTimezoneOffset(endDate, 7);
-
-    console.log('VN Today ISO:', startTimeISO);
-    console.log('VN EndOfWeek ISO:', endTimeISO);
-
+    
+    console.log('Weekend Start (Saturday):', startTimeISO);
+    console.log('Weekend End (Sunday):', endTimeISO);
+    console.log('Current day of week:', currentDayOfWeek);
+    console.log('Days to Saturday:', daysToSaturday);
+    
     return { startTimeISO, endTimeISO, startDate, endDate };
   }
 
-  // ✅ Chuyển Date thành ISO string với timezone offset (ví dụ: +07:00 cho VN)
   toISOWithTimezoneOffset(date: Date, offsetHours: number): string {
     const offsetDate = new Date(date.getTime() - offsetHours * 60 * 60 * 1000);
     return offsetDate.toISOString().replace('Z', `+${offsetHours.toString().padStart(2, '0')}:00`);
+  }
+
+  formatDate(isoDate: string): string {
+    const date = new Date(isoDate);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day} tháng ${month}, ${year}`;
   }
 
   updateVisibleItems() {
@@ -109,14 +126,6 @@ export class ThisweekendEventComponent implements OnInit {
 
   get canScrollRight(): boolean {
     return this.startIndex + this.ITEMS_PER_PAGE < this.items.length;
-  }
-
-  formatDate(isoDate: string): string {
-    const date = new Date(isoDate);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day} tháng ${month}, ${year}`;
   }
 
   goToEventDetail(eventId: number) {
