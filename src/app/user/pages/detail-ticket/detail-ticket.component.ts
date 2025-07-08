@@ -51,15 +51,18 @@ export class DetailTicketComponent implements OnInit {
     private eventsService: EventsService) { }
 
   ngOnInit(): void {
-  this.route.params.subscribe(params => {
-    this.eventId = +params['id'];
-    this.loadEventDetail(this.eventId);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // cuộn lên đầu trang
-  });
+    this.route.params.subscribe(params => {
+      this.eventId = +params['id'];
+      this.loadEventDetail(this.eventId);
 
-  this.loadEvents(); // Gọi 1 lần duy nhất
-}
+      // Check để tránh lỗi trong SSR
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
 
+    this.loadEvents(); // Gọi 1 lần duy nhất
+  }
 
   loadEventDetail(id: number): void {
     this.eventsService.getEventById(id).subscribe({
@@ -128,7 +131,6 @@ export class DetailTicketComponent implements OnInit {
       12 
     ).subscribe(res => {
       this.events = res?.data?.listEvents || [];
-      console.log('Sự kiện trước khi map:', this.events.length);
       // Map lại nếu cần, đảm bảo có đủ các trường
       this.events = this.events.map((event: any) => ({
         id: event.eventId,
@@ -144,8 +146,6 @@ export class DetailTicketComponent implements OnInit {
         addressDetail: event.addressDetail,
         price: event.minPrice
       }));
-
-      console.log('Sự kiện sau khi map:', this.events);
     });
   }
 
