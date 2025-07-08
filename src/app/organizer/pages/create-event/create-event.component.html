@@ -1,17 +1,15 @@
 <div class="steps-nav">
   <button [class.active]="currentStep === 1" (click)="goToStep(1)">1. Thông tin</button>
   <button [class.active]="currentStep === 2" (click)="goToStep(2)">2. Thời gian & Vé</button>
-  <button [class.active]="currentStep === 3" (click)="goToStep(3)">3. Thanh toán</button>
 </div>
 
 <div class="step-content">
   <app-info *ngIf="currentStep === 1" (formChange)="onInfoChange($event)"></app-info>
   <app-date *ngIf="currentStep === 2" (formChange)="onDateChange($event)"></app-date>
-  <app-pay *ngIf="currentStep === 3"></app-pay>
 </div>
 
 <div class="actions">
   <button (click)="prevStep()" [disabled]="currentStep === 1">Quay lại</button>
-  <button (click)="nextStep()" [disabled]="currentStep === maxStep">Tiếp tục</button>
+  <button (click)="nextStep()" [disabled]="currentStep === maxStep" *ngIf="currentStep !== maxStep">Tiếp tục</button>
   <button *ngIf="currentStep === maxStep" (click)="submitAll()" class="btn-submit">Tạo sự kiện</button>
 </div>
