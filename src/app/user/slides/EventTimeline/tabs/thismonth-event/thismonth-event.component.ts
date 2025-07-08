@@ -41,7 +41,7 @@ export class ThismonthEventComponent implements OnInit {
     this.items = events.map((event: any) => ({
       id: event.eventId,
       eventName: event.eventName,
-      imageUrl: event.backgroundUrl || '/assets/default.jpg',
+      backgroundUrl: event.backgroundUrl,
       startTime: event.startTime,
       title: event.eventName,
       price: event.minPrice,

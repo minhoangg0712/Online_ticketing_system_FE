@@ -18,7 +18,7 @@ export class EventsService {
     endTime?: string,
     name?: string,
     page: number = 1,
-    size: number = 10
+    size: number = 12
   ): Observable<any> {
     let params = new HttpParams();
 
@@ -38,7 +38,7 @@ export class EventsService {
     return this.http.get<any>(`${this.apiUrl}/${eventId}`);
   }
 
-  searchEvents(params: { category?: string; address?: string, startTime?: string }): Observable<any> {
+  searchEvents(params: { category?: string; address?: string, startTime?: string , endTime?: string; }): Observable<any> {
     let httpParams = new HttpParams();
 
     if (params.category) {
@@ -53,6 +53,9 @@ export class EventsService {
       httpParams = httpParams.set('startTime', params.startTime);
     }
     
+    if (params.endTime) {  // Thêm block này
+      httpParams = httpParams.set('endTime', params.endTime);
+    }
     return this.http.get(`${this.apiUrl}/recommend`, { params: httpParams });
   }
 }

@@ -81,11 +81,6 @@ export class ThisweekendEventComponent implements OnInit {
     const startTimeISO = this.toISOWithTimezoneOffset(startDate, 7);
     const endTimeISO = this.toISOWithTimezoneOffset(endDate, 7);
     
-    console.log('Weekend Start (Saturday):', startTimeISO);
-    console.log('Weekend End (Sunday):', endTimeISO);
-    console.log('Current day of week:', currentDayOfWeek);
-    console.log('Days to Saturday:', daysToSaturday);
-    
     return { startTimeISO, endTimeISO, startDate, endDate };
   }
 

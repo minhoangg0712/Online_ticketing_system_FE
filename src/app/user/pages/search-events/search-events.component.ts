@@ -27,13 +27,14 @@ export class SearchEventsComponent implements OnInit {
       const category = params['category'] || '';
       const address = params['address'] || '';
       const startTime = params['startTime'] || '';
+      const endTime = params['endTime'] || '';
 
-      console.log('Received params:', { category, address, startTime });
-      this.fetchEvents({ category, address, startTime });
+      console.log('Received params:', { category, address, startTime, endTime });
+      this.fetchEvents({ category, address, startTime, endTime });
     });
   }
 
-  fetchEvents(params: { category?: string; address?: string, startTime?: string  }) {
+  fetchEvents(params: { category?: string; address?: string; startTime?: string; endTime?: string }) {
     this.eventsService.searchEvents(params).subscribe({
       next: (response) => {
         if (response?.data?.listEvents) {
