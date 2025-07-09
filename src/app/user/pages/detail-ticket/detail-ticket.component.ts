@@ -156,11 +156,11 @@ export class DetailTicketComponent implements OnInit {
   }
 
   onEventClick(eventId: number) {
-  this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    this.router.navigate(['/detail-ticket', eventId]);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/detail-ticket', eventId]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
 
   @HostListener('window:scroll', [])
@@ -179,11 +179,8 @@ export class DetailTicketComponent implements OnInit {
 
   needLoginToBuyTicket() {
     if (this.isLoggedIn()) {
-      // Thực hiện hành động khi đã đăng nhập
       console.log('Thực hiện hành động...');
-      // Thêm logic của bạn ở đây
     } else {
-      // Hiển thị thông báo yêu cầu đăng nhập
       this.notification.showNotification(
         'Bạn phải đăng nhập để sử dụng chức năng này.',
         5000,
@@ -192,7 +189,5 @@ export class DetailTicketComponent implements OnInit {
     }
   }
 
-  onNotificationClose() {
-    console.log('Notification đã đóng');
-  }
+  onNotificationClose() {}
 }
