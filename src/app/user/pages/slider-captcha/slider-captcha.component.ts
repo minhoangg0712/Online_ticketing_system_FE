@@ -7,6 +7,8 @@ import { Component,
   EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 interface CaptchaChallenge {
   type: 'image' | 'math' | 'slider';
@@ -25,6 +27,7 @@ interface CaptchaChallenge {
 export class SliderCaptchaComponent implements OnInit {
   @Output() verificationComplete = new EventEmitter<boolean>();
 
+  eventId!: number;
   currentChallenge!: CaptchaChallenge;
   selectedImages: number[] = [];
   mathAnswer: number | null = null;
@@ -35,6 +38,8 @@ export class SliderCaptchaComponent implements OnInit {
   verificationResult: 'success' | 'failed' | null = null;
   attempts = 0;
   maxAttempts = 3;
+
+  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) {}
 
   private challenges: CaptchaChallenge[] = [
     {
@@ -58,11 +63,14 @@ export class SliderCaptchaComponent implements OnInit {
     {
       type: 'slider',
       question: 'Kéo thanh trượt để khớp với chấm đỏ',
-      correctAnswer: 0 // Will be set dynamically
+      correctAnswer: 0
     }
   ];
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.eventId = params['eventId'];
+    });
     this.initializeChallenge();
     this.setupSliderEvents();
   }
@@ -160,6 +168,7 @@ export class SliderCaptchaComponent implements OnInit {
       if (isCorrect) {
         setTimeout(() => {
           this.verificationComplete.emit(true);
+          this.router.navigate(['/select-ticket', this.eventId]);
         }, 1500);
       } else {
         this.attempts++;

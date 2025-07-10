@@ -59,8 +59,7 @@
         <div class="tp-intro-text">
           <p>GIÁ VÉ HIỂN THỊ TRÊN HỆ THỐNG ĐÃ LÀ GIÁ EARLY BIRD</p>
           <p>
-            Thời gian áp dụng (Từ 20:00 ngày 30/05/2025 đến 19:59 ngày
-            01/06/2025 hoặc đến khi hết số lượng vé ưu đãi)
+            {{ eventData.description }}
           </p>
         </div>
 
@@ -74,9 +73,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let ticket of displayedTickets">
-              <td>{{ ticket.zone }}</td>
-              <td>{{ ticket.originalPrice }}</td>
+            <tr *ngFor="let ticket of eventData.ticketPrices">
+              <td>{{ ticket.type }}</td>
+              <td>{{ ticket.price | number:'1.0-0' }} VNĐ</td>
               <td>{{ ticket.discountedPrice }}</td>
               <td>{{ ticket.discount }}</td>
             </tr>

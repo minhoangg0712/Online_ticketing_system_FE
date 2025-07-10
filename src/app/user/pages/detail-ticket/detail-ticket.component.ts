@@ -179,7 +179,9 @@ export class DetailTicketComponent implements OnInit {
 
   needLoginToBuyTicket() {
     if (this.isLoggedIn()) {
-      console.log('Thực hiện hành động...');
+      this.router.navigate(['/slider-captcha'], {
+        queryParams: { eventId: this.eventId } 
+      });
     } else {
       this.notification.showNotification(
         'Bạn phải đăng nhập để sử dụng chức năng này.',
