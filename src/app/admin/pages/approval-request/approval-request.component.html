@@ -1,586 +1,490 @@
-<!-- Content Header (Page header) -->
-<section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1>Phê duyệt sự kiện</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Phê duyệt sự kiện</li>
-        </ol>
-      </div>
-    </div>
-  </div><!-- /.container-fluid -->
-</section>
-
-<!-- Main content -->
-<section class="content">
-
-  <!-- Default box -->
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Phê duyệt sự kiện</h3>
-
-      <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-          <i class="fas fa-minus"></i>
-        </button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-          <i class="fas fa-times"></i>
-        </button>
+<!-- event-management.component.html -->
+<div class="container-fluid py-4">
+  <!-- Statistics Cards -->
+  <div class="row mb-4">
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h4>{{ stats.total }}</h4>
+              <p class="mb-0">Tổng sự kiện</p>
+            </div>
+            <div class="align-self-center">
+              <i class="fas fa-calendar-alt fa-2x"></i>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card-body p-0">
-      <table class="table table-striped projects">
-        <thead>
-          <tr>
-            <th style="width: 1%">
-              #
-            </th>
-            <th style="width: 20%">
-              Tên sự kiện
-            </th>
-            <th style="width: 30%">
-              Thành viên nhóm
-            </th>
-            <th>
-              Tiến độ dự án
-            </th>
-            <th style="width: 8%" class="text-center">
-              Trạng thái
-            </th>
-            <th style="width: 20%">
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar2.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 57%">
-                </div>
-              </div>
-              <small>
-                57% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar2.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="47" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 47%">
-                </div>
-              </div>
-              <small>
-                47% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar2.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="77" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 77%">
-                </div>
-              </div>
-              <small>
-                77% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar2.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 60%">
-                </div>
-              </div>
-              <small>
-                60% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar5.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="12" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 12%">
-                </div>
-              </div>
-              <small>
-                12% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar2.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="35" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 35%">
-                </div>
-              </div>
-              <small>
-                35% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar5.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="87" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 87%">
-                </div>
-              </div>
-              <small>
-                87% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="77" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 77%">
-                </div>
-              </div>
-              <small>
-                77% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              #
-            </td>
-            <td>
-              <a>
-                AdminLTE v3
-              </a>
-              <br>
-              <small>
-                Created 01.01.2019
-              </small>
-            </td>
-            <td>
-              <ul class="list-inline">
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                </li>
-                <li class="list-inline-item">
-                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar5.png">
-                </li>
-              </ul>
-            </td>
-            <td class="project_progress">
-              <div class="progress progress-sm">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="77" aria-valuemin="0"
-                  aria-valuemax="100" style="width: 77%">
-                </div>
-              </div>
-              <small>
-                77% Complete
-              </small>
-            </td>
-            <td class="project-state">
-              <span class="badge badge-success">Success</span>
-            </td>
-            <td class="project-actions text-right">
-              <a class="btn btn-primary btn-sm" href="#">
-                <i class="fas fa-folder">
-                </i>
-                View
-              </a>
-              <a class="btn btn-info btn-sm" href="#">
-                <i class="fas fa-pencil-alt">
-                </i>
-                Edit
-              </a>
-              <a class="btn btn-danger btn-sm" href="#">
-                <i class="fas fa-trash">
-                </i>
-                Delete
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-warning text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h4>{{ stats.pending }}</h4>
+              <p class="mb-0">Chờ duyệt</p>
+            </div>
+            <div class="align-self-center">
+              <i class="fas fa-clock fa-2x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- /.card-body -->
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h4>{{ stats.approved }}</h4>
+              <p class="mb-0">Đã duyệt</p>
+            </div>
+            <div class="align-self-center">
+              <i class="fas fa-check fa-2x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-danger text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h4>{{ stats.rejected }}</h4>
+              <p class="mb-0">Từ chối</p>
+            </div>
+            <div class="align-self-center">
+              <i class="fas fa-times fa-2x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- /.card -->
 
-</section>
-<!-- /.content -->
+  <!-- Main Content -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-calendar-check mr-2"></i>
+            Quản lý sự kiện
+          </h3>
+        </div>
+
+        <!-- Filters & Search -->
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Tìm kiếm sự kiện..."
+                  [(ngModel)]="searchKeyword"
+                  (input)="onSearch()">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary" (click)="onSearch()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-control" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+                <option value="all">Tất cả trạng thái</option>
+                <option value="pending">Chờ duyệt</option>
+                <option value="approved">Đã duyệt</option>
+                <option value="rejected">Từ chối</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-control" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+                <option value="all">Tất cả danh mục</option>
+                <option *ngFor="let category of getUniqueCategories()" [value]="category">
+                  {{ category }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-primary btn-block" (click)="loadEvents()">
+                <i class="fas fa-sync mr-1"></i>
+                Làm mới
+              </button>
+            </div>
+          </div>
+
+          <!-- Batch Actions -->
+          <div class="row mb-3" *ngIf="selectedEvents.length > 0">
+            <div class="col-12">
+              <div class="alert alert-info">
+                <strong>{{ selectedEvents.length }}</strong> sự kiện được chọn
+                <div class="float-right">
+                  <button class="btn btn-success btn-sm mr-1" (click)="batchApprove()">
+                    <i class="fas fa-check mr-1"></i>
+                    Duyệt hàng loạt
+                  </button>
+                  <button class="btn btn-warning btn-sm mr-1" (click)="showRejectModal = true">
+                    <i class="fas fa-times mr-1"></i>
+                    Từ chối hàng loạt
+                  </button>
+                  <button class="btn btn-danger btn-sm" (click)="openConfirmModal('batchDelete')">
+                    <i class="fas fa-trash mr-1"></i>
+                    Xóa hàng loạt
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Events Table -->
+        <div class="card-body table-responsive p-0">
+          <table class="table table-hover text-nowrap">
+            <thead>
+              <tr>
+                <th style="width: 1%">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="selectAll"
+                    (change)="toggleSelectAll()">
+                </th>
+                <th style="width: 1%">#</th>
+                <th style="width: 25%">Thông tin sự kiện</th>
+                <th style="width: 15%">Người tổ chức</th>
+                <th style="width: 20%">Thời gian & Địa điểm</th>
+                <th style="width: 12%">Danh mục</th>
+                <th style="width: 12%" class="text-center">Trạng thái</th>
+                <th style="width: 15%" class="text-center">Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="loading">
+                <td colspan="8" class="text-center py-4">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <p class="mt-2 mb-0">Đang tải dữ liệu...</p>
+                </td>
+              </tr>
+              <tr *ngIf="!loading && getPaginatedEvents().length === 0">
+                <td colspan="8" class="text-center py-4">
+                  <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                  <p class="text-muted">Không có sự kiện nào</p>
+                </td>
+              </tr>
+              <tr *ngFor="let event of getPaginatedEvents(); let i = index">
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="isEventSelected(event.id)"
+                    (change)="toggleEventSelection(event.id)">
+                </td>
+                <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img
+                      [src]="event.imageUrl || 'https://via.placeholder.com/60x40/007bff/ffffff?text=Event'"
+                      alt="Event Image"
+                      class="event-image mr-3"
+                      style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;">
+                    <div>
+                      <div class="font-weight-bold">{{ event.title }}</div>
+                      <small class="text-muted">Được tạo: {{ formatDate(event.createdDate) }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img
+                      [src]="event.organizer.avatar || 'https://via.placeholder.com/32x32/28a745/ffffff?text=' + event.organizer.name.charAt(0)"
+                      alt="Organizer"
+                      class="rounded-circle mr-2"
+                      style="width: 32px; height: 32px; object-fit: cover;">
+                    <div>
+                      <div style="font-size: 0.9em; font-weight: 500;">{{ event.organizer.name }}</div>
+                      <small class="text-muted">ID: {{ event.organizer.id }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="event-datetime">
+                    <div>
+                      <i class="fas fa-calendar mr-1"></i>
+                      {{ formatDate(event.startDate) }}
+                      <span *ngIf="event.endDate && event.endDate !== event.startDate">
+                        - {{ formatDate(event.endDate) }}
+                      </span>
+                    </div>
+                    <div>
+                      <i class="fas fa-clock mr-1"></i>
+                      {{ event.startTime }} - {{ event.endTime }}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="badge badge-info">{{ event.category }}</span>
+                </td>
+                <td class="text-center">
+                  <span class="badge" [ngClass]="getStatusClass(event.status)">
+                    <i [class]="getStatusIcon(event.status)" class="mr-1"></i>
+                    {{ getStatusText(event.status) }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <div class="btn-group" role="group">
+                    <!-- Pending Status Actions -->
+                    <ng-container *ngIf="event.status === 'pending'">
+                      <button
+                        class="btn btn-success btn-sm"
+                        (click)="approveEvent(event.id)"
+                        title="Duyệt">
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        (click)="openRejectModal(event)"
+                        title="Từ chối">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </ng-container>
+
+                    <!-- Approved Status Actions -->
+                    <ng-container *ngIf="event.status === 'approved'">
+                      <button
+                        class="btn btn-warning btn-sm"
+                        (click)="openConfirmModal('revoke', event)"
+                        title="Thu hồi duyệt">
+                        <i class="fas fa-undo"></i>
+                      </button>
+                    </ng-container>
+
+                    <!-- Rejected Status Actions -->
+                    <ng-container *ngIf="event.status === 'rejected'">
+                      <button
+                        class="btn btn-success btn-sm"
+                        (click)="openConfirmModal('approve', event)"
+                        title="Duyệt lại">
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button
+                        class="btn btn-secondary btn-sm"
+                        (click)="viewRejectionReason(event)"
+                        title="Xem lý do từ chối">
+                        <i class="fas fa-comment"></i>
+                      </button>
+                    </ng-container>
+
+                    <!-- Common Actions -->
+                    <button
+                      class="btn btn-info btn-sm"
+                      (click)="viewEventDetail(event)"
+                      title="Xem chi tiết">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="openConfirmModal('delete', event)"
+                      title="Xóa">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+       <!-- Trong file approval-request.component.html -->
+<!-- Thay đổi phần Pagination -->
+<div class="card-footer">
+  <div class="row">
+    <div class="col-sm-12 col-md-5">
+      <div class="dataTables_info">
+        Hiển thị {{ (currentPage - 1) * itemsPerPage + 1 }} đến
+        {{ getDisplayEndIndex() }} <!-- Thay Math.min bằng phương thức mới -->
+        của {{ totalItems }} sự kiện
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-7">
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-sm float-right">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="#" (click)="goToPage(currentPage - 1); $event.preventDefault()">
+              Trước
+            </a>
+          </li>
+          <li
+            class="page-item"
+            *ngFor="let page of [].constructor(getTotalPages()); let i = index"
+            [class.active]="currentPage === i + 1">
+            <a class="page-link" href="#" (click)="goToPage(i + 1); $event.preventDefault()">
+              {{ i + 1 }}
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === getTotalPages()">
+            <a class="page-link" href="#" (click)="goToPage(currentPage + 1); $event.preventDefault()">
+              Sau
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Event Detail Modal -->
+<div class="modal fade" [class.show]="showDetailModal" [style.display]="showDetailModal ? 'block' : 'none'">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Chi tiết sự kiện</h4>
+        <button type="button" class="close" (click)="closeModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="selectedEvent">
+        <div class="row">
+          <div class="col-md-4">
+            <img
+              [src]="selectedEvent.imageUrl || 'https://via.placeholder.com/300x200/007bff/ffffff?text=Event'"
+              alt="Event Image"
+              class="img-fluid rounded">
+          </div>
+          <div class="col-md-8">
+            <h5>{{ selectedEvent.title }}</h5>
+            <p>{{ selectedEvent.description }}</p>
+            <div class="row">
+              <div class="col-sm-6">
+                <strong>Người tổ chức:</strong><br>
+                {{ selectedEvent.organizer.name }}
+              </div>
+              <div class="col-sm-6">
+                <strong>Danh mục:</strong><br>
+                {{ selectedEvent.category }}
+              </div>
+              <div class="col-sm-6">
+                <strong>Thời gian:</strong><br>
+                {{ formatDate(selectedEvent.startDate) }} - {{ formatDate(selectedEvent.endDate) }}<br>
+                {{ selectedEvent.startTime }} - {{ selectedEvent.endTime }}
+              </div>
+              <div class="col-sm-6">
+                <strong>Địa điểm:</strong><br>
+                {{ selectedEvent.location }}
+              </div>
+              <div class="col-sm-6">
+                <strong>Trạng thái:</strong><br>
+                <span class="badge" [ngClass]="getStatusClass(selectedEvent.status)">
+                  {{ getStatusText(selectedEvent.status) }}
+                </span>
+              </div>
+              <div class="col-sm-6">
+                <strong>Ngày tạo:</strong><br>
+                {{ formatDateTime(selectedEvent.createdDate) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" [class.show]="showRejectModal" [style.display]="showRejectModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Từ chối sự kiện</h4>
+        <button type="button" class="close" (click)="closeModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="rejectReason">Lý do từ chối:</label>
+          <textarea
+            id="rejectReason"
+            class="form-control"
+            rows="4"
+            [(ngModel)]="rejectReason"
+            placeholder="Nhập lý do từ chối sự kiện..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          Hủy
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="selectedEvent ? rejectEvent(selectedEvent.id, rejectReason) : batchReject()"
+          [disabled]="!rejectReason.trim()">
+          Từ chối
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal fade" [class.show]="showConfirmModal" [style.display]="showConfirmModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Xác nhận</h4>
+        <button type="button" class="close" (click)="closeModal()">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="confirmAction === 'approve'">
+          Bạn có chắc chắn muốn duyệt sự kiện này?
+        </p>
+        <p *ngIf="confirmAction === 'revoke'">
+          Bạn có chắc chắn muốn thu hồi duyệt sự kiện này?
+        </p>
+        <p *ngIf="confirmAction === 'delete'">
+          Bạn có chắc chắn muốn xóa sự kiện này? Hành động này không thể hoàn tác.
+        </p>
+        <p *ngIf="confirmAction === 'batchDelete'">
+          Bạn có chắc chắn muốn xóa {{ selectedEvents.length }} sự kiện đã chọn? Hành động này không thể hoàn tác.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          Hủy
+        </button>
+        <button
+          type="button"
+          class="btn"
+          [ngClass]="{
+            'btn-success': confirmAction === 'approve',
+            'btn-warning': confirmAction === 'revoke',
+            'btn-danger': confirmAction === 'delete' || confirmAction === 'batchDelete'
+          }"
+          (click)="confirmAction === 'batchDelete' ? batchDelete() : confirmModalAction()">
+          <span *ngIf="confirmAction === 'approve'">Duyệt</span>
+          <span *ngIf="confirmAction === 'revoke'">Thu hồi</span>
+          <span *ngIf="confirmAction === 'delete'">Xóa</span>
+          <span *ngIf="confirmAction === 'batchDelete'">Xóa tất cả</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="showDetailModal || showRejectModal || showConfirmModal"></div>
