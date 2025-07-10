@@ -14,18 +14,18 @@ export class EventsService {
    getRecommendedEvents(
     category?: string,
     address?: string,
-    startTime?: Date,
-    endTime?: Date,
+    startTime?: string,
+    endTime?: string,
     name?: string,
     page: number = 1,
-    size: number = 10
+    size: number = 12
   ): Observable<any> {
     let params = new HttpParams();
 
     if (category) params = params.set('category', category);
     if (address) params = params.set('address', address);
-    if (startTime) params = params.set('startTime', startTime.toISOString());
-    if (endTime) params = params.set('endTime', endTime.toISOString());
+    if (startTime) params = params.set('startTime', startTime);
+    if (endTime) params = params.set('endTime', endTime);
     if (name) params = params.set('name', name);
 
     params = params.set('page', page.toString());
@@ -36,5 +36,26 @@ export class EventsService {
 
   getEventById(eventId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${eventId}`);
+  }
+
+  searchEvents(params: { category?: string; address?: string, startTime?: string , endTime?: string; }): Observable<any> {
+    let httpParams = new HttpParams();
+
+    if (params.category) {
+      httpParams = httpParams.set('category', params.category);
+    }
+
+    if (params.address) {
+      httpParams = httpParams.set('address', params.address);
+    }
+
+    if (params.startTime) {
+      httpParams = httpParams.set('startTime', params.startTime);
+    }
+    
+    if (params.endTime) {  // Thêm block này
+      httpParams = httpParams.set('endTime', params.endTime);
+    }
+    return this.http.get(`${this.apiUrl}/recommend`, { params: httpParams });
   }
 }

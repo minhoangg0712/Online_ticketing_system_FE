@@ -6,15 +6,16 @@
   padding: 0.5rem clamp(0.5rem, 2vw, 1rem);
   max-width: 1400px;
   margin: 0 auto;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  flex-wrap: wrap;
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
 .tab-group {
   display: flex;
   gap: clamp(1rem, 3vw, 1.5rem);
-  margin-left: clamp(10px, 5vw, 20px); /* Responsive margin instead of fixed 75px */
-  flex-wrap: wrap; /* Allow wrapping for small screens */
+  margin-left: clamp(10px, 5vw, 20px); 
+  flex-wrap: wrap; 
 }
 
 .filter-btn {
@@ -65,14 +66,14 @@
 }
 
 .see-more-btn i {
-  margin-right: clamp(5px, 2vw, 10px); /* Responsive margin instead of fixed 70px */
+  margin-right: clamp(5px, 2vw, 10px);
   font-size: clamp(10px, 2.5vw, 12px);
 }
 
 .banner-container {
   padding: clamp(5px, 2vw, 10px);
   margin: clamp(5px, 2vw, 10px) auto;
-  max-width: 1350px; /* Reduced from 1330px for better compatibility */
+  max-width: 1350px; 
   box-sizing: border-box;
 }
 
@@ -93,14 +94,13 @@
   border-radius: 8px;
 }
 
-/* Media Queries for Larger Screens */
 @media (min-width: 768px) {
   .filter-tab {
     padding: 0.5rem 1rem;
   }
 
   .tab-group {
-    margin-left: 20px; /* Slightly larger margin for larger screens */
+    margin-left: 20px;
   }
 
   .banner-container {
@@ -109,17 +109,16 @@
   }
 }
 
-/* Media Queries for Smaller Screens */
 @media (max-width: 480px) {
   .filter-tab {
     padding: 0.5rem;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: column;
     align-items: flex-start;
   }
 
   .tab-group {
-    margin-left: 0; /* Remove margin for small screens */
-    justify-content: center; /* Center tabs */
+    margin-left: 0;
+    justify-content: center;
   }
 
   .filter-btn {
@@ -141,6 +140,6 @@
   }
 
   .image-container {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* Lighter shadow for small screens */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); 
   }
 }

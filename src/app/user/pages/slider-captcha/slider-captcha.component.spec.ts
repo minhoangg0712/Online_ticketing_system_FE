@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InfoComponent } from './info.component';
+import { SliderCaptchaComponent } from './slider-captcha.component';
 
-describe('InfoComponent', () => {
-  let component: InfoComponent;
-  let fixture: ComponentFixture<InfoComponent>;
+describe('SliderCaptchaComponent', () => {
+  let component: SliderCaptchaComponent;
+  let fixture: ComponentFixture<SliderCaptchaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InfoComponent]
+      imports: [SliderCaptchaComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InfoComponent);
+    fixture = TestBed.createComponent(SliderCaptchaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

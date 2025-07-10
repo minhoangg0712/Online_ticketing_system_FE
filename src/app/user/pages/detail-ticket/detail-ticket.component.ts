@@ -16,6 +16,7 @@ export class DetailTicketComponent implements OnInit {
   eventId!: number;
   eventData: any = {};
   ticketList: any[] = [];
+  events: any[] = [];
 
   expanded = false;
   showHeader = false;
@@ -51,9 +52,16 @@ export class DetailTicketComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.eventId = +params['id']; // lấy từ URL
+      this.eventId = +params['id'];
       this.loadEventDetail(this.eventId);
+
+      // Check để tránh lỗi trong SSR
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
+
+    this.loadEvents(); // Gọi 1 lần duy nhất
   }
 
   loadEventDetail(id: number): void {
@@ -111,116 +119,49 @@ export class DetailTicketComponent implements OnInit {
     });
   }
 
-  events = [
-    {
-      id: 1,
-      title: 'A COMPLETE GUIDE FOR SUCCESSFUL PROJECT MANAGEMENT',
-      price: 'Từ 3.560.000đ',
-      date: '21 tháng 10, 2024',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/25b0320f-4ff5-4114-f511-0b43af3cde03.jpg',
-      imageAlt: 'Woman speaking at a project presentation, side view with a microphone'
-    },
-    {
-      id: 2,
-      title: 'ART WORKSHOP "MOMOFUKU STYLE BASIL RASBERRY CAKE"',
-      price: 'Từ 420.000đ',
-      date: '30 tháng 05, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/bc0c6adc-becc-4e93-a275-2d6b8c3e22f0.jpg',
-      imageAlt: 'Momofuku style basil raspberry cake with eggs and knife on table'
-    },
-    {
-      id: 3,
-      title: 'SÂN KHẤU THIÊN ĐĂNG : CHUYỆN ĐÒ ĐỊNH MỆNH',
-      price: 'Từ 330.000đ',
-      date: '30 tháng 05, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/a99b80d3-9161-4adf-363b-a8ca1b2d7281.jpg',
-      imageAlt: 'Movie poster with a large eye and dark background'
-    },
-    {
-      id: 4,
-      title: '1900 FUTURE HITS #70: JUN PHẠM | FRIDAY 30.05.2025',
-      price: 'Từ 800.000đ',
-      date: '30 tháng 05, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/3b234bdc-6539-476f-317f-38d514b8d8ca.jpg',
-      imageAlt: 'Young man with clock background and red accent'
-    },
-    {
-      id: 5,
-      title: '[VIVIAN VU\'S CANDLES] WORKSHOP LÀM NẾN THƠM VÀ SOAP HANDMADE',
-      price: 'Từ 315.000đ',
-      date: '31 tháng 05, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/c1063538-9467-44a1-bbe3-4e7bfffaff58.jpg',
-      imageAlt: 'Handmade workshop with candle and decorative elements'
-    },
-    {
-      id: 6,
-      title: 'AQUAFINA VIETNAM INTERNATIONAL FASHION WEEK XUÂN HÈ 2025',
-      price: 'Từ 500.000đ',
-      date: '05 tháng 06, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/a95e54c4-99f7-4a43-1c80-76f692c33f2e.jpg',
-      imageAlt: 'Aquafina Vietnam International Fashion Week banner with white and blue colors'
-    },
-    {
-      id: 7,
-      title: 'Nhà Hát Kịch IDECAF: TÂM CẢM ĐẠI CHIẾN!',
-      price: 'Từ 270.000đ',
-      date: '06 tháng 06, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/f01d71b1-4f93-40db-c261-8389230074b6.jpg',
-      imageAlt: 'Theater play Tâm Cảm Đại Chiến cast photo with green background'
-    },
-    {
-      id: 8,
-      title: 'SHOPEE - BRAND X CREATOR CONFERENCE 2025',
-      price: 'Từ 1.200.000đ',
-      date: '19 tháng 06, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/793bc483-c516-4400-ceae-f746b265372b.jpg',
-      imageAlt: 'Shopee Brand X Creator Conference 2025 with orange theme and logo'
-    },
-    {
-      id: 9,
-      title: 'FAMILY RETREAT IN THE NATURE',
-      price: 'Từ 3.200.000đ',
-      date: '19 tháng 06, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/093c64c2-01ec-419c-6e1b-3359e13f96e6.jpg',
-      imageAlt: 'Family retreat in the nature with forest view and text overlay'
-    },
-    {
-      id: 10,
-      title: 'LIVESHOW "801" - Bùi Công Nam & Thanh Duy _ Special Guest: Uyên Linh',
-      price: 'Từ 800.000đ',
-      date: '20 tháng 06, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/53b06c33-a691-4a6c-0dd0-27d38c6a430f.jpg',
-      imageAlt: 'Liveshow 801 with three people and sunflower'
-    },
-    {
-      id: 11,
-      title: 'FUTURE WITH AI: AI & TƯƠNG LAI DOANH NGHIỆP - Chiến lược vượt sóng dẫn đầu...',
-      price: 'Từ 128.000đ',
-      date: '21 tháng 06, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/3d534dfd-6136-4f39-30f8-6677ea20737d.jpg',
-      imageAlt: 'Future with AI conference with two men and blue background'
-    },
-    {
-      id: 12,
-      title: '[TP.HCM] Dệt Nắng - Nối Charity Foundation 2025',
-      price: 'Từ 479.000đ',
-      date: '07 tháng 07, 2025',
-      imageUrl: 'https://storage.googleapis.com/a1aa/image/bf8c85a0-f526-4f21-c48c-88a8f01efb85.jpg',
-      imageAlt: 'TPHCM Dệt Nắng Nối Charity Foundation collage photos'
-    }
-  ];
+
+  loadEvents() {
+    this.eventsService.getRecommendedEvents(
+      '', 
+      '', 
+      '', 
+      '', 
+      '', 
+      1, 
+      12 
+    ).subscribe(res => {
+      this.events = res?.data?.listEvents || [];
+      // Map lại nếu cần, đảm bảo có đủ các trường
+      this.events = this.events.map((event: any) => ({
+        id: event.eventId,
+        eventName: event.eventName,
+        description: event.description,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        category: event.category,
+        status: event.status,
+        approval_status: event.approval_status,
+        backgroundUrl: event.backgroundUrl,
+        address: event.address || event.addressName,
+        addressDetail: event.addressDetail,
+        price: event.minPrice
+      }));
+    });
+  }
 
   promotionalBannerUrl = 'https://storage.googleapis.com/a1aa/image/42737dff-09dd-4692-9d1c-4f174cd415e5.jpg';
 
-  onLoadMoreEvents(): void {
-    // Logic để load thêm sự kiện
-    console.log('Loading more events...');
+  onLoadMoreEvents(){
+    this.router.navigate(['/home']);
   }
 
-  onEventClick(event: any): void {
-    // Logic khi click vào sự kiện
-    console.log('Event clicked:', event);
+  onEventClick(eventId: number) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/detail-ticket', eventId]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
+
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -238,19 +179,15 @@ export class DetailTicketComponent implements OnInit {
 
   needLoginToBuyTicket() {
     if (this.isLoggedIn()) {
-      // Thực hiện hành động khi đã đăng nhập
       console.log('Thực hiện hành động...');
-      // Thêm logic của bạn ở đây
     } else {
-      // Hiển thị thông báo yêu cầu đăng nhập
       this.notification.showNotification(
         'Bạn phải đăng nhập để sử dụng chức năng này.',
-        5000
+        5000,
+        "warning",
       );
     }
   }
 
-  onNotificationClose() {
-    console.log('Notification đã đóng');
-  }
+  onNotificationClose() {}
 }

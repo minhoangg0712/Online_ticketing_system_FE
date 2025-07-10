@@ -10,11 +10,11 @@
   <div class="carousel-container">
     <div class="carousel-wrapper" [style.transition]="transitionStyle">
       <div class="carousel-item" *ngFor="let item of visibleImages">
-      <div class="image-wrapper">
-        <img [src]="item.backgroundUrl || '/assets/default.jpg'" />
-        <button class="detail-button" (click)="viewDetails(item)">Xem chi tiết</button>
+        <div class="image-wrapper">
+          <img [src]="item.backgroundUrl || '/assets/default.jpg'" />
+          <button class="detail-button" (click)="goToEventDetail(item.id)">Xem chi tiết </button>
+        </div>
       </div>
-    </div>
     </div>
 
     <button class="arrow left" (click)="prevSlide()">&#10094;</button>

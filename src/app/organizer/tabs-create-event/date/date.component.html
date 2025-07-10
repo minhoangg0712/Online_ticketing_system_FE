@@ -1,8 +1,8 @@
 <div class="form-wrapper">
   <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
     <h2>Thời gian & Vé</h2>
-    <section class="form-group">
-      <label>Bắt đầu bán:</label>
+    <section class="section-group">
+      <label class="section-title">Bắt đầu bán</label>
       <div class="datetime-row">
         <div>
           <label for="startDate"><i class="bi bi-calendar"></i> Ngày mở bán</label>
@@ -26,8 +26,8 @@
     </section>
 
     <!-- Kết thúc bán -->
-    <section class="form-group">
-      <label>Kết thúc bán:</label>
+    <section class="section-group">
+      <label class="section-title">Kết thúc bán</label>
       <div class="datetime-row">
         <div>
           <label for="endDate"><i class="bi bi-calendar-x"></i> Ngày kết thúc</label>
@@ -54,8 +54,8 @@
     </section>
 
     <!-- Ngày diễn ra sự kiện -->
-    <section class="form-group">
-      <label>Ngày diễn ra sự kiện:</label>
+    <section class="section-group">
+      <label class="section-title">Ngày diễn ra sự kiện</label>
       <div class="datetime-row">
         <div>
           <label for="eventDate"><i class="bi bi-calendar-event-fill"></i> Ngày diễn ra sự kiện</label>
@@ -82,8 +82,8 @@
     </section>
 
     <!-- Ngày kết thúc sự kiện -->
-    <section class="form-group">
-      <label> Ngày kết thúc sự kiện:</label>
+    <section class="section-group">
+      <label class="section-title">Ngày kết thúc sự kiện</label>
       <div class="datetime-row">
         <div>
           <label for="eventEndDate"><i class="bi bi-calendar-x"></i> Ngày kết thúc sự kiện</label>
@@ -113,7 +113,7 @@
     <h2>Loại vé</h2>
     <div formArrayName="tickets">
       <section 
-        class="ticket-box"
+        class="ticket-box section-ticket"
         *ngFor="let ticket of tickets.controls; let i = index"
         [formGroupName]="i"
       >
@@ -127,11 +127,15 @@
             Vui lòng nhập tên loại vé
           </div>
         </div>
-        <div>
+        <div class="price-input-group">
           <label for="ticketPrice-{{ i }}"><i class="bi bi-currency-dollar"></i> Giá vé</label>
-          <input type="number" id="ticketPrice-{{ i }}" formControlName="price"
-                 placeholder="Giá vé (VND)" min="1" class="input-field"
-                 [class.error]="ticket.get('price')?.invalid && ticket.get('price')?.touched" />
+          <div class="price-input-flex">
+            <span class="price-icon">₫</span>
+            <input type="number" id="ticketPrice-{{ i }}" formControlName="price"
+                   placeholder="Giá vé" min="1" class="input-field price-input"
+                   [class.error]="ticket.get('price')?.invalid && ticket.get('price')?.touched" />
+            <span class="price-unit">VNĐ</span>
+          </div>
           <div class="error-message" *ngIf="ticket.get('price')?.invalid && ticket.get('price')?.touched">
             Giá vé phải lớn hơn 0
           </div>

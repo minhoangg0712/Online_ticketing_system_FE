@@ -1,12 +1,12 @@
 .event-section {
-  padding: 10px 15px; /* Slightly increased side padding for small screens */
+  padding: 10px 15px;
   color: #fff;
   position: relative;
-  max-width: 1400px; /* Maximum width for larger screens */
-  margin: 0 auto; /* Center the section */
+  max-width: 1400px; 
+  margin: 0 auto; 
   margin-bottom: 0;
-  box-sizing: border-box; /* Ensure padding doesn’t affect width */
-  font-family: Inter, sans-serif;
+  box-sizing: border-box; 
+  font-family: 'Inter', sans-serif;
 }
 
 .tab-group {
@@ -16,12 +16,12 @@
   padding: 8px 5px;
   border-radius: 8px;
   color: black;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  flex-wrap: wrap;
 }
 
 .section-title {
   margin: 0;
-  font-size: clamp(14px, 4vw, 16px); /* Responsive font size */
+  font-size: clamp(14px, 4vw, 16px); 
   font-weight: 700;
 }
 
@@ -30,18 +30,18 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  width: 100%; /* Ensure full width */
+  width: 100%; 
 }
 
 .event-list {
   display: flex;
   flex-wrap: nowrap;
   gap: 10px;
-  padding-bottom: 10px; /* Space for scrollbar */
+  padding-bottom: 10px;
 }
 
 .event-card {
-  width: clamp(250px, 45vw, 325px); /* Responsive card width */
+  width: clamp(250px, 45vw, 325px); 
   background-color: transparent;
   border-radius: 12px;
   flex-shrink: 0;
@@ -50,7 +50,7 @@
 
 .event-image {
   width: 100%;
-  height: clamp(120px, 20vw, 160px); /* Responsive image height */
+  height: clamp(120px, 20vw, 160px);
   object-fit: cover;
   border-radius: 12px;
 }
@@ -61,7 +61,7 @@
 
 .event-title {
   font-weight: bold;
-  font-size: clamp(13px, 3.5vw, 14.5px); /* Responsive font size */
+  font-size: clamp(13px, 3.5vw, 14.5px);
   color: black;
   margin-bottom: 6px;
 }
@@ -105,37 +105,35 @@
   font-size: clamp(12px, 3vw, 14px);
 }
 
-/* Media Queries for Larger Screens */
 @media (min-width: 768px) {
   .event-section {
-    padding: 20px 30px; /* More padding on larger screens */
+    padding: 20px 30px; 
   }
 
   .event-card {
-    width: 325px; /* Fixed width for larger screens */
+    width: 325px; 
   }
 
   .event-image {
-    height: 160px; /* Fixed height for consistency */
+    height: 160px; 
   }
 }
 
-/* Media Queries for Smaller Screens */
 @media (max-width: 480px) {
   .event-section {
-    padding: 10px 10px; /* Reduced padding for small screens */
+    padding: 10px 10px; 
   }
 
   .event-card {
-    width: 80vw; /* Wider cards on small screens for better visibility */
+    width: 80vw; 
   }
 
   .event-image {
-    height: 120px; /* Smaller image height */
+    height: 120px; 
   }
 
   .tab-group {
-    flex-direction: column; /* Stack tabs vertically if needed */
+    flex-direction: column;
     align-items: flex-start;
   }
 }

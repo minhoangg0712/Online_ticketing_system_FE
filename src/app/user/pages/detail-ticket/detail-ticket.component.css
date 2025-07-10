@@ -616,6 +616,8 @@ body {
   gap: 16px;
   margin-bottom: 32px;
   justify-items: center;
+  font-family: 'Inter', sans-serif;
+  flex-wrap: nowrap;
 }
 
 @media (min-width: 768px) {

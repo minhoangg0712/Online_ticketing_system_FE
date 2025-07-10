@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thismonth-event',
@@ -14,38 +15,43 @@ export class ThismonthEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
 
-  constructor(private eventsService: EventsService){}
+  constructor(private eventsService: EventsService,private router: Router){}
 
   ngOnInit(): void {
     this.loadEventsThisMonth();
   }
 
   loadEventsThisMonth() {
-    const now = new Date();
+  const now = new Date();
 
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+  // Ngày bắt đầu tháng: 01/tháng hiện tại lúc 00:00
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
 
-    this.eventsService.getRecommendedEvents(
-      '',               // category (rỗng hoặc truyền tên nếu muốn)
-      undefined,        // address
-      startOfMonth,
-      endOfMonth
-    ).subscribe(res => {
-      const events = res?.data?.listEvents || [];
+  // Ngày kết thúc tháng: ngày cuối cùng trong tháng lúc 23:59:59.999
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
-      this.items = events.map((event: any) => ({
-        imageUrl: event.backgroundUrl || '/assets/default.jpg',
-        startTime: event.startTime,
-        title: event.eventName,
-        price: event.minPrice,
-        date: this.formatDate(event.startTime)
-      }));
+  this.eventsService.getRecommendedEvents(
+    '',                // category
+    undefined,         // address
+    startOfMonth.toISOString(),
+    endOfMonth.toISOString()
+  ).subscribe(res => {
+    const events = res?.data?.listEvents || [];
 
-      this.startIndex = 0;
-      this.updateVisibleItems();
-    });
-  }
+    this.items = events.map((event: any) => ({
+      id: event.eventId,
+      eventName: event.eventName,
+      backgroundUrl: event.backgroundUrl,
+      startTime: event.startTime,
+      title: event.eventName,
+      price: event.minPrice,
+      date: this.formatDate(event.startTime)
+    }));
+
+    this.startIndex = 0;
+    this.updateVisibleItems();
+  });
+}
 
   formatDate(isoDate: string): string {
     const date = new Date(isoDate);
@@ -79,5 +85,9 @@ export class ThismonthEventComponent implements OnInit {
 
   get canScrollRight(): boolean {
     return this.startIndex + this.ITEMS_PER_PAGE < this.items.length;
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }

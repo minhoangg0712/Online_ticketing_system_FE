@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trending-event',
@@ -14,7 +15,7 @@ export class TrendingEventComponent implements OnInit {
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 3;
 
-  constructor(private eventService: EventsService) {}
+  constructor(private eventService: EventsService,private router: Router) {}
 
   ngOnInit(): void {
     this.loadTrendingEvents();
@@ -25,6 +26,7 @@ export class TrendingEventComponent implements OnInit {
       const events = res?.data?.listEvents || [];
 
       this.events = events.map((event: any) => ({
+        id: event.eventId,
         backgroundUrl: event.backgroundUrl,
       }));
 
@@ -57,5 +59,9 @@ export class TrendingEventComponent implements OnInit {
 
   get canScrollRight(): boolean {
     return this.startIndex + this.ITEMS_PER_PAGE < this.events.length;
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }

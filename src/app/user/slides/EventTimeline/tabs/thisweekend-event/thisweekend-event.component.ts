@@ -1,46 +1,52 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventsService } from '../../../../services/events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thisweekend-event',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './thisweekend-event.component.html',
-  styleUrl: './thisweekend-event.component.css'
+  styleUrls: ['./thisweekend-event.component.css']
 })
 export class ThisweekendEventComponent implements OnInit {
   items: any[] = [];
   visibleItems: any[] = [];
-  startIndex: number = 0;
+  startIndex = 0;
   readonly ITEMS_PER_PAGE = 4;
 
-  constructor(private eventsService: EventsService){}
+  constructor(private eventsService: EventsService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadWeekendEventsThisWeek();
   }
 
+  
   loadWeekendEventsThisWeek() {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-
-    const saturday = new Date(today);
-    saturday.setDate(today.getDate() + (6 - dayOfWeek));
-    saturday.setHours(0, 0, 0, 0);
-
-    const sunday = new Date(today);
-    sunday.setDate(today.getDate() + (7 - dayOfWeek));
-    sunday.setHours(23, 59, 59, 999);
+    const { startTimeISO, endTimeISO, startDate, endDate } = this.getWeekendTimeRange();
 
     this.eventsService.getRecommendedEvents(
-      '',
-      undefined,
-      saturday,
-      sunday
+      '', 
+      undefined, 
+      startTimeISO,
+      endTimeISO,
+      undefined, 
+      1,
+      50
     ).subscribe(res => {
-      const events = res?.data?.listEvents || [];
+      const allEvents = res?.data?.listEvents || [];
+      
+      const filteredEvents = allEvents.filter((event: any) => {
+        const raw = event.startTime.replace(' ', 'T') + '+07:00';
+        const eventTime = new Date(raw);
+        
+        const isInWeekend = eventTime.getTime() >= startDate.getTime() && eventTime.getTime() <= endDate.getTime();
+        return isInWeekend;
+      });
 
-      this.items = events.map((event: any) => ({
+      this.items = filteredEvents.map((event: any) => ({
+        id: event.eventId,
         backgroundUrl: event.backgroundUrl,
         startTime: event.startTime,
         eventName: event.eventName,
@@ -53,14 +59,43 @@ export class ThisweekendEventComponent implements OnInit {
     });
   }
 
-  formatDate(isoDate: string): string {
-    const date = new Date(isoDate);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${day < 10 ? '0' + day : day} tháng ${month < 10 ? '0' + month : month}, ${year}`;
+  getWeekendTimeRange(): { startTimeISO: string, endTimeISO: string, startDate: Date, endDate: Date } {
+    const now = new Date();
+    const currentDayOfWeek = now.getDay();
+    
+    let daysToSaturday: number;
+    if (currentDayOfWeek === 0) { 
+      daysToSaturday = 6; 
+    } else {
+      daysToSaturday = 6 - currentDayOfWeek; 
+    }
+    
+    const startDate = new Date(now);
+    startDate.setDate(now.getDate() + daysToSaturday);
+    startDate.setHours(0, 0, 0, 0);
+    
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 1);
+    endDate.setHours(23, 59, 59, 999);
+    
+    const startTimeISO = this.toISOWithTimezoneOffset(startDate, 7);
+    const endTimeISO = this.toISOWithTimezoneOffset(endDate, 7);
+    
+    return { startTimeISO, endTimeISO, startDate, endDate };
   }
 
+  toISOWithTimezoneOffset(date: Date, offsetHours: number): string {
+    const offsetDate = new Date(date.getTime() - offsetHours * 60 * 60 * 1000);
+    return offsetDate.toISOString().replace('Z', `+${offsetHours.toString().padStart(2, '0')}:00`);
+  }
+
+  formatDate(isoDate: string): string {
+    const date = new Date(isoDate);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day} tháng ${month}, ${year}`;
+  }
 
   updateVisibleItems() {
     this.visibleItems = this.items.slice(this.startIndex, this.startIndex + this.ITEMS_PER_PAGE);
@@ -86,5 +121,9 @@ export class ThisweekendEventComponent implements OnInit {
 
   get canScrollRight(): boolean {
     return this.startIndex + this.ITEMS_PER_PAGE < this.items.length;
+  }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 }

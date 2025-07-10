@@ -4,6 +4,7 @@ import { HeaderUserComponent } from "./component/header-user/header-user.compone
 import { CommonModule } from "@angular/common";
 import { FooterUserComponent } from "./component/footer-user/footer-user.component";
 import { AuthService } from './auth/services/auth.service';
+import { SliderCaptchaComponent } from './user/pages/slider-captcha/slider-captcha.component';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,8 @@ export class AppComponent {
         this.isAuthPage = event.url.includes('/login') || event.url.includes('/register')
         || event.url.includes('/forgot-password')
         || event.url.includes('/organizer')
-        || event.url.includes('/admin');
+        || event.url.includes('/admin')
+        || event.url.includes('/slider-captcha');
       }
     });
   }

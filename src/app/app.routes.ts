@@ -22,6 +22,8 @@ import { OrderTicketComponent } from './user/pages/order-ticket/order-ticket.com
 import { SearchEventsComponent } from './user/pages/search-events/search-events.component';
 import { PaymentTicketsComponent } from './user/pages/payment-tickets/payment-tickets.component';
 import { RegisterOrganizerComponent } from './auth/register-organizer/register-organizer.component';
+import { ExportFileDetailComponent } from './organizer/pages/export-file-detail/export-file-detail.component';
+import { SliderCaptchaComponent } from './user/pages/slider-captcha/slider-captcha.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -40,6 +42,7 @@ export const routes: Routes = [
       { path: 'create-event', component: CreateEventComponent },
       { path: 'organizer-profile', component: ProfileComponent },
       { path: 'event-detail/:id', component: HomeOrganizerComponent },
+      // { path: 'export-file/:id', component: ExportFileDetailComponent },
     ]
   },
 
@@ -75,6 +78,11 @@ export const routes: Routes = [
     path: 'payment-tickets',
     component: PaymentTicketsComponent
   },
+  {
+    path: 'slider-captcha',
+    component: SliderCaptchaComponent
+  },
+
   {
     path: 'admin',
     component: HomeAdminComponent,

@@ -1,0 +1,10 @@
+<div *ngIf="isLoading">
+  <p>Đang tải chi tiết sự kiện...</p>
+</div>
+
+<div *ngIf="!isLoading && eventData">
+  <h2>{{ eventData.eventName }}</h2>
+  <p>Thời gian: {{ eventData.startTime | date:'dd/MM/yyyy' }} - {{ eventData.endTime | date:'dd/MM/yyyy' }}</p>
+  <p>Địa điểm: {{ eventData.address }}</p>
+  <p>Mô tả: {{ eventData.description }}</p>
+</div>

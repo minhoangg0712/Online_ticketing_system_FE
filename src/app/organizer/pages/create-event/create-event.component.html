@@ -1,17 +1,321 @@
-<div class="steps-nav">
-  <button [class.active]="currentStep === 1" (click)="goToStep(1)">1. Thông tin</button>
-  <button [class.active]="currentStep === 2" (click)="goToStep(2)">2. Thời gian & Vé</button>
-  <button [class.active]="currentStep === 3" (click)="goToStep(3)">3. Thanh toán</button>
+<div class="form-wrapper">
+  <h2>Thông tin sự kiện</h2>
+
+  <!-- Upload hình ảnh -->
+  <section class="section-upload">
+    <label>Upload hình ảnh</label>
+    <div class="image-upload-row">
+      <div class="image-box" (click)="triggerFileInput('eventLogo')">
+        <input #eventLogoInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'eventLogo')">
+        <ng-container *ngIf="!eventLogoPreview; else eventLogo">
+          <div class="upload-placeholder">
+            <img src="assets/icons/upload-icon.svg" width="24" height="24" />
+            <div class="text-center">Thêm logo sự kiện<br/>(720x958)</div>
+          </div>
+        </ng-container>
+        <ng-template #eventLogo>
+          <div class="image-preview">
+            <img [src]="eventLogoPreview" alt="Event logo" />
+            <div class="image-overlay">Thay đổi ảnh</div>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Ảnh nền sự kiện -->
+      <div class="image-box flex-1" (click)="triggerFileInput('eventBackground')">
+        <input #eventBackgroundInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'eventBackground')">
+        <ng-container *ngIf="!eventBackgroundPreview; else background">
+          <div class="upload-placeholder">
+            <img src="assets/icons/image-icon.svg" width="24" height="24" />
+            <div class="text-center">Thêm ảnh nền sự kiện<br/>(1280x720)</div>
+          </div>
+        </ng-container>
+        <ng-template #background>
+          <div class="image-preview">
+            <img [src]="eventBackgroundPreview" alt="Background" />
+            <div class="image-overlay">Thay đổi ảnh</div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cắt ảnh -->
+  <ng-container *ngIf="croppingType">
+    <div class="cropper-overlay">
+      <div class="cropper-container">
+        <h3>Cắt ảnh {{ croppingType === 'eventLogo' ? 'logo sự kiện' : 'ảnh nền sự kiện' }}</h3>
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="croppingType === 'eventLogo' ? 720 / 958 : 1280 / 720"
+          format="png"
+          (imageCropped)="imageCropped($event)"
+        ></image-cropper>
+        <div class="cropper-actions">
+          <button type="button" (click)="saveCroppedImage()">Lưu</button>
+          <button type="button" (click)="cancelCrop()">Hủy</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Form thông tin sự kiện -->
+  <form [formGroup]="eventForm">
+    <!-- Tên sự kiện -->
+    <section class="section-event-name form-group">
+      <label for="eventName">Tên sự kiện</label>
+      <input id="eventName" type="text" maxlength="100" placeholder="Tên sự kiện" class="input-field" 
+             formControlName="eventName" (input)="updateCharCount('eventName', $event)" />
+      <div class="char-count">{{ getCharCount('eventName') }} / 100</div>
+      <div class="error-message" *ngIf="eventForm.get('eventName')?.invalid && eventForm.get('eventName')?.touched">
+        Vui lòng nhập tên sự kiện
+      </div>
+    </section>
+
+    <!-- Địa điểm -->
+    <section class="section-venue form-group">
+      <label for="venueName">Tên địa điểm</label>
+      <input id="venueName" type="text" maxlength="60" placeholder="Tên địa điểm" class="input-field"
+             formControlName="venueName" (input)="updateCharCount('venueName', $event)" />
+      <div class="char-count">{{ getCharCount('venueName') }} / 60</div>
+      <div class="error-message" *ngIf="eventForm.get('venueName')?.invalid && eventForm.get('venueName')?.touched">
+        Vui lòng nhập tên địa điểm
+      </div>
+
+      <div class="address-grid">
+        <div class="address-row">
+          <div>
+            <label for="province">Tỉnh/Thành</label>
+            <select id="province" class="input-field" formControlName="province" (change)="onProvinceChange()">
+              <option value="" disabled>Chọn Tỉnh/Thành</option>
+              <option *ngFor="let province of provinces" [value]="province.id">{{ province.name }}</option>
+            </select>
+            <div class="error-message" *ngIf="eventForm.get('province')?.invalid && eventForm.get('province')?.touched">
+              Vui lòng chọn tỉnh/thành phố
+            </div>
+          </div>
+          <div>
+            <label for="district">Quận/Huyện</label>
+            <select id="district" class="input-field" formControlName="district" (change)="onDistrictChange()">
+              <option value="" disabled>Chọn Quận/Huyện</option>
+              <option *ngFor="let district of districts" [value]="district.id">{{ district.name }}</option>
+            </select>
+          </div>
+          <div>
+            <label for="ward">Phường/Xã</label>
+            <select id="ward" class="input-field" formControlName="ward">
+              <option value="" disabled>Chọn Phường/Xã</option>
+              <option *ngFor="let ward of wards" [value]="ward.id">{{ ward.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="address-row">
+          <div style="flex: 1;">
+            <label for="streetAddress">Số nhà, đường</label>
+            <input id="streetAddress" type="text" maxlength="60" class="input-field" placeholder="Số nhà, đường"
+                   formControlName="streetAddress" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Thể loại -->
+    <section class="section-category form-group">
+      <label for="category">Thể loại sự kiện</label>
+      <select id="category" class="input-field" formControlName="category">
+        <option value="" disabled selected hidden>Thể loại sự kiện</option>
+        <option value="Music">Âm nhạc</option>
+        <option value="Theatre-Arts">Sân khấu & nghệ thuật</option>
+        <option value="workshop">Workshop</option>
+        <option value="Sport">Thể thao</option>
+        <option value="training">Khác</option>
+      </select>
+      <div class="error-message" *ngIf="eventForm.get('category')?.invalid && eventForm.get('category')?.touched">
+        Vui lòng chọn thể loại sự kiện
+      </div>
+    </section>
+
+    <!-- Mô tả sự kiện -->
+    <section class="section-description form-group">
+      <label for="description">Thông tin sự kiện</label>
+      <textarea id="description" class="input-textarea" rows="10" maxlength="500" placeholder="Mô tả chi tiết..."
+                formControlName="description" (input)="updateCharCount('description', $event)"></textarea>
+      <div class="char-count">{{ getCharCount('description') }} / 500</div>
+    </section>
+  </form>
 </div>
 
-<div class="step-content">
-  <app-info *ngIf="currentStep === 1" (formChange)="onInfoChange($event)"></app-info>
-  <app-date *ngIf="currentStep === 2" (formChange)="onDateChange($event)"></app-date>
-  <app-pay *ngIf="currentStep === 3"></app-pay>
-</div>
+<!-- Form thời gian và vé -->
+<div class="form-wrapper">
+  <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+    <h2>Thời gian & Vé</h2>
+    <section class="section-group">
+      <label class="section-title">Bắt đầu bán</label>
+      <div class="datetime-row">
+        <div>
+          <label for="startDate"><i class="bi bi-calendar"></i> Ngày mở bán</label>
+          <input id="startDate" type="date" formControlName="startDate"
+                 class="input-field"
+                 [class.error]="ticketForm.get('startDate')?.invalid && ticketForm.get('startDate')?.touched" />
+          <div class="error-message" *ngIf="ticketForm.get('startDate')?.invalid && ticketForm.get('startDate')?.touched">
+            Vui lòng chọn ngày mở bán
+          </div>
+        </div>
+        <div>
+          <label for="startTime"><i class="bi bi-clock"></i> Giờ mở bán</label>
+          <input id="startTime" type="time" formControlName="startTime"
+                 class="input-field"
+                 [class.error]="ticketForm.get('startTime')?.invalid && ticketForm.get('startTime')?.touched" />
+          <div class="error-message" *ngIf="ticketForm.get('startTime')?.invalid && ticketForm.get('startTime')?.touched">
+            Vui lòng chọn giờ mở bán
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="actions">
-  <button (click)="prevStep()" [disabled]="currentStep === 1">Quay lại</button>
-  <button (click)="nextStep()" [disabled]="currentStep === maxStep">Tiếp tục</button>
-  <button *ngIf="currentStep === maxStep" (click)="submitAll()" class="btn-submit">Tạo sự kiện</button>
+    <!-- Kết thúc bán -->
+    <section class="section-group">
+      <label class="section-title">Kết thúc bán</label>
+      <div class="datetime-row">
+        <div>
+          <label for="endDate"><i class="bi bi-calendar-x"></i> Ngày kết thúc</label>
+          <input id="endDate" type="date" formControlName="endDate"
+                 class="input-field"
+                 [class.error]="ticketForm.get('endDate')?.invalid && ticketForm.get('endDate')?.touched" />
+          <div class="error-message" *ngIf="ticketForm.get('endDate')?.invalid && ticketForm.get('endDate')?.touched">
+            Vui lòng chọn ngày kết thúc
+          </div>
+        </div>
+        <div>
+          <label for="endTime"><i class="bi bi-clock-history"></i> Giờ kết thúc</label>
+          <input id="endTime" type="time" formControlName="endTime"
+                 class="input-field"
+                 [class.error]="ticketForm.get('endTime')?.invalid && ticketForm.get('endTime')?.touched" />
+          <div class="error-message" *ngIf="ticketForm.get('endTime')?.invalid && ticketForm.get('endTime')?.touched">
+            Vui lòng chọn giờ kết thúc
+          </div>
+        </div>
+      </div>
+      <div class="error-message" *ngIf="!isEndTimeAfterStart && ticketForm.get('endDate')?.touched && ticketForm.get('endTime')?.touched">
+        Thời gian kết thúc phải sau thời gian bắt đầu
+      </div>
+    </section>
+
+    <!-- Ngày diễn ra sự kiện -->
+    <section class="section-group">
+      <label class="section-title">Ngày diễn ra sự kiện</label>
+      <div class="datetime-row">
+        <div>
+          <label for="eventDate"><i class="bi bi-calendar-event-fill"></i> Ngày diễn ra sự kiện</label>
+          <input id="eventDate" type="date" formControlName="eventDate"
+                 class="input-field"
+                 [class.error]="ticketForm.get('eventDate')?.invalid && ticketForm.get('eventDate')?.touched" />
+          <div class="error-message" *ngIf="ticketForm.get('eventDate')?.invalid && ticketForm.get('eventDate')?.touched">
+            Vui lòng chọn ngày diễn ra sự kiện
+          </div>
+        </div>
+        <div>
+          <label for="eventTime"><i class="bi bi-clock-fill"></i> Giờ diễn ra sự kiện</label>
+          <input id="eventTime" type="time" formControlName="eventTime"
+                 class="input-field"
+                 [class.error]="ticketForm.get('eventTime')?.invalid && ticketForm.get('eventTime')?.touched" />
+          <div class="error-message" *ngIf="ticketForm.get('eventTime')?.invalid && ticketForm.get('eventTime')?.touched">
+            Vui lòng chọn giờ diễn ra sự kiện
+          </div>
+        </div>
+      </div>
+      <div class="error-message" *ngIf="!isEventDateValid && ticketForm.get('eventDate')?.touched">
+        Ngày sự kiện không thể trước ngày mở bán
+      </div>
+    </section>
+
+    <!-- Ngày kết thúc sự kiện -->
+    <section class="section-group">
+      <label class="section-title">Ngày kết thúc sự kiện</label>
+      <div class="datetime-row">
+        <div>
+          <label for="eventEndDate"><i class="bi bi-calendar-x"></i> Ngày kết thúc sự kiện</label>
+          <input id="eventEndDate" type="date" formControlName="eventEndDate"
+                 class="input-field"
+                 [class.error]="ticketForm.get('eventEndDate')?.invalid && ticketForm.get('eventEndDate')?.touched" />
+          <div class="error-message" *ngIf="ticketForm.get('eventEndDate')?.invalid && ticketForm.get('eventEndDate')?.touched">
+            Vui lòng chọn ngày kết thúc sự kiện
+          </div>
+        </div>
+        <div>
+          <label for="eventEndTime"><i class="bi bi-clock-history"></i> Giờ kết thúc sự kiện</label>
+          <input id="eventEndTime" type="time" formControlName="eventEndTime"
+                 class="input-field"
+                 [class.error]="ticketForm.get('eventEndTime')?.invalid && ticketForm.get('eventEndTime')?.touched" />
+          <div class="error-message" *ngIf="ticketForm.get('eventEndTime')?.invalid && ticketForm.get('eventEndTime')?.touched">
+            Vui lòng chọn giờ kết thúc sự kiện
+          </div>
+        </div>
+      </div>
+      <div class="error-message" *ngIf="!isEventEndTimeAfterStart && ticketForm.get('eventEndDate')?.touched && ticketForm.get('eventEndTime')?.touched">
+        Thời gian kết thúc sự kiện phải sau thời gian bắt đầu
+      </div>
+    </section>
+
+    <!-- Danh sách loại vé -->
+    <h2>Loại vé</h2>
+    <div formArrayName="tickets">
+      <section 
+        class="ticket-box section-ticket"
+        *ngFor="let ticket of tickets.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div>
+          <label for="ticketName-{{ i }}"><i class="bi bi-ticket"></i> Tên loại vé {{ i + 1 }}</label>
+          <input type="text" id="ticketName-{{ i }}" formControlName="name"
+                 placeholder="Tên loại vé" maxlength="60" class="input-field"
+                 [class.error]="ticket.get('name')?.invalid && ticket.get('name')?.touched" />
+          <div class="char-count">{{ getCharCount(ticket.get('name')?.value) }} / 60</div>
+          <div class="error-message" *ngIf="ticket.get('name')?.invalid && ticket.get('name')?.touched">
+            Vui lòng nhập tên loại vé
+          </div>
+        </div>
+        <div class="price-input-group">
+          <label for="ticketPrice-{{ i }}"><i class="bi bi-currency-dollar"></i> Giá vé</label>
+          <div class="price-input-flex">
+            <span class="price-icon">₫</span>
+            <input type="number" id="ticketPrice-{{ i }}" formControlName="price"
+                   placeholder="Giá vé" min="1" class="input-field price-input"
+                   [class.error]="ticket.get('price')?.invalid && ticket.get('price')?.touched" />
+            <span class="price-unit">VNĐ</span>
+          </div>
+          <div class="error-message" *ngIf="ticket.get('price')?.invalid && ticket.get('price')?.touched">
+            Giá vé phải lớn hơn 0
+          </div>
+        </div>
+        <div>
+          <label for="ticketQuantity-{{ i }}"><i class="bi bi-ticket-detailed"></i> Số lượng</label>
+          <input type="number" id="ticketQuantity-{{ i }}" formControlName="quantity"
+                 placeholder="Tổng số lượng" min="1" class="input-field"
+                 [class.error]="ticket.get('quantity')?.invalid && ticket.get('quantity')?.touched" />
+          <div class="error-message" *ngIf="ticket.get('quantity')?.invalid && ticket.get('quantity')?.touched">
+            Số lượng vé phải lớn hơn 0
+          </div>
+        </div>
+        <div class="remove-btn-row" *ngIf="tickets.length > 1">
+          <button type="button" class="btn-remove" (click)="removeTicket(i)">
+            <i class="bi bi-trash"></i> Xóa
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Nút thêm loại vé -->
+    <button type="button" class="btn-add" (click)="addTicket()">
+      <i class="bi bi-plus-circle"></i> Thêm loại vé
+    </button>
+
+    <!-- Nút submit và hủy -->
+    <div class="actions">
+      <button type="submit" [disabled]="!isFormValid" class="btn-submit">Tạo sự kiện</button>
+      <button type="button" (click)="onCancel()" class="btn-cancel">Hủy</button>
+    </div>
+  </form>
 </div>
