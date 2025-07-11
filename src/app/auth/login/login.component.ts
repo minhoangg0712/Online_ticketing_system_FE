@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
           }
         },
         error: (err) => {
-          this.notification.showNotification(this.errorMessage, 5000, 'warning');
+          this.notification.showNotification('Sai tài khoản hoặc mật khẩu!', 5000, 'error');
         }
       });
     }

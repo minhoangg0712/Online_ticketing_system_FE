@@ -26,17 +26,9 @@ export class DetailTicketComponent implements OnInit {
   showNotification = false;
   notificationMessage = 'Bạn phải đăng nhập để sử dụng chức năng này.';
 
-  tickets = [
-    { zone: 'Zone - GA B2', originalPrice: '899,000 đ', discountedPrice: '449,500 đ', discount: '50%' },
-    { zone: 'Zone - GA C1', originalPrice: '599,000 đ', discountedPrice: '299,500 đ', discount: '50%' },
-    { zone: 'Zone - GA C2', originalPrice: '599,000 đ', discountedPrice: '299,500 đ', discount: '50%' },
-    { zone: 'Zone - GA A1', originalPrice: '1,900,000 đ', discountedPrice: '950,000 đ', discount: '50%' },
-    { zone: 'Zone - GA A2', originalPrice: '1,900,000 đ', discountedPrice: '950,000 đ', discount: '50%' },
-    { zone: 'Zone - GA B1', originalPrice: '899,000 đ', discountedPrice: '449,500 đ', discount: '50%' }
-  ];
-
   get displayedTickets() {
-    return this.expanded ? this.tickets : this.tickets.slice(0, 3);
+    const tickets = this.eventData.ticketPrices || [];
+    return this.expanded ? tickets : tickets.slice(0, 3);
   }
 
   toggleRows(): void {

@@ -55,7 +55,7 @@ export const routes: Routes = [
     component: DetailTicketComponent
   },
   {
-    path: 'select-ticket',
+    path: 'select-ticket/:id',
     component: SelectTicketComponent
   },
   {
