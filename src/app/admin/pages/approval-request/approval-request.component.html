@@ -186,11 +186,6 @@
                 <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                 <td>
                   <div class="d-flex align-items-center">
-                    <img
-                      [src]="event.imageUrl || 'https://via.placeholder.com/60x40/007bff/ffffff?text=Event'"
-                      alt="Event Image"
-                      class="event-image mr-3"
-                      style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;">
                     <div>
                       <div class="font-weight-bold">{{ event.title }}</div>
                       <small class="text-muted">Được tạo: {{ formatDate(event.createdDate) }}</small>
@@ -199,11 +194,6 @@
                 </td>
                 <td>
                   <div class="d-flex align-items-center">
-                    <img
-                      [src]="event.organizer.avatar || 'https://via.placeholder.com/32x32/28a745/ffffff?text=' + event.organizer.name.charAt(0)"
-                      alt="Organizer"
-                      class="rounded-circle mr-2"
-                      style="width: 32px; height: 32px; object-fit: cover;">
                     <div>
                       <div style="font-size: 0.9em; font-weight: 500;">{{ event.organizer.name }}</div>
                       <small class="text-muted">ID: {{ event.organizer.id }}</small>
@@ -222,6 +212,14 @@
                     <div>
                       <i class="fas fa-clock mr-1"></i>
                       {{ event.startTime }} - {{ event.endTime }}
+                    </div>
+                    <div class="mt-1" *ngIf="event.location !== 'Chưa cung cấp địa chỉ'">
+                      <i class="fas fa-map-marker-alt mr-1"></i>
+                      {{ event.location }}
+                    </div>
+                    <div class="mt-1 text-muted" *ngIf="event.location === 'Chưa cung cấp địa chỉ'">
+                      <i class="fas fa-map-marker-alt mr-1"></i>
+                      Chưa cung cấp địa chỉ
                     </div>
                   </div>
                 </td>
@@ -298,48 +296,48 @@
           </table>
         </div>
 
-       <!-- Trong file approval-request.component.html -->
-<!-- Thay đổi phần Pagination -->
-<div class="card-footer">
-  <div class="row">
-    <div class="col-sm-12 col-md-5">
-      <div class="dataTables_info">
-        Hiển thị {{ (currentPage - 1) * itemsPerPage + 1 }} đến
-        {{ getDisplayEndIndex() }} <!-- Thay Math.min bằng phương thức mới -->
-        của {{ totalItems }} sự kiện
-      </div>
-    </div>
-    <div class="col-sm-12 col-md-7">
-      <nav aria-label="Page navigation">
-        <ul class="pagination pagination-sm float-right">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" href="#" (click)="goToPage(currentPage - 1); $event.preventDefault()">
-              Trước
-            </a>
-          </li>
-          <li
-            class="page-item"
-            *ngFor="let page of [].constructor(getTotalPages()); let i = index"
-            [class.active]="currentPage === i + 1">
-            <a class="page-link" href="#" (click)="goToPage(i + 1); $event.preventDefault()">
-              {{ i + 1 }}
-            </a>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === getTotalPages()">
-            <a class="page-link" href="#" (click)="goToPage(currentPage + 1); $event.preventDefault()">
-              Sau
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-</div>
+        <!-- Pagination -->
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info">
+                Hiển thị {{ (currentPage - 1) * itemsPerPage + 1 }} đến
+                {{ getDisplayEndIndex() }} của {{ totalItems }} sự kiện
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm float-right">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" href="#" (click)="goToPage(currentPage - 1); $event.preventDefault()">
+                      Trước
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    *ngFor="let page of [].constructor(getTotalPages()); let i = index"
+                    [class.active]="currentPage === i + 1">
+                    <a class="page-link" href="#" (click)="goToPage(i + 1); $event.preventDefault()">
+                      {{ i + 1 }}
+                    </a>
+                  </li>
+                  <li class="page-item" [class.disabled]="currentPage === getTotalPages()">
+                    <a class="page-link" href="#" (click)="goToPage(currentPage + 1); $event.preventDefault()">
+                      Sau
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Event Detail Modal -->
+<!-- Trong file event-management.component.html -->
 <!-- Event Detail Modal -->
 <div class="modal fade" [class.show]="showDetailModal" [style.display]="showDetailModal ? 'block' : 'none'">
   <div class="modal-dialog modal-lg">
@@ -347,16 +345,24 @@
       <div class="modal-header">
         <h4 class="modal-title">Chi tiết sự kiện</h4>
         <button type="button" class="close" (click)="closeModal()">
-          <span>&times;</span>
+          <span>×</span>
         </button>
       </div>
       <div class="modal-body" *ngIf="selectedEvent">
         <div class="row">
-          <div class="col-md-4">
+         <div class="col-md-4">
+            <!-- Logo sự kiện -->
             <img
               [src]="selectedEvent.imageUrl || 'https://via.placeholder.com/300x200/007bff/ffffff?text=Event'"
-              alt="Event Image"
-              class="img-fluid rounded">
+              alt="Event Logo"
+              class="img-fluid rounded mb-3"
+              (click)="goToEventDetail(selectedEvent.id)">
+            <!-- Background sự kiện -->
+            <img
+              [src]="selectedEvent.backgroundUrl || 'https://via.placeholder.com/300x200/007bff/ffffff?text=Background'"
+              alt="Background"
+              class="modal-background"
+              (click)="goToEventDetail(selectedEvent.id)">
           </div>
           <div class="col-md-8">
             <h5>{{ selectedEvent.title }}</h5>
@@ -364,11 +370,26 @@
             <div class="row">
               <div class="col-sm-6">
                 <strong>Người tổ chức:</strong><br>
-                {{ selectedEvent.organizer.name }}
+                {{ selectedEvent.organizer.name }}<br>
+                <img
+                  [src]="selectedEvent.organizer.avatar || '/assets/default.jpg'"
+                  alt="Organizer Avatar"
+                  class="rounded-circle mb-2"
+                  style="width: 32px; height: 32px; object-fit: cover;">
+                <br>
+                <strong>Tiểu sử:</strong> {{ selectedEvent.organizer.bio || 'Chưa có thông tin' }}<br>
+                <strong>Email:</strong> {{ selectedEvent.organizer.email || 'Chưa cung cấp' }}<br>
+                <strong>Số điện thoại:</strong> {{ selectedEvent.organizer.phoneNumber || 'Chưa cung cấp' }}
               </div>
               <div class="col-sm-6">
                 <strong>Danh mục:</strong><br>
-                {{ selectedEvent.category }}
+                {{ selectedEvent.category }}<br>
+                <strong>Trạng thái:</strong><br>
+                <span class="badge" [ngClass]="getStatusClass(selectedEvent.status)">
+                  {{ getStatusText(selectedEvent.status) }}
+                </span><br>
+                <strong>Lý do từ chối:</strong><br>
+                {{ selectedEvent.rejectionReason || 'Không có' }}
               </div>
               <div class="col-sm-6">
                 <strong>Thời gian:</strong><br>
@@ -380,14 +401,12 @@
                 {{ selectedEvent.location }}
               </div>
               <div class="col-sm-6">
-                <strong>Trạng thái:</strong><br>
-                <span class="badge" [ngClass]="getStatusClass(selectedEvent.status)">
-                  {{ getStatusText(selectedEvent.status) }}
-                </span>
-              </div>
-              <div class="col-sm-6">
                 <strong>Ngày tạo:</strong><br>
                 {{ formatDateTime(selectedEvent.createdDate) }}
+              </div>
+              <div class="col-sm-6">
+                <strong>Ngày cập nhật:</strong><br>
+                {{ selectedEvent.updatedDate ? formatDateTime(selectedEvent.updatedDate) : 'Chưa cập nhật' }}
               </div>
             </div>
           </div>
@@ -409,7 +428,7 @@
       <div class="modal-header">
         <h4 class="modal-title">Từ chối sự kiện</h4>
         <button type="button" class="close" (click)="closeModal()">
-          <span>&times;</span>
+          <span>×</span>
         </button>
       </div>
       <div class="modal-body">
@@ -446,7 +465,7 @@
       <div class="modal-header">
         <h4 class="modal-title">Xác nhận</h4>
         <button type="button" class="close" (click)="closeModal()">
-          <span>&times;</span>
+          <span>×</span>
         </button>
       </div>
       <div class="modal-body">

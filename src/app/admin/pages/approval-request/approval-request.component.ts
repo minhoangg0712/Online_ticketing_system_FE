@@ -13,15 +13,22 @@ interface Event {
   endTime: string;
   location: string;
   category: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'approved' | 'rejected' | 'cancelled';
   createdDate: string;
-  imageUrl?: string;
+  updatedDate?: string;
+  imageUrl?: string; // logoUrl
+  backgroundUrl?: string; // backgroundUrl
   organizer: {
     id: number;
     name: string;
-    avatar?: string;
+    avatar?: string; // organizerAvatarUrl
+    bio?: string; // organizerBio
+    email?: string; // organizerEmail
+    phoneNumber?: string | null; // organizerPhoneNumber
   };
   rejectionReason?: string;
+  ticketPrices?: any;
+  ticketsSold?: any;
 }
 
 @Component({
@@ -71,7 +78,7 @@ export class ApprovalRequestComponent {
     this.loadStatistics();
   }
 
-  // Load events
+ // Load events
   loadEvents() {
     this.loading = true;
     this.adminService.getEvents().subscribe({
@@ -88,14 +95,19 @@ export class ApprovalRequestComponent {
             location: apiEvent.address || 'Chưa cung cấp địa chỉ',
             category: apiEvent.category || 'Không xác định',
             status: apiEvent.approvalStatus,
-            createdDate: apiEvent.updateAt,
-            imageUrl: apiEvent.imageUrl || 'https://via.placeholder.com/60x40/007bff/ffffff?text=Event',
+            createdDate: apiEvent.createdAt,
+            updatedDate: apiEvent.updatedAt,
+            imageUrl: apiEvent.logoUrl,
+            backgroundUrl: apiEvent.backgroundUrl,
             organizer: {
               id: apiEvent.organizerId || 0,
               name: apiEvent.organizerName || 'Không xác định',
-              avatar: apiEvent.organizerAvatar || 'https://via.placeholder.com/32x32/28a745/ffffff?text=User'
+              avatar: apiEvent.organizerAvatarUrl,
+              bio: apiEvent.organizerBio,
+              email: apiEvent.organizerEmail,
+              phoneNumber: apiEvent.organizerPhoneNumber
             },
-            rejectionReason: apiEvent.rejectionReason || ''
+            rejectionReason: apiEvent.rejectReason || ''
           }));
           console.log('Mapped events:', this.events);
           this.stats.total = this.events.length;
@@ -334,11 +346,56 @@ export class ApprovalRequestComponent {
   }
 
   // Modal methods
+  // View event detail
   viewEventDetail(event: Event) {
-    this.selectedEvent = event;
-    this.showDetailModal = true;
+    this.loading = true;
+    this.adminService.getEventById(event.id).subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          const apiEvent = response.data;
+          this.selectedEvent = {
+            id: apiEvent.eventId,
+            title: apiEvent.eventName,
+            description: apiEvent.description || 'Không có mô tả',
+            startDate: apiEvent.startTime ? apiEvent.startTime.split('T')[0] : '',
+            endDate: apiEvent.endTime ? apiEvent.endTime.split('T')[0] : '',
+            startTime: apiEvent.startTime ? apiEvent.startTime.split('T')[1] : '',
+            endTime: apiEvent.endTime ? apiEvent.endTime.split('T')[1] : '',
+            location: apiEvent.address || 'Chưa cung cấp địa chỉ',
+            category: apiEvent.category || 'Không xác định',
+            status: apiEvent.approvalStatus,
+            createdDate: apiEvent.createdAt,
+            updatedDate: apiEvent.updatedAt,
+            imageUrl: apiEvent.logoUrl || 'https://via.placeholder.com/300x200/007bff/ffffff?text=Event',
+            backgroundUrl: apiEvent.backgroundUrl || 'https://via.placeholder.com/300x200/007bff/ffffff?text=Background',
+            organizer: {
+              id: apiEvent.organizerId || 0,
+              name: apiEvent.organizerName || 'Không xác định',
+              avatar: apiEvent.organizerAvatarUrl || 'https://via.placeholder.com/32x32/28a745/ffffff?text=User',
+              bio: apiEvent.organizerBio || 'Chưa có thông tin',
+              email: apiEvent.organizerEmail || 'Chưa cung cấp',
+              phoneNumber: apiEvent.organizerPhoneNumber || 'Chưa cung cấp'
+            },
+            rejectionReason: apiEvent.rejectReason || '',
+            ticketPrices: apiEvent.ticketPrices || {},
+            ticketsSold: apiEvent.ticketsSold || {}
+          };
+          this.showDetailModal = true;
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading event detail:', error);
+        this.showError('Có lỗi xảy ra khi tải chi tiết sự kiện!');
+        this.loading = false;
+      }
+    });
   }
-
+goToEventDetail(eventId: number) {
+  // Điều hướng hoặc xử lý logic khi click vào ảnh
+  console.log('Navigate to event detail:', eventId);
+  // Ví dụ: this.router.navigate(['/event', eventId]);
+}
   openRejectModal(event: Event) {
     this.selectedEvent = event;
     this.showRejectModal = true;
