@@ -268,7 +268,7 @@
         [formGroupName]="i"
       >
         <div>
-          <label for="ticketName-{{ i }}"><i class="bi bi-ticket"></i> Tên loại vé {{ i + 1 }}</label>
+          <label for="ticketName-{{ i }}"> Tên loại vé {{ i + 1 }}</label>
           <input type="text" id="ticketName-{{ i }}" formControlName="name"
                  placeholder="Tên loại vé" maxlength="60" class="input-field"
                  [class.error]="ticket.get('name')?.invalid && ticket.get('name')?.touched" />
@@ -278,12 +278,15 @@
           </div>
         </div>
         <div class="price-input-group">
-          <label for="ticketPrice-{{ i }}"><i class="bi bi-currency-dollar"></i> Giá vé</label>
+          <label for="ticketPrice-{{ i }}"> Giá vé</label>
           <div class="price-input-flex">
-            <span class="price-icon">₫</span>
-            <input type="number" id="ticketPrice-{{ i }}" formControlName="price"
-                   placeholder="Giá vé" min="1" class="input-field price-input"
-                   [class.error]="ticket.get('price')?.invalid && ticket.get('price')?.touched" />
+            <input type="text"
+                  id="ticketPrice-{{ i }}"
+                  formControlName="price"
+                  placeholder="Giá vé"
+                  class="input-field price-input"
+                  [class.error]="ticket.get('price')?.invalid && ticket.get('price')?.touched"
+                  (input)="formatPrice(i)" />
             <span class="price-unit">VNĐ</span>
           </div>
           <div class="error-message" *ngIf="ticket.get('price')?.invalid && ticket.get('price')?.touched">
@@ -291,7 +294,7 @@
           </div>
         </div>
         <div>
-          <label for="ticketQuantity-{{ i }}"><i class="bi bi-ticket-detailed"></i> Số lượng</label>
+          <label for="ticketQuantity-{{ i }}"> Số lượng</label>
           <input type="number" id="ticketQuantity-{{ i }}" formControlName="quantity"
                  placeholder="Tổng số lượng" min="1" class="input-field"
                  [class.error]="ticket.get('quantity')?.invalid && ticket.get('quantity')?.touched" />
@@ -318,4 +321,30 @@
       <button type="button" (click)="onCancel()" class="btn-cancel">Hủy</button>
     </div>
   </form>
+</div>
+
+<!-- Toast Notification -->
+<app-toast-notification 
+  #toastNotification
+  [message]="toastMessage"
+  [show]="showToast"
+  [autoHideTime]="5000"
+  [showProgressBar]="true"
+  (onClose)="showToast = false">
+</app-toast-notification>
+
+<!-- Confirmation Dialog -->
+<div class="confirm-dialog-overlay" *ngIf="showConfirmDialog">
+  <div class="confirm-dialog">
+    <div class="confirm-dialog-header">
+      <h3>Xác nhận hủy</h3>
+    </div>
+    <div class="confirm-dialog-body">
+      <p>Bạn có chắc chắn muốn hủy? Tất cả dữ liệu sẽ bị mất!</p>
+    </div>
+    <div class="confirm-dialog-actions">
+      <button type="button" class="btn-cancel" (click)="cancelConfirmDialog()">Không</button>
+      <button type="button" class="btn-confirm" (click)="confirmCancel()">Có</button>
+    </div>
+  </div>
 </div>

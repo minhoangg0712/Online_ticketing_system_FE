@@ -5,6 +5,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { CreateEventsService } from '../../services/create-events.service';
 import { LocationService, Location as LocationData } from '../../services/location.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastNotificationComponent } from '../../../user/pop-up/toast-notification/toast-notification.component';
 
 interface EventForm {
   eventName: string;
@@ -23,7 +24,7 @@ interface EventForm {
 @Component({
   selector: 'app-create-event',
   standalone: true,
-  imports: [CommonModule, FormsModule, ImageCropperModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, ImageCropperModule, ReactiveFormsModule, HttpClientModule, ToastNotificationComponent],
   templateUrl: './create-event.component.html',
   styleUrls: ['./create-event.component.css']
 })
@@ -31,6 +32,7 @@ export class CreateEventComponent implements OnInit {
   @ViewChild('eventLogoInput') eventLogoInput!: ElementRef<HTMLInputElement>;
   @ViewChild('eventBackgroundInput') eventBackgroundInput!: ElementRef<HTMLInputElement>;
   @ViewChild('organizationLogoInput') organizationLogoInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('toastNotification') toastNotification!: ToastNotificationComponent;
 
   eventForm: FormGroup;
   ticketForm: FormGroup;
@@ -72,6 +74,14 @@ Lưu ý: dự kiến khách mời
 Lưu ý: dự kiến khách VVIP`;
 
   @Output() formChange = new EventEmitter<any>();
+
+  // Toast notification properties
+  showToast: boolean = false;
+  toastMessage: string = '';
+  toastType: 'success' | 'error' | 'warning' = 'error';
+  
+  // Confirmation dialog properties
+  showConfirmDialog: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -116,7 +126,7 @@ Lưu ý: dự kiến khách VVIP`;
       },
       error: (err) => {
         console.error('Lỗi khi tải tỉnh/thành phố:', err);
-        alert('Không thể tải danh sách tỉnh/thành phố. Vui lòng thử lại sau.');
+        this.showErrorToast('Không thể tải danh sách tỉnh/thành phố. Vui lòng thử lại sau.');
       }
     });
   }
@@ -150,12 +160,12 @@ Lưu ý: dự kiến khách VVIP`;
 
     const file = input.files[0];
     if (!file.type.startsWith('image/')) {
-      alert('Vui lòng chọn file hình ảnh!');
+      this.showErrorToast('Vui lòng chọn file hình ảnh!');
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('Kích thước file không được vượt quá 5MB!');
+      this.showErrorToast('Kích thước file không được vượt quá 5MB!');
       return;
     }
 
@@ -225,7 +235,7 @@ Lưu ý: dự kiến khách VVIP`;
         },
         error: (err) => {
           console.error('Lỗi khi tải quận/huyện:', err);
-          alert('Không thể tải danh sách quận/huyện. Vui lòng thử lại sau.');
+          this.showErrorToast('Không thể tải danh sách quận/huyện. Vui lòng thử lại sau.');
         }
       });
     }
@@ -244,7 +254,7 @@ Lưu ý: dự kiến khách VVIP`;
         },
         error: (err) => {
           console.error('Lỗi khi tải phường/xã:', err);
-          alert('Không thể tải danh sách phường/xã. Vui lòng thử lại sau.');
+          this.showErrorToast('Không thể tải danh sách phường/xã. Vui lòng thử lại sau.');
         }
       });
     }
@@ -253,19 +263,19 @@ Lưu ý: dự kiến khách VVIP`;
 
   onSubmit(): void {
     if (!this.eventForm.valid) {
-      alert('Vui lòng điền đầy đủ thông tin sự kiện!');
+      this.showErrorToast('Vui lòng điền đầy đủ thông tin sự kiện!');
       this.markFormGroupTouched();
       return;
     }
 
     if (!this.ticketForm.valid || !this.isEndTimeAfterStart || !this.isEventDateValid || !this.isEventEndTimeAfterStart) {
-      alert('Vui lòng kiểm tra thông tin vé!');
+      this.showErrorToast('Vui lòng kiểm tra thông tin vé!');
       this.markFormGroupTouched();
       return;
     }
 
     if (!this.eventLogoFile || !this.eventBackgroundFile) {
-      alert('Vui lòng cung cấp logo và ảnh nền cho sự kiện!');
+      this.showErrorToast('Vui lòng cung cấp logo và ảnh nền cho sự kiện!');
       return;
     }
 
@@ -301,7 +311,7 @@ Lưu ý: dự kiến khách VVIP`;
       .subscribe({
         next: (response) => {
           console.log('Sự kiện đã được tạo thành công:', response);
-          alert('Sự kiện đã được tạo thành công!');
+          this.showSuccessToast('Sự kiện đã được tạo thành công!');
           this.resetForm();
         },
         error: (error) => {
@@ -312,7 +322,7 @@ Lưu ý: dự kiến khách VVIP`;
           } else if (error.status === 500) {
             errorMessage = 'Lỗi server. Vui lòng thử lại sau.';
           }
-          alert(errorMessage);
+          this.showErrorToast(errorMessage);
         }
       });
 
@@ -328,9 +338,16 @@ Lưu ý: dự kiến khách VVIP`;
   }
 
   onCancel(): void {
-    if (confirm('Bạn có chắc chắn muốn hủy? Tất cả dữ liệu sẽ bị mất!')) {
-      this.resetForm();
-    }
+    this.showConfirmDialog = true;
+  }
+
+  confirmCancel(): void {
+    this.resetForm();
+    this.showConfirmDialog = false;
+  }
+
+  cancelConfirmDialog(): void {
+    this.showConfirmDialog = false;
   }
 
   private resetForm(): void {
@@ -468,5 +485,50 @@ Lưu ý: dự kiến khách VVIP`;
       eventBackgroundFile: this.eventBackgroundFile,
       organizationLogoFile: this.organizationLogoFile
     });
+  }
+
+  formatPrice(index: number) {
+    const control = this.tickets.at(index).get('price');
+    let value = control?.value?.toString().replace(/\D/g, '');
+    if (!value) {
+      control?.setValue(null, { emitEvent: false });
+      return;
+    }
+  
+    const numberValue = Number(value);
+    const displayValue = numberValue.toLocaleString('vi-VN');
+  
+    // Set hiển thị
+    const inputElement = document.getElementById(`ticketPrice-${index}`) as HTMLInputElement;
+    if (inputElement) {
+      inputElement.value = displayValue;
+    }
+  
+    // Dữ liệu thật
+    control?.setValue(numberValue, { emitEvent: false });
+  }
+  
+  
+
+  // Toast notification methods
+  showSuccessToast(message: string): void {
+    this.toastType = 'success';
+    this.toastMessage = message;
+    this.showToast = true;
+    this.toastNotification.showNotification(message, 5000, 'success');
+  }
+
+  showErrorToast(message: string): void {
+    this.toastType = 'error';
+    this.toastMessage = message;
+    this.showToast = true;
+    this.toastNotification.showNotification(message, 5000, 'error');
+  }
+
+  showWarningToast(message: string): void {
+    this.toastType = 'warning';
+    this.toastMessage = message;
+    this.showToast = true;
+    this.toastNotification.showNotification(message, 5000, 'warning');
   }
 }
