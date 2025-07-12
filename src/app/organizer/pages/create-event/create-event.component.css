@@ -542,6 +542,26 @@ select.input-field {
   box-shadow: none;
 }
 
+.loading-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .btn-cancel {
   background-color: #6b7280;
   color: white;
@@ -562,6 +582,14 @@ select.input-field {
 .btn-cancel:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+}
+
+.btn-cancel:disabled {
+  background-color: #4b5563;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
 }
 
 label i {

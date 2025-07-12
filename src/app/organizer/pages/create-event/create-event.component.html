@@ -317,8 +317,16 @@
 
     <!-- Nút submit và hủy -->
     <div class="actions">
-      <button type="submit" [disabled]="!isFormValid" class="btn-submit">Tạo sự kiện</button>
-      <button type="button" (click)="onCancel()" class="btn-cancel">Hủy</button>
+      <button type="submit" [disabled]="!isFormValid || isSubmitting" class="btn-submit">
+        <span *ngIf="!isSubmitting">
+          <i class="bi bi-plus-circle"></i> Tạo sự kiện
+        </span>
+        <span *ngIf="isSubmitting" class="loading-content">
+          <div class="spinner"></div>
+          Đang tạo sự kiện...
+        </span>
+      </button>
+      <button type="button" (click)="onCancel()" class="btn-cancel" [disabled]="isSubmitting">Hủy</button>
     </div>
   </form>
 </div>

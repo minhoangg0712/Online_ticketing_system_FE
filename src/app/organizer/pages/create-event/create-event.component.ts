@@ -6,6 +6,8 @@ import { CreateEventsService } from '../../services/create-events.service';
 import { LocationService, Location as LocationData } from '../../services/location.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastNotificationComponent } from '../../../user/pop-up/toast-notification/toast-notification.component';
+import { Router } from '@angular/router';
+import { timeout, catchError, of } from 'rxjs';
 
 interface EventForm {
   eventName: string;
@@ -83,10 +85,14 @@ Lưu ý: dự kiến khách VVIP`;
   // Confirmation dialog properties
   showConfirmDialog: boolean = false;
 
+  // Loading state
+  isSubmitting: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private createEventService: CreateEventsService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private router: Router
   ) {
     this.eventForm = this.fb.group({
       eventName: ['', Validators.required],
@@ -164,8 +170,17 @@ Lưu ý: dự kiến khách VVIP`;
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
+    // Kiểm tra kích thước file (5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
       this.showErrorToast('Kích thước file không được vượt quá 5MB!');
+      return;
+    }
+
+    // Kiểm tra định dạng file
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      this.showErrorToast('Chỉ chấp nhận file JPG, PNG hoặc WebP!');
       return;
     }
 
@@ -279,6 +294,9 @@ Lưu ý: dự kiến khách VVIP`;
       return;
     }
 
+    // Set loading state
+    this.isSubmitting = true;
+
     const eventData = {
       eventName: this.eventForm.value.eventName,
       description: this.eventForm.value.description,
@@ -308,19 +326,46 @@ Lưu ý: dự kiến khách VVIP`;
     const payload = { ...eventData, ...ticketData };
 
     this.createEventService.createEvent(payload, this.eventLogoFile, this.eventBackgroundFile)
+      .pipe(
+        timeout(30000), // Set a timeout of 30 seconds for file upload
+        catchError(err => {
+          console.error('Request error:', err);
+          this.isSubmitting = false;
+          
+          if (err.name === 'TimeoutError') {
+            this.showErrorToast('Yêu cầu tạo sự kiện bị timeout. Vui lòng thử lại.');
+          } else {
+            this.showErrorToast('Đã có lỗi xảy ra khi tạo sự kiện. Vui lòng thử lại.');
+          }
+          return of(null);
+        })
+      )
       .subscribe({
         next: (response) => {
-          console.log('Sự kiện đã được tạo thành công:', response);
-          this.showSuccessToast('Sự kiện đã được tạo thành công!');
-          this.resetForm();
+          if (response) {
+            console.log('Sự kiện đã được tạo thành công:', response);
+            this.isSubmitting = false;
+            this.showSuccessToast('Sự kiện đã được tạo thành công!');
+            
+            // Điều hướng về trang sự kiện sau 2 giây
+            setTimeout(() => {
+              this.router.navigate(['/organizer/events']);
+            }, 2000);
+          }
         },
         error: (error) => {
           console.error('Lỗi khi tạo sự kiện:', error);
+          this.isSubmitting = false;
+          
           let errorMessage = 'Đã có lỗi xảy ra khi tạo sự kiện. Vui lòng thử lại.';
           if (error.status === 400) {
             errorMessage = 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại thông tin.';
           } else if (error.status === 500) {
             errorMessage = 'Lỗi server. Vui lòng thử lại sau.';
+          } else if (error.status === 0) {
+            errorMessage = 'Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng.';
+          } else if (error.status === 413) {
+            errorMessage = 'File ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn.';
           }
           this.showErrorToast(errorMessage);
         }
@@ -489,13 +534,20 @@ Lưu ý: dự kiến khách VVIP`;
 
   formatPrice(index: number) {
     const control = this.tickets.at(index).get('price');
-    let value = control?.value?.toString().replace(/\D/g, '');
+    if (!control) return;
+    
+    let value = control.value?.toString().replace(/\D/g, '');
     if (!value) {
-      control?.setValue(null, { emitEvent: false });
+      control.setValue(null, { emitEvent: false });
       return;
     }
   
     const numberValue = Number(value);
+    if (isNaN(numberValue) || numberValue < 0) {
+      control.setValue(null, { emitEvent: false });
+      return;
+    }
+    
     const displayValue = numberValue.toLocaleString('vi-VN');
   
     // Set hiển thị
@@ -505,7 +557,7 @@ Lưu ý: dự kiến khách VVIP`;
     }
   
     // Dữ liệu thật
-    control?.setValue(numberValue, { emitEvent: false });
+    control.setValue(numberValue, { emitEvent: false });
   }
   
   
