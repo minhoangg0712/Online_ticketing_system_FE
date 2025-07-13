@@ -130,8 +130,8 @@ export class SelectTicketComponent {
     return (this.eventData.ticketPrices || []).reduce((sum: number, t: any) => sum + t.quantity, 0);
   }
 
-  backToDetails(): void {
-    this.router.navigate(['/detail-ticket']);
+  backToDetails(eventId: number): void {
+    this.router.navigate(['/detail-ticket', eventId]);
   }
 
   onNotificationClose() {}

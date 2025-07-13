@@ -52,6 +52,13 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/']);
             }
           }
+          const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+          if (redirectPath) {
+            sessionStorage.removeItem('redirectAfterLogin');
+            this.router.navigateByUrl(redirectPath);
+          } else {
+            this.router.navigate(['/']);
+          }
         },
         error: (err) => {
           this.notification.showNotification('Sai tài khoản hoặc mật khẩu!', 5000, 'error');

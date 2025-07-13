@@ -1,7 +1,7 @@
 <div class="container">
   <div class="left-panel">
     <div class="header">
-      <button class="back-btn" (click)="backToDetails()"><i class="bi bi-arrow-left"></i> Trở về</button>
+      <button class="back-btn" (click)="backToDetails(eventData.id)"><i class="bi bi-arrow-left"></i> Trở về</button>
       <h2>Chọn vé</h2>
     </div>
 
@@ -14,7 +14,7 @@
       <div class="ticket-item" *ngFor="let ticket of eventData.ticketPrices">
         <div>
           <div class="ticket-name">{{ ticket.type }}</div>
-          <div class="ticket-price">{{ ticket.price | number:'1.0-0' }} VNĐ</div>
+          <div class="ticket-price">{{ ticket.price | number:'1.0-3' }} VNĐ</div>
         </div>
         <div class="quantity-controls">
           <button (click)="decreaseQuantity(ticket)">-</button>
@@ -39,7 +39,7 @@
       <h4>Giá vé</h4>
       <div class="summary-item" *ngFor="let ticket of eventData.ticketPrices">
         <span>{{ ticket.type }}</span>
-        <span>{{ ticket.price | number:'1.0-0' }} VNĐ</span>
+        <span>{{ ticket.price | number:'1.0-3' }} VNĐ</span>
       </div>
     </div>
 

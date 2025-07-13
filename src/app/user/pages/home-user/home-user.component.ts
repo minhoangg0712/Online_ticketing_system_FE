@@ -68,7 +68,11 @@ export class HomeUserComponent implements OnInit {
     this.currentIndex = (this.currentIndex - 1 + this.events.length) % this.events.length;
   }
 
+  // detail-ticket.component.ts hoặc component list event
   goToEventDetail(eventId: number) {
-    this.router.navigate(['/detail-ticket', eventId]);
+    // Lưu đường dẫn vào sessionStorage
+    sessionStorage.setItem('redirectAfterLogin', `/detail-ticket/${eventId}`);
+    this.router.navigate([`/detail-ticket/${eventId}`]);
   }
+
 }

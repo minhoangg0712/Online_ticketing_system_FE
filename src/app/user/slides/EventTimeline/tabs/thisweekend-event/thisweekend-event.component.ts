@@ -124,6 +124,8 @@ export class ThisweekendEventComponent implements OnInit {
   }
 
   goToEventDetail(eventId: number) {
+    // Lưu đường dẫn vào sessionStorage
+    sessionStorage.setItem('redirectAfterLogin', `/detail-ticket/${eventId}`);
     this.router.navigate(['/detail-ticket', eventId]);
   }
 }
