@@ -41,7 +41,14 @@ export class LoginComponent implements OnInit {
           if (res.token) {
             this.authService.setToken(res.token);
 
-            // Sau khi đăng nhập thành công, kiểm tra role và điều hướng
+            const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+            if (redirectPath) {
+              sessionStorage.removeItem('redirectAfterLogin');
+              this.router.navigateByUrl(redirectPath); // ✅ Ưu tiên redirect nếu có
+              return; // ⛔ Dừng không xử lý điều hướng phía dưới nữa
+            }
+
+            // ✅ Nếu không có redirectPath thì mới phân quyền điều hướng
             if (this.authService.isAdmin()) {
               this.router.navigate(['/admin']);
             } else if (this.authService.isSeller()) {
@@ -51,13 +58,6 @@ export class LoginComponent implements OnInit {
             } else {
               this.router.navigate(['/']);
             }
-          }
-          const redirectPath = sessionStorage.getItem('redirectAfterLogin');
-          if (redirectPath) {
-            sessionStorage.removeItem('redirectAfterLogin');
-            this.router.navigateByUrl(redirectPath);
-          } else {
-            this.router.navigate(['/']);
           }
         },
         error: (err) => {
