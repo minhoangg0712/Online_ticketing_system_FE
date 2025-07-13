@@ -44,8 +44,8 @@ export class LoginComponent implements OnInit {
             const redirectPath = sessionStorage.getItem('redirectAfterLogin');
             if (redirectPath) {
               sessionStorage.removeItem('redirectAfterLogin');
-              this.router.navigateByUrl(redirectPath); // ✅ Ưu tiên redirect nếu có
-              return; // ⛔ Dừng không xử lý điều hướng phía dưới nữa
+              this.router.navigateByUrl(redirectPath);
+              return;
             }
 
             // ✅ Nếu không có redirectPath thì mới phân quyền điều hướng
