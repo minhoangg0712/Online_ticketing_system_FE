@@ -3,10 +3,12 @@ import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from '../../user/services/user.service';
+import { EventsService } from '../../user/services/events.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header-user',
-  imports: [CommonModule, NgIf],
+  imports: [CommonModule, NgIf, FormsModule],
   templateUrl: './header-user.component.html',
   styleUrl: './header-user.component.css'
 })
@@ -14,10 +16,12 @@ export class HeaderUserComponent {
   isDropdownOpen = false;
   private hideTimer: any;
   avatarUrl: string = '';
+  searchKeyword: string = '';
 
   constructor(private router: Router, private authService: AuthService,
     private elementRef: ElementRef,
-    private userService: UserService
+    private userService: UserService,
+    private eventService: EventsService
   ) {}
 
   ngOnInit() {
@@ -26,6 +30,18 @@ export class HeaderUserComponent {
         this.avatarUrl = url;
       });
     } else {}
+  }
+
+
+  // Hàm tìm kiếm
+  searchByEventName() {
+    const trimmedKeyword = this.searchKeyword.trim();
+    if (trimmedKeyword) {
+      // Điều hướng sang trang search-events với query param
+      this.router.navigate(['/search-events'], {
+        queryParams: { name: trimmedKeyword }
+      });
+    }
   }
 
   goToLogin() {

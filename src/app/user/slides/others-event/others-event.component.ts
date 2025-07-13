@@ -4,12 +4,12 @@ import { EventsService } from '../../services/events.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-livemusic-event',
+  selector: 'app-others-event',
   imports: [CommonModule],
-  templateUrl: './livemusic-event.component.html',
-  styleUrl: './livemusic-event.component.css'
+  templateUrl: './others-event.component.html',
+  styleUrl: './others-event.component.css'
 })
-export class LivemusicEventComponent implements OnInit {
+export class OthersEventComponent {
   events: any[] = [];
   visibleItems: any[] = [];
   startIndex: number = 0;
@@ -18,11 +18,11 @@ export class LivemusicEventComponent implements OnInit {
   constructor(private eventService: EventsService,private router: Router) {}
 
   ngOnInit(): void {
-    this.loadLiveMusicEvents();
+    this.loadOthersEvents();
   }
 
-  loadLiveMusicEvents() {
-    this.eventService.getRecommendedEvents('Music').subscribe(res => {
+  loadOthersEvents() {
+    this.eventService.getRecommendedEvents('Other').subscribe(res => {
       this.events = res?.data?.listEvents || [];
       
       this.events = this.events.map((event: any) => ({
@@ -51,7 +51,7 @@ export class LivemusicEventComponent implements OnInit {
 
   onSeeMore() {
     this.router.navigate(['/search-events'], {
-      queryParams: { category: 'Music' }
+      queryParams: { category: 'Other' }
     });
   }
 

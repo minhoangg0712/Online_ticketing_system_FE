@@ -48,6 +48,8 @@
   height: 180px;
   object-fit: cover;
   border-radius: 0.5rem;
+  max-width: 280px;
+  margin: auto; 
 }
 
 .event-card h3 {

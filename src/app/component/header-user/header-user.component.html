@@ -5,8 +5,13 @@
     </a>
 
     <div class="search-container">
-      <input type="text" class="search-box" placeholder="Bạn tìm gì hôm nay?" />
-      <i class="fas fa-search search-icon"></i>
+      <input type="text" 
+      class="search-box" 
+      placeholder="Bạn tìm gì hôm nay?" 
+      [(ngModel)]="searchKeyword"
+      />
+      <i class="fas fa-search search-icon"
+      (click)="searchByEventName()"></i>
     </div>
 
     <nav class="nav-actions" *ngIf="!isLoggedIn()">

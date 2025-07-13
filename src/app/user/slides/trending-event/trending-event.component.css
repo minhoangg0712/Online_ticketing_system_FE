@@ -14,11 +14,6 @@
   margin-bottom: 20px;
 }
 
-.fire-icon {
-  font-size: 28px;
-  animation: flicker 2s infinite alternate;
-}
-
 .section-header p {
   margin: 0;
   color: black;

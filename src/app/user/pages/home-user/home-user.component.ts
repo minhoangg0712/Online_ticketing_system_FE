@@ -10,11 +10,25 @@ import { InterestPlaceComponent } from "../../slides/interest-place/interest-pla
 import { SpecialEventComponent } from '../../slides/special-event/special-event.component';
 import { EventsService } from '../../services/events.service';
 import { Router } from '@angular/router';
+import { SportsEventComponent } from '../../slides/sports-event/sports-event.component';
+import { WorkshopEventComponent } from '../../slides/workshop-event/workshop-event.component';
+import { OthersEventComponent } from '../../slides/others-event/others-event.component';
 
 @Component({
   selector: 'app-home-user',
   standalone: true,
-  imports: [CommonModule, TrendingEventComponent, ForyouEventComponent, HttpClientModule, TimelineEventComponent, LivemusicEventComponent, StageArtEventComponent, InterestPlaceComponent, SpecialEventComponent],
+  imports: [CommonModule, 
+    TrendingEventComponent, 
+    ForyouEventComponent, 
+    HttpClientModule, 
+    TimelineEventComponent, 
+    LivemusicEventComponent, 
+    StageArtEventComponent, 
+    InterestPlaceComponent, 
+    SpecialEventComponent, 
+    SportsEventComponent, 
+    WorkshopEventComponent,
+    OthersEventComponent],
   templateUrl: './home-user.component.html',
   styleUrl: './home-user.component.css'
 })

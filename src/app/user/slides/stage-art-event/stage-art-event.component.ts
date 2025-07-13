@@ -22,7 +22,7 @@ export class StageArtEventComponent implements OnInit {
   }
 
   loadStageArtEvents() {
-    this.eventService.getRecommendedEvents('stage-art').subscribe(res => {
+    this.eventService.getRecommendedEvents('Theatre-Arts').subscribe(res => {
       this.events = res?.data?.listEvents || [];
       
 
@@ -53,7 +53,7 @@ export class StageArtEventComponent implements OnInit {
 
   onSeeMore() {
     this.router.navigate(['/search-events'], {
-      queryParams: { category: 'stage-art' }
+      queryParams: { category: 'Theatre-Arts' }
     });
   }
 
