@@ -47,7 +47,7 @@
 <div *ngIf="showHeader" class="sticky-header">
   <span>{{ eventData.eventName }}</span>
   <span> <i class="bi bi-geo-alt"></i> {{ eventData.addressDetail }} </span>
-  <button> <i class="bi bi-ticket-detailed"></i> Mua vé ngay</button>
+  <button (click)="needLoginToBuyTicket()"> <i class="bi bi-ticket-detailed"></i> Mua vé ngay</button>
 </div>
 
 <div class="main-content">
@@ -57,27 +57,20 @@
       <div class="tp-container">
         <h2 class="tp-title">Giới thiệu</h2>
         <div class="tp-intro-text">
-          <p>GIÁ VÉ HIỂN THỊ TRÊN HỆ THỐNG ĐÃ LÀ GIÁ EARLY BIRD</p>
-          <p>
-            {{ eventData.description }}
-          </p>
+          <p>{{ eventData.description }}</p>
         </div>
 
         <table class="tp-table">
           <thead>
             <tr>
               <th>HẠNG VÉ</th>
-              <th>GIÁ GỐC</th>
-              <th>GIÁ EARLY BIRD</th>
-              <th>ĐÃ GIẢM</th>
+              <th>GIÁ MỞ BÁN</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let ticket of eventData.ticketPrices">
               <td>{{ ticket.type }}</td>
-              <td>{{ ticket.price | number:'1.0-0' }} VNĐ</td>
-              <td>{{ ticket.discountedPrice }}</td>
-              <td>{{ ticket.discount }}</td>
+              <td>{{ ticket.price * 1000 | number:'1.0-3' }} VNĐ</td>
             </tr>
           </tbody>
         </table>
@@ -98,7 +91,7 @@
             <i [ngClass]="isMainExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
             <span>{{ eventData.startTime | date:'HH:mm dd-MM-yyyy' }}</span>
           </div>
-            <button type="button" class="buy-now-button">Mua vé ngay</button>
+            <button type="button" class="buy-now-button" (click)="needLoginToBuyTicket()">Mua vé ngay</button>
         </div>
 
         <div class="ticket-section" *ngIf="isMainExpanded">

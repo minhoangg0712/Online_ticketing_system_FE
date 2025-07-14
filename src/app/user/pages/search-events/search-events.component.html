@@ -38,6 +38,20 @@
         <button class="apply-btn" (click)="applyFilter()">Áp dụng</button>
       </div>
     </div>
+
+    <div class="filter-chips" *ngIf="selectedLocation !== 'Toàn quốc' || selectedCategories.length > 0">
+      <!-- Location chip -->
+      <span *ngIf="selectedLocation !== 'Toàn quốc'" class="chip">
+        <i class="fas fa-times" (click)="removeLocationFilter()"></i>
+        {{ selectedLocation }}
+      </span>
+
+      <!-- Category chips -->
+      <span *ngFor="let cat of selectedCategories" class="chip">
+        <i class="fas fa-times" (click)="removeCategory(cat)"></i>
+        {{ cat }}
+      </span>
+    </div>
   </div>
 </div>
 
@@ -53,4 +67,11 @@
       </p>
     </div>
   </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="text-center mt-4">
+    <p>Đang tải thêm sự kiện...</p>
+  </div>
 </div>
+
+<!-- Note: Chưa filter được 2 cái cùng lúc -->

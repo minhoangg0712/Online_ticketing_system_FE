@@ -257,7 +257,7 @@ body {
 }
 
 .tp-table th {
-  text-align: left;
+  text-align: center;
   font-weight: bold;
   padding: 8px;
   border-bottom: 1px solid #ccc;
@@ -265,6 +265,7 @@ body {
 
 .tp-table td {
   padding: 8px;
+  text-align: center;
 }
 
 .tp-toggle-btn {
@@ -787,7 +788,6 @@ body {
   position: sticky;
   top: 0;
   background: #2c2f33;
-  
   display: flex;
   gap: 1.5rem;
   height: 70px;
@@ -808,7 +808,7 @@ body {
 }
 
 .sticky-header button {
-  background: rgb(45, 194, 117);
+  background: #ff7e42;
   border: none;
   color: white;
   padding: 10px 20px;

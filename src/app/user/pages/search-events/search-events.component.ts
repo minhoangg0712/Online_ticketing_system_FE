@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EventsService } from '../../services/events.service';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-events',
@@ -14,42 +15,71 @@ import { ActivatedRoute } from '@angular/router';
 export class SearchEventsComponent implements OnInit {
   events: any[] = [];
   showFilter = false;
+  currentPage = 1;
+  totalPages = 1;
+  isLoading = false;
 
   locations = ['Toàn quốc', 'Hồ Chí Minh', 'Hà Nội', 'Đà Lạt', 'Vị trí khác'];
   selectedLocation = 'Toàn quốc';
   categories = ['Nhạc sống', 'Sân khấu & Nghệ thuật', 'Thể Thao', 'Khác'];
   selectedCategories: string[] = [];
 
-  constructor(private eventsService: EventsService, private route: ActivatedRoute) {}
+  queryParams: any = {};
+
+  constructor(private eventsService: EventsService, private route: ActivatedRoute,
+  private router: Router) {}
 
   ngOnInit() {
-      this.route.queryParams.subscribe(params => {
-      const category = params['category'] || '';
-      const address = params['address'] || '';
-      const startTime = params['startTime'] || '';
-      const endTime = params['endTime'] || '';
-      const name = params['name'] || '';
+    this.route.queryParams.subscribe(params => {
+      this.queryParams = {
+        category: params['category'] || '',
+        address: params['address'] || '',
+        startTime: params['startTime'] || '',
+        endTime: params['endTime'] || '',
+        name: params['name'] || '',
+        page: params['page'] ? + params['page'] : 1
+      };
 
-      this.fetchEvents({ category, address, startTime, endTime, name });
+      this.currentPage = 1;
+      this.events = [];
+      this.loadEvents();
     });
   }
 
-  fetchEvents(params: { category?: string; address?: string; startTime?: string; endTime?: string; name?: string }) {
-    this.eventsService.searchEvents(params).subscribe({
+  loadEvents() {
+    if (this.isLoading || (this.currentPage > this.totalPages)) return;
+
+    this.isLoading = true;
+
+    const paramsWithPage = { ...this.queryParams, page: this.currentPage };
+
+    this.eventsService.searchEvents(paramsWithPage).subscribe({
       next: (response) => {
-        if (response?.data?.listEvents) {
-          this.events = response.data.listEvents;
-        } else {
-          this.events = [];
-        }
+        const newEvents = response?.data?.listEvents || [];
+        this.totalPages = response?.data?.totalPages || 1;
+
+        this.events = [...this.events, ...newEvents];
+        this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Lỗi khi gọi API:', error);
-        this.events = [];
+      error: () => {
+        console.error('Lỗi khi gọi API');
+        this.isLoading = false;
       }
     });
   }
-  
+
+  @HostListener('window:scroll', [])
+  onScroll(): void {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
+      !this.isLoading &&
+      this.currentPage < this.totalPages
+    ) {
+      this.currentPage++;
+      this.loadEvents();
+    }
+  }
+
   toggleFilter() {
     this.showFilter = !this.showFilter;
   }
@@ -68,10 +98,51 @@ export class SearchEventsComponent implements OnInit {
     this.selectedCategories = [];
   }
 
+  removeLocationFilter() {
+    this.selectedLocation = 'Toàn quốc';
+    this.applyFilter();
+  }
+
+  removeCategory(category: string) {
+    this.selectedCategories = this.selectedCategories.filter(cat => cat !== category);
+    this.applyFilter();
+  }
+
   applyFilter() {
-    console.log({
-      location: this.selectedLocation,
-      categories: this.selectedCategories
+    let addressParam: string | undefined;
+    let categoryParam: string | undefined;
+
+    if (this.selectedLocation === 'Toàn quốc') {
+      addressParam = undefined;
+    } else if (this.selectedLocation === 'Vị trí khác') {
+      addressParam = 'Khác';
+    } else {
+      addressParam = this.selectedLocation;
+    }
+
+    const categoryMap: { [key: string]: string } = {
+      'Nhạc sống': 'Music',
+      'Sân khấu & Nghệ thuật': 'Theatre-Arts',
+      'Thể Thao': 'Sport',
+      'Khác': 'Other'
+    };
+
+    if (this.selectedCategories.length === 1) {
+      categoryParam = categoryMap[this.selectedCategories[0]];
+    } else {
+      categoryParam = undefined;
+    }
+
+    // 👉 Điều hướng đến route hiện tại kèm query mới
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        address: addressParam || null,
+        category: categoryParam || null,
+      }
     });
+
+    // Ẩn popup
+    this.showFilter = false;
   }
 }

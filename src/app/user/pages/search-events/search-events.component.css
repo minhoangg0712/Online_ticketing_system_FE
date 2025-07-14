@@ -99,6 +99,30 @@
   z-index: 999;
 }
 
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #ff7e42;
+  color: #e5e7eb;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.15rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.chip i {
+  cursor: pointer;
+}
+
 /* Nội dung popup */
 .section {
   margin-bottom: 16px;

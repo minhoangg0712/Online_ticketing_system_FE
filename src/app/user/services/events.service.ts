@@ -38,7 +38,7 @@ export class EventsService {
     return this.http.get<any>(`${this.apiUrl}/${eventId}`);
   }
 
-  searchEvents(params: { category?: string; address?: string, startTime?: string , endTime?: string , name?: string; }): Observable<any> {
+  searchEvents(params: { category?: string; address?: string, startTime?: string , endTime?: string , name?: string; page?: number;}): Observable<any> {
     let httpParams = new HttpParams();
 
     if (params.category) {
@@ -60,6 +60,11 @@ export class EventsService {
     if (params.name) {                   
       httpParams = httpParams.set('name', params.name);
     }
+
+    if (params.page !== undefined) {
+      httpParams = httpParams.set('page', params.page.toString());
+    }
+    
     return this.http.get(`${this.apiUrl}/recommend`, { params: httpParams });
   }
 }

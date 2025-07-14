@@ -1,16 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-interest-place',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './interest-place.component.html',
   styleUrl: './interest-place.component.css'
 })
 export class InterestPlaceComponent {
+  constructor(private router: Router) {}
+
   interestPlaces = [
     {
-      name: 'Tp. Hồ Chí Minh',
+      name: 'Hồ Chí Minh',
       image: 'assets/HCM.webp'
     },
     {
@@ -26,4 +30,10 @@ export class InterestPlaceComponent {
       image: 'assets/ANOTHER.webp'
     }
   ];
+
+  onCityClick(cityName: string) {
+    this.router.navigate(['/search-events'], {
+      queryParams: { address: cityName }
+    });
+  }
 }
