@@ -36,19 +36,21 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
+
       this.authService.login(email, password).subscribe({
         next: (res: any) => {
           if (res.token) {
             this.authService.setToken(res.token);
 
             const redirectPath = sessionStorage.getItem('redirectAfterLogin');
-            if (redirectPath) {
+
+            if (redirectPath && this.authService.isCustomer()) {
               sessionStorage.removeItem('redirectAfterLogin');
               this.router.navigateByUrl(redirectPath);
               return;
             }
 
-            // ✅ Nếu không có redirectPath thì mới phân quyền điều hướng
+            // 👉 Phân quyền điều hướng
             if (this.authService.isAdmin()) {
               this.router.navigate(['/admin']);
             } else if (this.authService.isSeller()) {
@@ -66,7 +68,6 @@ export class LoginComponent implements OnInit {
       });
     }
   }
-
 
   togglePasswordVisibility() {
     this.hidePassword = !this.hidePassword;

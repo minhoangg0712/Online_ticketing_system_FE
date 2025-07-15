@@ -61,11 +61,9 @@ export class DetailTicketComponent implements OnInit {
       next: (res) => {
         const event = res?.data;
 
-        // Lấy giá đầu tiên từ ticketPrices
         const ticketPricesObj = event.ticketPrices || {};
         const price = Object.values(ticketPricesObj)[0] || 0;
 
-        // Chuyển ticketPrices object thành mảng để hiển thị danh sách
         const ticketPrices = Object.entries(ticketPricesObj).map(([type, price]) => ({
           type,
           price
@@ -75,16 +73,14 @@ export class DetailTicketComponent implements OnInit {
 
         const parts = fullAddress.split(',').map((part: string) => part.trim());
 
-        // Đảm bảo có ít nhất 3 phần để lấy SECC - Q7
         let addressDetail = '';
         let addressName = '';
 
         if (parts.length >= 3) {
-          addressDetail = parts[1]; // phần SECC - Q7
-          // ghép lại Quận 7 + từ Ward 8 trở đi
+          addressDetail = parts[1];
           addressName = [parts[0], ...parts.slice(2)].join(', ');
         } else {
-          addressName = fullAddress; // fallback
+          addressName = fullAddress;
         }
 
         this.eventData = {
@@ -97,7 +93,6 @@ export class DetailTicketComponent implements OnInit {
           organizerBio: event.organizerBio,
           organizerAvatarUrl: event.organizerAvatarUrl,
 
-          // ✅ Tách theo yêu cầu
           addressDetail: addressDetail,
           addressName: addressName,
 
