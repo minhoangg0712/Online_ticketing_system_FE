@@ -62,8 +62,8 @@ export class DetailTicketComponent implements OnInit {
         const event = res?.data;
 
         const ticketPricesObj = event.ticketPrices || {};
-        const price = Object.values(ticketPricesObj)[0] || 0;
-
+        const price = Math.min(...Object.values(ticketPricesObj).map(v => Number(v))) || 0;
+        
         const ticketPrices = Object.entries(ticketPricesObj).map(([type, price]) => ({
           type,
           price

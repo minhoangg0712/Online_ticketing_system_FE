@@ -56,6 +56,23 @@ export class HomeUserComponent implements OnInit {
     });
   }
 
+  goToSearchEvents(category: string) {
+    const categoryMap: { [key: string]: string } = {
+      'Nhạc sống': 'Music',
+      'Sân khấu & Nghệ thuật': 'Theatre-Arts',
+      'Thể Thao': 'Sport',
+      'Khác': 'Other'
+    };
+
+    const categoryParam = categoryMap[category];
+
+    this.router.navigate(['/search-events'], {
+      queryParams: {
+        category: categoryParam
+      }
+    });
+  }
+
   get visibleImages() {
     const total = this.events.length;
 
@@ -88,5 +105,4 @@ export class HomeUserComponent implements OnInit {
     sessionStorage.setItem('redirectAfterLogin', `/detail-ticket/${eventId}`);
     this.router.navigate([`/detail-ticket/${eventId}`]);
   }
-
 }
