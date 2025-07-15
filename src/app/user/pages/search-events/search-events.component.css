@@ -28,7 +28,7 @@
   color: #e5e7eb;
   border: none;
   border-radius: 9999px;
-  padding: 0.15rem 1rem;
+  padding: 5px 1rem;
   cursor: pointer;
   font-size: 0.875rem;
 }
@@ -43,6 +43,9 @@
   gap: 2rem 1.5rem;
 }
 
+.event-card {
+  cursor: pointer;
+}
 .event-card img {
   width: 100%;
   height: 180px;

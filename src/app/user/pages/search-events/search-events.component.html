@@ -35,7 +35,7 @@
 
       <div class="action-buttons">
         <button class="reset-btn" (click)="resetFilter()">Thiết lập lại</button>
-        <button class="apply-btn" (click)="applyFilter()">Áp dụng</button>
+        <button class="apply-btn" [disabled]="selectedCategories.length >= 1" (click)="applyFilter()">Áp dụng</button>
       </div>
     </div>
 
@@ -58,9 +58,9 @@
 
   <div class="grid">
     <div class="event-card" *ngFor="let event of events">
-      <img [src]="event.backgroundUrl" [alt]="event.alt" />
+      <img [src]="event.backgroundUrl" [alt]="event.alt" (click)="goToEventDetail(event.eventId)"/>
       <h3>{{ event.eventName }}</h3>
-      <p class="price">Từ {{ event.minPrice }}</p>
+      <p class="price">Từ {{ event.minPrice | number:'1.0-0'}}</p>
       <p class="date">
         <i class="far fa-calendar-alt"></i>
         {{ event.startTime | date: 'dd/MM/yyyy'}}
@@ -73,5 +73,7 @@
     <p>Đang tải thêm sự kiện...</p>
   </div>
 </div>
-
-<!-- Note: Chưa filter được 2 cái cùng lúc -->
+<app-toast-notification 
+  #notification
+  (onClose)="onNotificationClose()">
+</app-toast-notification>

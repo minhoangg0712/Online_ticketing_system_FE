@@ -1,23 +1,26 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EventsService } from '../../services/events.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
 
 @Component({
   selector: 'app-search-events',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ToastNotificationComponent],
   templateUrl: './search-events.component.html',
   styleUrl: './search-events.component.css'
 })
 export class SearchEventsComponent implements OnInit {
+  @ViewChild('notification') notification!: ToastNotificationComponent;
   events: any[] = [];
   showFilter = false;
   currentPage = 1;
   totalPages = 1;
   isLoading = false;
+  showNotification = false;
 
   locations = ['Toàn quốc', 'Hồ Chí Minh', 'Hà Nội', 'Đà Lạt', 'Vị trí khác'];
   selectedLocation = 'Toàn quốc';
@@ -86,7 +89,12 @@ export class SearchEventsComponent implements OnInit {
 
   toggleCategory(category: string) {
     const index = this.selectedCategories.indexOf(category);
+
     if (index === -1) {
+      if (this.selectedCategories.length >= 1) {
+        this.notification.showNotification('Chỉ được chọn tối đa 1 thể loại !', 3000, 'warning');
+        return;
+      }
       this.selectedCategories.push(category);
     } else {
       this.selectedCategories.splice(index, 1);
@@ -145,4 +153,10 @@ export class SearchEventsComponent implements OnInit {
     // Ẩn popup
     this.showFilter = false;
   }
+
+  goToEventDetail(eventId: number) {
+    this.router.navigate([`/detail-ticket/${eventId}`]);
+  }
+
+  onNotificationClose() {}
 }

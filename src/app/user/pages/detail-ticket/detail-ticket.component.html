@@ -21,7 +21,7 @@
         <hr class="divider" />
         <div class="price-section">
           <h3 class="price-label">Giá từ</h3>
-          <p class="price">{{ eventData.price * 1000 | number:'1.0-3' }} VNĐ</p>
+          <p class="price">{{ eventData.price | number:'1.0-0' }} VNĐ</p>
           <i class="bi bi-chevron-compact-right price-icon"></i>
         </div>
         <button class="buy-btn" (click)="needLoginToBuyTicket()">Mua vé ngay</button>
@@ -70,7 +70,7 @@
           <tbody>
             <tr *ngFor="let ticket of eventData.ticketPrices">
               <td>{{ ticket.type }}</td>
-              <td>{{ ticket.price * 1000 | number:'1.0-3' }} VNĐ</td>
+              <td>{{ ticket.price | number:'1.0-0' }} VNĐ</td>
             </tr>
           </tbody>
         </table>
