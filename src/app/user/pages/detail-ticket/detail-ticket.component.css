@@ -62,6 +62,9 @@
   font-family: 'Inter', sans-serif;
 }
 
+.address-link{
+  text-decoration: none;
+}
 .info {
   display: flex;
   margin-top: 20px;

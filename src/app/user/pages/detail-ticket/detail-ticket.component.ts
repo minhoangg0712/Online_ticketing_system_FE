@@ -178,5 +178,10 @@ export class DetailTicketComponent implements OnInit {
     }
   }
 
+  getGoogleMapUrl(addressName: string): string {
+    const fullAddress = `${addressName}`;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+  }
+
   onNotificationClose() {}
 }
