@@ -141,14 +141,28 @@ export class SearchEventsComponent implements OnInit {
       categoryParam = undefined;
     }
 
-    // 👉 Điều hướng đến route hiện tại kèm query mới
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        address: addressParam || null,
-        category: categoryParam || null,
-      }
+        ...this.queryParams,
+        address: addressParam,
+        category: categoryParam,
+        page: 1
+      },
+      queryParamsHandling: 'merge'
     });
+
+    this.currentPage = 1;
+    this.events = [];
+
+    this.queryParams = {
+      ...this.queryParams,
+      address: addressParam,
+      category: categoryParam,
+      page: 1
+    };
+
+    this.loadEvents();
 
     // Ẩn popup
     this.showFilter = false;
