@@ -178,8 +178,8 @@ export class DetailTicketComponent implements OnInit {
     }
   }
 
-  getGoogleMapUrl(addressName: string): string {
-    const fullAddress = `${addressName}`;
+  getGoogleMapUrl(addressDetail: string, addressName: string): string {
+    const fullAddress = `${addressDetail}, ${addressName}`;
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
   }
 

@@ -9,7 +9,7 @@
           <p class="text-green">{{ eventData.startTime | date:'HH:mm dd-MM-yyyy' }}</p>
         </div>
         <a 
-          [href]="getGoogleMapUrl(eventData.addressName)" 
+          [href]="getGoogleMapUrl(eventData.addressDetail, eventData.addressName)" 
           target="_blank" 
           rel="noopener noreferrer"
           class="address-link"
