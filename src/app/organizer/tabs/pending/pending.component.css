@@ -163,9 +163,17 @@
   margin-bottom: 20px;
 }
 
-.modal-logo,
-.modal-background {
+.modal-logo {
   width: 200px;
+  height: auto;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  object-fit: cover;
+}
+
+.modal-background {
+  width: 400px;
   height: auto;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.1);
