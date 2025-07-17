@@ -8,8 +8,8 @@
 
     <!-- Danh sách sự kiện -->
     <div class="event-list">
-      <div class="event-card" *ngFor="let item of visibleItems">
-        <img [src]="item.backgroundUrl || '/assets/default.jpg'" class="event-image" (click)="goToEventDetail(item.id)"/>
+      <div class="event-card" *ngFor="let item of visibleItems" (click)="goToEventDetail(item.id)">
+        <img [src]="item.backgroundUrl || '/assets/default.jpg'" class="event-image"/>
       </div>
 
       <!-- Nút phải -->
