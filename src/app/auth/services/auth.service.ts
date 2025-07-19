@@ -125,7 +125,21 @@ export class AuthService {
   /*Kiểm tra xem user có đăng nhập không */
   isLoggedIn(): boolean {
     if (!this.isBrowser()) return false;
-    return !!this.getToken();
+    const token = this.getToken();
+    if (!token) return false;
+
+    try {
+      const decoded: any = jwtDecode(token);
+      // Kiểm tra hạn token (exp là giây)
+      if (decoded.exp && Date.now() >= decoded.exp * 1000) {
+        this.logout();
+        return false;
+      }
+      return true;
+    } catch {
+      this.logout();
+      return false;
+    }
   }
 
   /*Đăng xuất */
