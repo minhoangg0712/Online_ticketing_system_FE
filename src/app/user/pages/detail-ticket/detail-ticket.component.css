@@ -364,6 +364,11 @@ body {
   background-color: #ec7943;
 }
 
+.buy-now-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
 .ticket-section {
   background-color: #222529;
 }
@@ -825,4 +830,9 @@ body {
   border-radius: 5px;
   -webkit-box-align: center;
   align-items: center;
+}
+
+.sticky-header button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }

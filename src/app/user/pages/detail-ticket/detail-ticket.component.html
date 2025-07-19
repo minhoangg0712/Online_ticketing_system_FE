@@ -30,10 +30,13 @@
         </div>
         <button
           class="buy-btn"
-          [disabled]="isAllTicketsSoldOut()"
+          [disabled]="isAllTicketsSoldOut() || eventHasEnded()"
           (click)="needLoginToBuyTicket()"
         >
-          {{ isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' }}
+          {{ 
+            eventHasEnded() ? 'Sự kiện đã kết thúc' :
+            isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' 
+          }}
         </button>
       </div>
 
@@ -57,10 +60,13 @@
 <div *ngIf="showHeader" class="sticky-header">
   <span>{{ eventData.eventName }}</span>
   <span> <i class="bi bi-geo-alt"></i> {{ eventData.addressDetail }} </span>
-  <button [disabled]="isAllTicketsSoldOut()"
+  <button [disabled]="isAllTicketsSoldOut() || eventHasEnded()"
           (click)="needLoginToBuyTicket()"> 
           <i class="bi bi-ticket-detailed"></i> 
-          {{ isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' }}
+          {{ 
+            eventHasEnded() ? 'Sự kiện đã kết thúc' :
+            isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' 
+          }}
         </button>
 </div>
 
@@ -101,18 +107,21 @@
         </div>
 
         <div class="ticket-event">
-          <div class="ticket-event-info" (click)="toggleMainSection()">
+          <div class="ticket-event-info" (click)="!eventHasEnded() && toggleMainSection()">
             <i [ngClass]="isMainExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
             <span>{{ eventData.startTime | date:'HH:mm dd-MM-yyyy' }}</span>
           </div>
             <button type="button" class="buy-now-button" 
-              [disabled]="isAllTicketsSoldOut()"
+              [disabled]="isAllTicketsSoldOut() || eventHasEnded()"
               (click)="needLoginToBuyTicket()"> 
-                {{ isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' }}
+                {{ 
+                eventHasEnded() ? 'Sự kiện đã kết thúc' :
+                isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' 
+                }}
             </button>
         </div>
 
-        <div class="ticket-section" *ngIf="isMainExpanded">
+        <div class="ticket-section" *ngIf="isMainExpanded && !eventHasEnded()">
           <div class="ticket-item" *ngFor="let ticket of eventData.ticketPrices; let i = index">
             <div class="ticket-item-header" (click)="toggleTicket(i)">
               <div class="ticket-title">

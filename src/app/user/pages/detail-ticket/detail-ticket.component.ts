@@ -199,6 +199,12 @@ export class DetailTicketComponent implements OnInit {
     return this.eventData.ticketPrices?.every((ticket: any) => ticket.isSoldOut);
   }
 
+  eventHasEnded(): boolean {
+    const now = new Date();
+    const eventDate = new Date(this.eventData.startTime);
+    return now > eventDate;
+  }
+
   getGoogleMapUrl(addressDetail: string, addressName: string): string {
     const fullAddress = `${addressDetail}, ${addressName}`;
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
