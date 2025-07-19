@@ -28,7 +28,13 @@
           <p class="price">{{ eventData.price | number:'1.0-0' }} VNĐ</p>
           <i class="bi bi-chevron-compact-right price-icon"></i>
         </div>
-        <button class="buy-btn" (click)="needLoginToBuyTicket()">Mua vé ngay</button>
+        <button
+          class="buy-btn"
+          [disabled]="isAllTicketsSoldOut()"
+          (click)="needLoginToBuyTicket()"
+        >
+          {{ isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' }}
+        </button>
       </div>
 
       <div class="circle top-right"></div>
@@ -51,7 +57,11 @@
 <div *ngIf="showHeader" class="sticky-header">
   <span>{{ eventData.eventName }}</span>
   <span> <i class="bi bi-geo-alt"></i> {{ eventData.addressDetail }} </span>
-  <button (click)="needLoginToBuyTicket()"> <i class="bi bi-ticket-detailed"></i> Mua vé ngay</button>
+  <button [disabled]="isAllTicketsSoldOut()"
+          (click)="needLoginToBuyTicket()"> 
+          <i class="bi bi-ticket-detailed"></i> 
+          {{ isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' }}
+        </button>
 </div>
 
 <div class="main-content">
@@ -95,7 +105,11 @@
             <i [ngClass]="isMainExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
             <span>{{ eventData.startTime | date:'HH:mm dd-MM-yyyy' }}</span>
           </div>
-            <button type="button" class="buy-now-button" (click)="needLoginToBuyTicket()">Mua vé ngay</button>
+            <button type="button" class="buy-now-button" 
+              [disabled]="isAllTicketsSoldOut()"
+              (click)="needLoginToBuyTicket()"> 
+                {{ isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' }}
+            </button>
         </div>
 
         <div class="ticket-section" *ngIf="isMainExpanded">
@@ -109,7 +123,7 @@
             </div>
 
             <div class="ticket-details" *ngIf="ticket.isExpanded">
-              <p>Mô tả chi tiết cho vé "{{ ticket.name }}".</p>
+              <p *ngIf="ticket.isSoldOut" class="text-red-600 font-semibold">Hết vé</p>
             </div>
           </div>
         </div>

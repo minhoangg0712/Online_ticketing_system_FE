@@ -17,6 +17,7 @@ export class EventsService {
     startTime?: string,
     endTime?: string,
     name?: string,
+    sortBy?: string,
     page: number = 1,
     size: number = 12
   ): Observable<any> {
@@ -27,7 +28,8 @@ export class EventsService {
     if (startTime) params = params.set('startTime', startTime);
     if (endTime) params = params.set('endTime', endTime);
     if (name) params = params.set('name', name);
-
+    if (sortBy) params = params.set('sortBy', sortBy);
+    
     params = params.set('page', page.toString());
     params = params.set('size', size.toString());
 

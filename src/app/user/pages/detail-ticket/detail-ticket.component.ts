@@ -36,7 +36,7 @@ export class DetailTicketComponent implements OnInit {
   }
 
   toggleTicket(index: number): void {
-    this.ticketList[index].isExpanded = !this.ticketList[index].isExpanded;
+    this.eventData.ticketPrices[index].isExpanded = !this.eventData.ticketPrices[index].isExpanded;
   }
 
   constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute,
@@ -62,15 +62,29 @@ export class DetailTicketComponent implements OnInit {
         const event = res?.data;
 
         const ticketPricesObj = event.ticketPrices || {};
-        const price = Math.min(...Object.values(ticketPricesObj).map(v => Number(v))) || 0;
-        
-        const ticketPrices = Object.entries(ticketPricesObj).map(([type, price]) => ({
-          type,
-          price
-        }));
+        const ticketsSoldObj = event.ticketsSold || {};
+        const ticketsTotalObj = event.ticketsTotal || {};
+
+        const ticketPrices = Object.entries(ticketPricesObj).map(([type, price]) => {
+          const sold = ticketsSoldObj[type] || 0;
+          const total = ticketsTotalObj[type] || 0;
+          const available = total - sold;
+
+          return {
+            type,
+            price,
+            total,
+            sold,
+            available,
+            isSoldOut: available <= 0
+          };
+        });
+
+        const allSoldOut = ticketPrices.every(ticket => ticket.isSoldOut);
+
+        const price = Math.min(...ticketPrices.map(v => Number(v.price))) || 0;
 
         const fullAddress = event.address || event.addressName || '';
-
         const parts = fullAddress.split(',').map((part: string) => part.trim());
 
         let addressDetail = '';
@@ -98,14 +112,16 @@ export class DetailTicketComponent implements OnInit {
 
           price,
           ticketPrices,
+          allSoldOut,
+          isExpanded: false
         };
+
       },
       error: (err) => {
         console.error('Lỗi khi lấy chi tiết sự kiện:', err);
       }
     });
   }
-
 
   loadEvents() {
     this.eventsService.getRecommendedEvents(
@@ -114,6 +130,7 @@ export class DetailTicketComponent implements OnInit {
       '', 
       '', 
       '', 
+      '',
       1, 
       12 
     ).subscribe(res => {
@@ -176,6 +193,10 @@ export class DetailTicketComponent implements OnInit {
         "warning",
       );
     }
+  }
+
+  isAllTicketsSoldOut(): boolean {
+    return this.eventData.ticketPrices?.every((ticket: any) => ticket.isSoldOut);
   }
 
   getGoogleMapUrl(addressDetail: string, addressName: string): string {

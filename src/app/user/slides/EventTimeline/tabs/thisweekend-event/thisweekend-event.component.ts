@@ -32,6 +32,7 @@ export class ThisweekendEventComponent implements OnInit {
       startTimeISO,
       endTimeISO,
       undefined, 
+      '',
       1,
       50
     ).subscribe(res => {

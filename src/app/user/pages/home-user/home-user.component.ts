@@ -46,10 +46,20 @@ export class HomeUserComponent implements OnInit {
 
 
   loadHotTrendingEvents() {
-    this.eventService.getRecommendedEvents('hot-trending').subscribe(res => {
-      this.events = res?.data?.listEvents || [];
+    this.eventService.getRecommendedEvents(
+      undefined,        // category
+      undefined,        // address
+      undefined,        // startTime
+      undefined,        // endTime
+      undefined,        // name
+      'totalTicketSold:DESC',  // sortBy
+      1,                // page
+      100               // size
+    ).subscribe(res => {
+      const allEvents = res?.data?.listEvents || [];
 
-      this.events = this.events.map((event: any) => ({
+      // 👉 Lấy top 4 từ danh sách đã được sort giảm dần theo totalTicketSold
+      this.events = allEvents.slice(0, 4).map((event: any) => ({
         id: event.eventId,
         backgroundUrl: event.backgroundUrl
       }));
