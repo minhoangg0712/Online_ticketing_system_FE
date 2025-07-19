@@ -1,50 +1,64 @@
 <div class="event-container">
+  <!-- Bộ lọc thời gian -->
+  <div class="filter-container">
+    <button class="btn" (click)="showFilter = !showFilter">
+      Bộ lọc
+    </button>
+  
+    <div
+      class="filter-popup"
+      *ngIf="showFilter"
+      (clickOutside)="showFilter = false"
+    >
+      <label>
+        Từ ngày:
+        <input type="date" [(ngModel)]="startDate" />
+      </label>
+      <label>
+        Đến ngày:
+        <input type="date" [(ngModel)]="endDate" />
+      </label>
+      <div class="popup-actions">
+        <button class="btn" (click)="filterEvents()">Áp dụng</button>
+        <button
+          class="btn"
+          (click)="startDate=''; endDate=''; filterEvents(); showFilter=false"
+        >
+          Xóa lọc
+        </button>
+      </div>
+    </div>
+  </div>
+  
+
   <div *ngIf="isLoadingList" class="loading">
     <p>Đang tải danh sách sự kiện...</p>
   </div>
 
-  <div *ngIf="!isLoadingList && events.length === 0" class="no-events">
+  <div *ngIf="!isLoadingList && filteredEvents.length === 0" class="no-events">
     <p>Không có sự kiện nào.</p>
   </div>
 
-  <div class="event-list" *ngIf="!isLoadingList && events.length > 0">
-    <div class="event-card" *ngFor="let event of events">
+  <div class="event-list" *ngIf="!isLoadingList && filteredEvents.length > 0">
+    <div class="event-card" *ngFor="let event of filteredEvents">
       <div class="event-details">
-        <h3 class="event-name">{{ event.eventName }}</h3>
+        <h3 class="event-name">
+          {{ event.eventName }}
+        </h3>
         <p class="event-info">
-          <span class="label">Ngày bắt đầu: </span>{{ event.startTime | date:'dd/MM/yyyy' }}
+          <span class="label">Ngày bắt đầu:</span>
+          <span class="event-date">{{ event.startTime | date:'dd/MM/yyyy' }}</span>
         </p>
       </div>
-      <!-- <div class="event-actions">
-        <button class="btn btn-view" (click)="openDetail(event)">Xem chi tiết</button>
-      </div> -->
       <div class="event-actions">
         <a
           class="btn btn-view"
-          [routerLink]="['export-file/:id', event.eventId]"
+          [routerLink]="['/organizer/export-file-detail', event.eventId]"
           target="_blank"
         >
-          Xem chi tiết
+           Xem chi tiết
         </a>
       </div>
     </div>
   </div>
-
-  <!-- <div class="event-detail-modal" *ngIf="selectedEvent">
-    <div class="modal-content">
-      <span class="close-button" (click)="closeDetail()">&times;</span>
-      <h2>{{ selectedEvent.eventName }}</h2>
-
-      <div class="modal-images">
-        <img *ngIf="selectedEvent.logoUrl" [src]="selectedEvent.logoUrl" alt="Logo" class="modal-logo" />
-        <img *ngIf="selectedEvent.backgroundUrl" [src]="selectedEvent.backgroundUrl" alt="Background" class="modal-background" />
-      </div>
-
-      <p><strong>Thời gian:</strong> {{ selectedEvent.startTime | date:'dd/MM/yyyy, HH:mm' }} - {{ selectedEvent.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
-      <p><strong>Địa điểm:</strong> {{ selectedEvent.address }}</p>
-      <p><strong>Danh mục:</strong> {{ selectedEvent.category }}</p>
-      <p><strong>Mô tả:</strong> {{ selectedEvent.description }}</p>
-      <p><strong>Đơn vị tổ chức:</strong> {{ selectedEvent.organizerName }} - {{ selectedEvent.organizerEmail }}</p>
-    </div>
-  </div> -->
 </div>
