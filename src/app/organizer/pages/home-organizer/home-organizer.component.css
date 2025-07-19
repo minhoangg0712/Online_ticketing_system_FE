@@ -4,6 +4,7 @@
   background: linear-gradient(135deg, #a2694b6e 0%, #000000 100%);
   color: white;
   box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .search-filter-section {
