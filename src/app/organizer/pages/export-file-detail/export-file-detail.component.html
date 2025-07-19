@@ -1,10 +1,152 @@
-<div *ngIf="isLoading">
-  <p>Đang tải chi tiết sự kiện...</p>
-</div>
+<div class="export-detail-container">
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Đang tải chi tiết sự kiện...</p>
+  </div>
 
-<div *ngIf="!isLoading && eventData">
-  <h2>{{ eventData.eventName }}</h2>
-  <p>Thời gian: {{ eventData.startTime | date:'dd/MM/yyyy' }} - {{ eventData.endTime | date:'dd/MM/yyyy' }}</p>
-  <p>Địa điểm: {{ eventData.address }}</p>
-  <p>Mô tả: {{ eventData.description }}</p>
+  <!-- Main content -->
+  <div *ngIf="!isLoading && eventData" class="main-content">
+    <!-- Header -->
+    <div class="header-section">
+      <div class="back-button" (click)="goBack()">
+        <span>←</span>
+        <span>Quay lại</span>
+      </div>
+      <h1 class="event-title">{{ eventData.eventName }}</h1>
+    </div>
+
+    <!-- Event Info -->
+    <div class="event-info-section">
+      <div class="info-card">
+        <h3>Thông tin sự kiện</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Thời gian:</span>
+            <span class="value">{{ eventData.startTime | date:'dd/MM/yyyy HH:mm' }} - {{ eventData.endTime | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Địa điểm:</span>
+            <span class="value">{{ eventData.addressName }}, {{ eventData.addressDetail }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Thể loại:</span>
+            <span class="value">{{ eventData.category }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Mô tả:</span>
+            <span class="value">{{ eventData.description }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Overview -->
+    <div class="stats-overview" *ngIf="!isLoadingStats">
+      <h3>Thống kê tổng quan</h3>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <span>🎫</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ ticketStats.totalTickets || 0 }}</div>
+            <div class="stat-label">Tổng số vé</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon sold">
+            <span>✅</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ ticketStats.soldTickets || 0 }}</div>
+            <div class="stat-label">Đã bán</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon remaining">
+            <span>⏰</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ ticketStats.remainingTickets || 0 }}</div>
+            <div class="stat-label">Còn lại</div>
+          </div>
+        </div>
+
+        <div class="stat-card revenue">
+          <div class="stat-icon">
+            <span>💰</span>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ formatCurrency(ticketStats.totalRevenue || 0) }}</div>
+            <div class="stat-label">Tổng doanh thu</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-section" *ngIf="ticketStats.totalTickets > 0">
+        <div class="progress-info">
+          <span>Tỷ lệ bán vé</span>
+          <span>{{ getSoldPercentage(ticketStats.totalTickets, ticketStats.soldTickets) }}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="getSoldPercentage(ticketStats.totalTickets, ticketStats.soldTickets)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticket Types Detail -->
+    <div class="ticket-types-section" *ngIf="!isLoadingStats && ticketStats.ticketTypes && ticketStats.ticketTypes.length > 0">
+      <h3>Chi tiết từng loại vé</h3>
+      <div class="ticket-types-grid">
+        <div class="ticket-type-card" *ngFor="let ticket of ticketStats.ticketTypes">
+          <div class="ticket-header">
+            <h4>{{ ticket.ticketType }}</h4>
+            <span class="ticket-price">{{ formatCurrency(ticket.price) }}</span>
+          </div>
+          
+          <div class="ticket-stats">
+            <div class="ticket-stat">
+              <span class="stat-label">Tổng số lượng:</span>
+              <span class="stat-value">{{ ticket.totalQuantity }}</span>
+            </div>
+            <div class="ticket-stat">
+              <span class="stat-label">Đã bán:</span>
+              <span class="stat-value sold">{{ ticket.soldQuantity }}</span>
+            </div>
+            <div class="ticket-stat">
+              <span class="stat-label">Còn lại:</span>
+              <span class="stat-value remaining">{{ ticket.remainingQuantity }}</span>
+            </div>
+            <div class="ticket-stat">
+              <span class="stat-label">Doanh thu:</span>
+              <span class="stat-value revenue">{{ formatCurrency(ticket.revenue) }}</span>
+            </div>
+          </div>
+
+          <!-- Mini progress bar -->
+          <div class="mini-progress" *ngIf="ticket.totalQuantity > 0">
+            <div class="mini-progress-fill" [style.width.%]="getSoldPercentage(ticket.totalQuantity, ticket.soldQuantity)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading stats -->
+    <div *ngIf="isLoadingStats" class="loading-stats">
+      <div class="loading-spinner"></div>
+      <p>Đang tải thống kê vé...</p>
+    </div>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="!isLoading && !eventData" class="error-container">
+    <span style="font-size: 3rem;">⚠️</span>
+    <h3>Không tìm thấy sự kiện</h3>
+    <p>Sự kiện này có thể đã bị xóa hoặc không tồn tại.</p>
+    <button class="back-btn" (click)="goBack()">Quay lại</button>
+  </div>
 </div>
