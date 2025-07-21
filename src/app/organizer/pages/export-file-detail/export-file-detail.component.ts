@@ -37,7 +37,7 @@ export class ExportFileDetailComponent implements OnInit {
   }
 
   loadEventData(): void {
-    this.listEventsService.getEventById(this.eventId).subscribe({
+    this.listEventsService.getEventById(this.eventId.toString()).subscribe({
       next: (res: any) => {
         this.eventData = res.data;
         this.isLoading = false;

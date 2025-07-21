@@ -65,7 +65,7 @@ export class HomeOrganizerComponent implements OnInit {
     const idFromUrl = this.route.snapshot.paramMap.get('id');
     if (idFromUrl) {
       this.eventId = Number(idFromUrl);
-      this.listEventsService.getEventById(this.eventId).subscribe({
+      this.listEventsService.getEventById(this.eventId.toString()).subscribe({
         next: data => {
           this.eventData = data.data;
           this.selectedEvent = this.eventData;
