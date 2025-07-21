@@ -575,7 +575,6 @@ select.input-field {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
   letter-spacing: 0.025em;
 }
 
