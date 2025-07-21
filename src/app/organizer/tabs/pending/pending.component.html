@@ -9,7 +9,7 @@
         <h3 class="event-name">{{ event.eventName }}</h3>
         <p class="event-info"><span class="label">Bắt đầu:</span> {{ event.startTime | date:'dd/MM/yyyy, HH:mm' }}</p>
         <p class="event-info"><span class="label">Kết thúc:</span> {{ event.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
-        <p class="event-info"><span class="label">Trạng thái duyệt:</span> 
+        <p class="event-info"><span class="label">Trạng thái duyệt:</span>
           <span class="status" [ngClass]="{
             'status-approved': event.approvalStatus === 'approved',
             'status-pending': event.approvalStatus === 'pending',
@@ -26,19 +26,72 @@
   <div class="event-detail-modal" *ngIf="selectedEvent">
     <div class="modal-content">
       <span class="close-button" (click)="closeDetail()">&times;</span>
-      <h2>{{ selectedEvent.eventName }}</h2>
-  
-      <div class="modal-images">
-        <img *ngIf="selectedEvent.logoUrl" [src]="selectedEvent.logoUrl" alt="Logo" class="modal-logo" />
-        <img *ngIf="selectedEvent.backgroundUrl" [src]="selectedEvent.backgroundUrl" alt="Background" class="modal-background" />
+      <div *ngIf="!isEditing">
+        <h2>{{ selectedEvent.eventName }}</h2>
+        <div class="modal-images">
+          <img *ngIf="selectedEvent.logoUrl" [src]="selectedEvent.logoUrl" alt="Logo" class="modal-logo" />
+          <img *ngIf="selectedEvent.backgroundUrl" [src]="selectedEvent.backgroundUrl" alt="Background" class="modal-background" />
+        </div>
+        <p><strong>Thời gian:</strong> {{ selectedEvent.startTime | date:'dd/MM/yyyy, HH:mm' }} - {{ selectedEvent.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
+        <p><strong>Địa điểm:</strong> {{ selectedEvent.address }}</p>
+        <p><strong>Danh mục:</strong> {{ selectedEvent.category }}</p>
+        <p><strong>Mô tả:</strong> {{ selectedEvent.description }}</p>
+        <p><strong>Trạng thái duyệt:</strong> {{ selectedEvent.approvalStatus | statusTranslate }}</p>
+        <p *ngIf="selectedEvent.approvalStatus === 'rejected' && selectedEvent.rejectReason">
+          <strong>Lý do từ chối:</strong> {{ selectedEvent.rejectReason }}
+        </p>
+        <div class="ticket-prices" *ngIf="selectedEvent.ticketPrices">
+          <strong>Giá vé:</strong>
+          <ul>
+            <li *ngFor="let ticket of selectedEvent.ticketPrices | keyvalue">
+              {{ ticket.key }}: {{ asNumber(ticket.value) | number:'1.0-0' }} VND
+            </li>
+          </ul>
+        </div>
+        <p><strong>Đơn vị tổ chức:</strong> {{ selectedEvent.organizerName }}</p>
+        <div class="modal-actions">
+          <button class="btn btn-edit" (click)="toggleEdit()">Chỉnh sửa</button>
+        </div>
       </div>
-  
-      <p><strong>Thời gian:</strong> {{ selectedEvent.startTime | date:'dd/MM/yyyy, HH:mm' }} - {{ selectedEvent.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
-      <p><strong>Địa điểm:</strong> {{ selectedEvent.address }}</p>
-      <p><strong>Danh mục:</strong> {{ selectedEvent.category }}</p>
-      <p><strong>Mô tả:</strong> {{ selectedEvent.description }}</p>
-      <p><strong>Trạng thái duyệt:</strong> {{ selectedEvent.approvalStatus | statusTranslate }}</p>
-      <p><strong>Đơn vị tổ chức:</strong> {{ selectedEvent.organizerName }} - {{ selectedEvent.organizerEmail }}</p>
+      <div *ngIf="isEditing">
+        <h2>Chỉnh sửa sự kiện</h2>
+        <div class="form-group">
+          <label>Tên sự kiện</label>
+          <input type="text" [(ngModel)]="editableEvent.eventName" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Thời gian bắt đầu</label>
+          <input type="datetime-local" [(ngModel)]="editableEvent.startTime" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Thời gian kết thúc</label>
+          <input type="datetime-local" [(ngModel)]="editableEvent.endTime" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Địa điểm</label>
+          <input type="text" [(ngModel)]="editableEvent.address" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Danh mục</label>
+          <input type="text" [(ngModel)]="editableEvent.category" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Mô tả</label>
+          <textarea [(ngModel)]="editableEvent.description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Logo</label>
+          <input type="file" (change)="onFileSelected($event, 'logo')" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Ảnh bìa</label>
+          <input type="file" (change)="onFileSelected($event, 'background')" class="form-control">
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-save" (click)="saveChanges()">Lưu thay đổi</button>
+          <button class="btn btn-cancel" (click)="toggleEdit()">Hủy</button>
+        </div>
+      </div>
     </div>
-  </div>  
+  </div>
 </div>

@@ -135,8 +135,8 @@
   border-radius: 16px;
   color: #ffffff;
   width: 90%;
-  max-width: 900px;
-  max-height: 90vh;
+  max-width: 850px;
+  max-height: 80vh;
   overflow-y: auto;
   position: relative;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
@@ -199,6 +199,72 @@
   font-weight: 600;
   min-width: 120px;
   display: inline-block;
+}
+
+.modal-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-edit {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background-color: #2980b9;
+}
+
+.btn-save {
+  background-color: #2ecc71;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background-color: #27ae60;
+}
+
+.btn-cancel {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background-color: #c0392b;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #ff7e42;
+  box-shadow: 0 0 8px rgba(255, 126, 66, 0.5);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
 }
 
 @media (max-width: 768px) {
