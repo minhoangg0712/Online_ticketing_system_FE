@@ -103,6 +103,13 @@
   cursor: pointer;
 }
 
+.quantity-controls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
 .quantity-controls input {
   width: 40px;
   text-align: center;

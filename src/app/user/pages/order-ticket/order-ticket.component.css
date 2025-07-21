@@ -213,6 +213,17 @@ body {
   margin-bottom: 0.25rem;
 }
 
+.info-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 9.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+
+
+
 .total-row {
   display: flex;
   justify-content: space-between;
@@ -229,4 +240,15 @@ body {
   border: none;
   border-radius: 9999px;
   cursor: pointer;
+}
+
+.price-row {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+hr.event-divider {
+  border: none;
+  border-top: 1px dashed #aaa;
+  margin: 4px 0 8px 0;
 }
