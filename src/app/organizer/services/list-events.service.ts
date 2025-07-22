@@ -15,11 +15,11 @@ export class ListEventsService {
     return this.http.get<any>(this.apiUrl);
   }
 
- getEventById(id: string): Observable<any> {
+  getEventById(id: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
-}
+  }
 
-updateEvent(eventId: number, data: any, logo?: File, background?: File): Observable<any> {
+  updateEvent(eventId: number, data: any, logo?: File, background?: File): Observable<any> {
     const formData = new FormData();
 
     formData.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' }));
