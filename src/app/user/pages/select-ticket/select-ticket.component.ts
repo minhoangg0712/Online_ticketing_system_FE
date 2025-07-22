@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { EventsService } from '../../services/events.service';
 import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
 import { ActivatedRoute } from '@angular/router';
+import { TicketOrderService } from '../../services/ticket-order.service';
 
 @Component({
   selector: 'app-select-ticket',
@@ -21,7 +22,9 @@ export class SelectTicketComponent {
   @ViewChild('notification') notification!: ToastNotificationComponent;
 
   constructor(private router: Router,
-    private eventsService: EventsService, private route: ActivatedRoute) {}
+    private eventsService: EventsService, 
+    private route: ActivatedRoute,
+    private ticketOrderService: TicketOrderService) {}
   
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -35,30 +38,26 @@ export class SelectTicketComponent {
     });
   }
   
-  tickets: any[] = [
-    { name: 'COURTSIDE', price: 1500000, quantity: 0 },
-    { name: 'VIP - A1', price: 700000, quantity: 0 },
-    { name: 'VIP - A2', price: 700000, quantity: 0 },
-    { name: 'VIP - B', price: 700000, quantity: 0 },
-    { name: 'PREMIUM - A1', price: 450000, quantity: 0 },
-    { name: 'PREMIUM - A2', price: 450000, quantity: 0 },
-  ];
-
   loadEventDetail(id: number): void {
     this.eventsService.getEventById(id).subscribe({
       next: (res) => {
         const event = res?.data;
 
         // Lấy giá đầu tiên từ ticketPrices
+        const ticketTypesMap = event.ticketTypes || {}; 
         const ticketPricesObj = event.ticketPrices || {};
         const price = Object.values(ticketPricesObj)[0] || 0;
 
         // Chuyển ticketPrices object thành mảng để hiển thị danh sách
-        const ticketPrices = Object.entries(ticketPricesObj).map(([type, price]) => ({
-          type,
-          price,
-          quantity: 0
-        }));
+        const ticketPrices = Object.entries(ticketPricesObj).map(([type, price]) => {
+          const ticketId = +Object.keys(ticketTypesMap).find(key => ticketTypesMap[key] === type)!;
+          return {
+            id: ticketId,
+            type,
+            price,
+            quantity: 0
+          };
+        });
 
         const fullAddress = event.address || event.addressName || '';
 
@@ -103,7 +102,7 @@ export class SelectTicketComponent {
 
   increaseQuantity(ticket: any): void {
     const index = this.eventData.ticketPrices.findIndex((t: any) => t.type === ticket.type);
-    if (index !== -1) {
+    if (index !== -1 && this.eventData.ticketPrices[index].quantity < 5) {
       this.eventData.ticketPrices[index].quantity++;
     }
   }
@@ -114,7 +113,6 @@ export class SelectTicketComponent {
       this.eventData.ticketPrices[index].quantity--;
     }
   }
-
 
   get totalAmount(): number {
     return (this.eventData.ticketPrices || []).reduce(
@@ -128,6 +126,30 @@ export class SelectTicketComponent {
 
   get totalTicketCount(): number {
     return (this.eventData.ticketPrices || []).reduce((sum: number, t: any) => sum + t.quantity, 0);
+  }
+
+  proceedToOrder() {
+    const selectedTickets = this.eventData.ticketPrices
+      .filter((t: any) => t.quantity > 0)
+      .map((t: any) => ({
+        ticketId: t.id,
+        type: t.type,
+        price: t.price,
+        quantity: t.quantity,
+        total: t.price * t.quantity
+      }));
+
+    const totalAmount = selectedTickets.reduce((acc: number, item: any) => acc + item.total, 0);
+
+    const orderData = {
+      eventId: this.eventData.id,
+      tickets: selectedTickets,
+      totalAmount: totalAmount
+      // discountCode: "ABC"
+    };
+
+    this.ticketOrderService.setOrder(orderData);
+    this.router.navigate(['/order-ticket']);
   }
 
   backToDetails(eventId: number): void {

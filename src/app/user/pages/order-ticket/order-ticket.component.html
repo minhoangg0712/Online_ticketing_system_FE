@@ -1,7 +1,8 @@
-<div class="header-border">
+<app-loading [show]="isLoading"></app-loading>
+<div class="header-border" *ngIf="!isLoading && orderData">
   <div class="event-header">
     <div class="event-details">
-      <h1 class="event-title">Tên sự kiện</h1>
+      <h1 class="event-title">{{ orderData?.eventName }}</h1>
       <hr class="event-divider" />
       <p class="event-address">Địa chỉ: Thiên Sơn Plaza</p>
       <p class="event-time">Thời gian: 20:00 - 23:00, 16 tháng 5 năm 2025</p>
@@ -21,7 +22,7 @@
   </div>
 </div>
 
-<div class="payment-section">
+<div class="payment-section" *ngIf="!isLoading">
   <h2 class="section-title">Thanh toán</h2>
     <div class="payment-container">
         <div class="left-panel">
@@ -41,37 +42,48 @@
             </div>
         </div>
 
-        <div class="right-panel">
+        <div class="right-panel" >
             <div class="box">
-                <p class="box-order">Thông tin đặt vé</p>
-                <div class="info-row">
-                  <span>Loại vé</span>
-                  <span>Số lượng</span>
-                </div>
-                <div class="info-row">
-                  <span>GA</span>
-                  <span>02</span>
-                </div>
-                <div class="info-row">
-                  <span>330.000 ₫</span>
-                  <span>330.000 ₫</span>
-                </div>
-            </div>
+              <p class="box-order">Thông tin đặt vé</p>
 
+              <div class="info-row">
+                <div class="info-labels"> 
+                  <span><strong>Loại vé</strong></span>
+                  <span><strong>Số lượng</strong></span>
+                </div>
+              </div>
+
+              <ng-container *ngFor="let ticket of orderData?.tickets">
+                <div class="info-row">
+                  <span>{{ ticket.type }}</span>
+                  <span>{{ ticket.quantity | number:'2.0' }}</span>
+                </div>
+                <div class="info-row price-row">
+                  <span>{{ ticket.price | number:'1.0-0' }} đ</span>
+                  <span>{{ (ticket.price * ticket.quantity) | number:'1.0-0' }} đ</span>
+                </div>
+                <hr class="event-divider" />
+              </ng-container>
+            </div>
               <div class="box">
                 <div class="info-row">
                   <span>Tạm tính</span>
-                  <span>660.000 ₫</span>
+                  <span>{{ orderData?.totalAmount | number: '1.0-0' }} đ</span>
                 </div>
                   <hr class="event-divider" />
                 <div class="total-row">
                   <span>Tổng tiền</span>
-                  <span>660.000 ₫</span>
+                  <span>{{ orderData?.totalAmount | number: '1.0-0' }} đ</span>
                 </div>
-                <button class="pay-button" type="button">
+                <button class="pay-button" type="button" (click)="submitOrder()">
                 Thanh toán
                 </button>
               </div>
         </div>
     </div>
 </div>
+
+<app-toast-notification
+  #notification
+  (onClose)="onNotificationClose()">
+</app-toast-notification>
