@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../pop-up/loading/loading.component';
 import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
 import { Router } from '@angular/router';
+import { EventsService } from '../../services/events.service';
 
 @Component({
   selector: 'app-order-ticket',
@@ -17,6 +18,7 @@ export class OrderTicketComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   @ViewChild('notification') notification!: ToastNotificationComponent;
   showNotification = false;
+  eventDetail: any;
 
   minutes: string = '15';
   seconds: string = '00';
@@ -26,7 +28,8 @@ export class OrderTicketComponent implements OnInit, OnDestroy {
   private isBrowser: boolean;
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object,
-    private ticketOrderService: TicketOrderService) {
+    private ticketOrderService: TicketOrderService,
+    private eventsService: EventsService) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
@@ -36,9 +39,29 @@ export class OrderTicketComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.orderData = this.ticketOrderService.getOrder();
+
+      if (!this.orderData) {
+        if (!this.isBrowser) return;
+        const orderDataString = sessionStorage.getItem('orderData');
+        if (orderDataString) {
+          try {
+            this.orderData = JSON.parse(orderDataString);
+          } catch (error) {
+            console.error('Lỗi parse orderData từ sessionStorage:', error);
+          }
+        }
+      }
+
+      // Nếu orderData có eventId thì bạn có thể gọi loadEventDetail ở đây (nếu cần)
+      const eventId = this.orderData?.eventId;
+      if (eventId) {
+        this.loadEventDetail(eventId); // Gọi hàm của bạn
+      }
+
       this.isLoading = false;
     }, 100);
   }
+
 
   ngOnDestroy() {
     if (this.interval) {
@@ -65,8 +88,6 @@ export class OrderTicketComponent implements OnInit, OnDestroy {
       } else {
         // Timer đã hết hạn
         this.resetTimer();
-        this.notification.showNotification('Hết thời gian đặt vé. Vui lòng chọn lại vé !', 5000, 'warning');
-        this.router.navigate(['/select-ticket']);
       }
     } else {
       // Lần đầu tiên vào trang trong session
@@ -119,10 +140,28 @@ export class OrderTicketComponent implements OnInit, OnDestroy {
     }
 
     const eventId = this.orderData?.eventId; 
-    this.notification.showNotification('Hết thời gian đặt vé. Vui lòng chọn lại vé !', 5000, 'warning');
-    this.router.navigate(['/select-ticket'], { queryParams: { eventId: eventId } });
-  }
 
+    // Hiển thị thông báo
+    this.notification.showNotification('Hết thời gian đặt vé. Vui lòng chọn lại vé !', 3000, 'warning');
+
+    // Chuyển hướng sau 3 giây (thời gian hiển thị thông báo)
+    setTimeout(() => {
+      if (eventId) {
+        this.router.navigate(['/select-ticket', eventId]);
+      }
+    }, 3000);
+  } 
+
+  loadEventDetail(eventId: number) {
+    this.eventsService.getEventById(eventId).subscribe({
+      next: (res) => {
+        this.eventDetail = res.data; // <- Chỉ lấy phần 'data'
+      },
+      error: (err) => {
+        console.error('Lỗi khi load chi tiết sự kiện:', err);
+      }
+    });
+  }
 
   submitOrder() {
     this.ticketOrderService.orderTickets(this.orderData).subscribe({

@@ -1,26 +1,36 @@
 <app-loading [show]="isLoading"></app-loading>
-<div class="header-border" *ngIf="!isLoading && orderData">
-  <div class="event-header">
-    <div class="event-details">
-      <h1 class="event-title">{{ orderData?.eventName }}</h1>
-      <hr class="event-divider" />
-      <p class="event-address">Địa chỉ: Thiên Sơn Plaza</p>
-      <p class="event-time">Thời gian: 20:00 - 23:00, 16 tháng 5 năm 2025</p>
-    </div>
-    <div class="countdown-box">
-      <p class="countdown-title">Hoàn tất đặt vé trong</p>
+<div class="header-border" *ngIf="!isLoading && eventDetail"
+     [ngStyle]="{ 'background-image': 'url(' + eventDetail.backgroundUrl + ')', 'background-size': 'cover', 'background-position': 'center' }">
+  
+  <!-- Overlay mờ -->
+  <div class="overlay">
+    <div class="event-header">
+      <div class="event-details">
+        <h1 class="event-title">{{ eventDetail.eventName }}</h1>
+        <hr class="event-divider" />
+        <p class="event-address">
+          <i class="fa fa-map-marker"></i> {{ eventDetail.address }}
+        </p>
+        <p class="event-time">
+          <i class="fa fa-calendar"></i>
+          {{ eventDetail.startTime | date:'HH:mm' }} - 
+          {{ eventDetail.endTime | date:'HH:mm' }},
+          {{ eventDetail.startTime | date:'dd MMMM, yyyy' }}
+        </p>
+      </div>
+
+      <div class="countdown-box">
+        <p class="countdown-title">Hoàn tất đặt vé trong</p>
         <div class="timer-display">
-            <div class="time-unit">
-              <span class="time-value">{{ minutes }}</span>
-            </div>
-            <div class="separator">:</div>
-            <div class="time-unit">
-              <span class="time-value">{{ seconds }}</span>
-            </div>
+          <div class="time-unit"><span class="time-value">{{ minutes }}</span></div>
+          <div class="separator">:</div>
+          <div class="time-unit"><span class="time-value">{{ seconds }}</span></div>
         </div>
+      </div>
     </div>
   </div>
 </div>
+
 
 <div class="payment-section" *ngIf="!isLoading">
   <h2 class="section-title">Thanh toán</h2>
