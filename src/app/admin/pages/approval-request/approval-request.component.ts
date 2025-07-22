@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../service/admin.service';
-
+import { HttpClient } from '@angular/common/http'; // Add HttpClient import
 interface Event {
   id: number;
   title: string;
@@ -71,7 +71,7 @@ export class ApprovalRequestComponent {
     rejected: 0
   };
 
-  constructor(private adminService: AdminService) {}
+  constructor(private adminService: AdminService, private http: HttpClient) {}
 
   ngOnInit() {
     this.loadEvents();
@@ -146,6 +146,105 @@ export class ApprovalRequestComponent {
     });
   }
 
+  // Export Excel for a single event
+  exportEventExcel(eventId: number) {
+    this.loading = true;
+    const url = `http://localhost:8080/api/events/${eventId}/report/excel`;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (response: Blob) => {
+        this.downloadFile(response, `event_${eventId}_report.xlsx`);
+        this.showSuccess('Xuất file Excel thành công!');
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error exporting Excel:', error);
+        this.showError('Có lỗi xảy ra khi xuất file Excel!');
+        this.loading = false;
+      }
+    });
+  }
+
+  // Optional: Batch export Excel for selected events
+  batchExportExcel() {
+    if (this.selectedEvents.length === 0) {
+      this.showError('Vui lòng chọn ít nhất một sự kiện để xuất!');
+      return;
+    }
+
+    this.loading = true;
+    const exportPromises = this.selectedEvents.map(eventId => {
+      const url = `http://localhost:8080/api/events/${eventId}/report/excel`;
+      return this.http.get(url, { responseType: 'blob' }).toPromise().then((response: Blob | undefined) => {
+        if (response) {
+          this.downloadFile(response, `event_${eventId}_report.xlsx`);
+        }
+      });
+    });
+
+    Promise.all(exportPromises)
+      .then(() => {
+        this.showSuccess(`Đã xuất ${this.selectedEvents.length} file Excel thành công!`);
+        this.loading = false;
+      })
+      .catch(error => {
+        console.error('Error batch exporting Excel:', error);
+        this.showError('Có lỗi xảy ra khi xuất hàng loạt file Excel!');
+        this.loading = false;
+      });
+  }
+
+  // Utility method to download file
+  private downloadFile(blob: Blob, fileName: string) {
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+    window.URL.revokeObjectURL(link.href);
+  }
+    // Export PDF for a single event
+  exportEventPdf(eventId: number) {
+    this.loading = true;
+    const url = `http://localhost:8080/api/events/${eventId}/report/pdf`;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (response: Blob) => {
+        this.downloadFile(response, `event_${eventId}_report.pdf`);
+        this.showSuccess('Xuất file PDF thành công!');
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error exporting PDF:', error);
+        this.showError('Có lỗi xảy ra khi xuất file PDF!');
+        this.loading = false;
+      }
+    });
+  }
+
+  // Batch export PDF
+  batchExportPdf() {
+    if (this.selectedEvents.length === 0) {
+      this.showError('Vui lòng chọn ít nhất một sự kiện để xuất!');
+      return;
+    }
+    this.loading = true;
+    const exportPromises = this.selectedEvents.map(eventId => {
+      const url = `http://localhost:8080/api/events/${eventId}/report/pdf`;
+      return this.http.get(url, { responseType: 'blob' }).toPromise().then((response: Blob | undefined) => {
+        if (response) {
+          this.downloadFile(response, `event_${eventId}_report.pdf`);
+        }
+      });
+    });
+    Promise.all(exportPromises)
+      .then(() => {
+        this.showSuccess(`Đã xuất ${this.selectedEvents.length} file PDF thành công!`);
+        this.loading = false;
+      })
+      .catch(error => {
+        console.error('Error batch exporting PDF:', error);
+        this.showError('Có lỗi xảy ra khi xuất hàng loạt file PDF!');
+        this.loading = false;
+      });
+  }
   // Apply filters
   applyFilters() {
     this.filteredEvents = this.events.filter(event => {

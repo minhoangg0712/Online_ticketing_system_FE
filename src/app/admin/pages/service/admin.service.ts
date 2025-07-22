@@ -260,4 +260,12 @@ getEventsByStatus(status: string): Observable<any> {
   getRejectionReason(eventId: number): Observable<any> {
     return this.http.get<any>(`${this.eventsApiUrl}/${eventId}/rejection-reason`);
   }
+
+  exportEventExcel(eventId: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/events/${eventId}/report/excel`, { responseType: 'blob' });
+  }
+
+  exportEventPdf(eventId: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/events/${eventId}/report/pdf`, { responseType: 'blob' });
+  }
 }
