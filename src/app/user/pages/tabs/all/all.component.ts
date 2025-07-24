@@ -57,7 +57,6 @@ export class AllComponent {
         this.ticketOrders = data.sort((a: any, b: any) => {
           return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime();
         });
-        console.log('Orders loaded:', this.ticketOrders);
       },
       error: (err) => {
         console.error('Error loading orders:', err);
