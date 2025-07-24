@@ -63,7 +63,7 @@ export const routes: Routes = [
     component: UserProfileComponent
   },
   {
-    path: 'purchased-ticket',
+    path: 'purchased-ticket/:id',
     component: PurchasedTicketComponent
   },
   {

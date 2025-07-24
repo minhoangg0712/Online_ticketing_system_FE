@@ -207,13 +207,6 @@ body {
   font-weight: bold;
 }
 
-.payment-methods {
-  font-size: 1rem;
-  list-style: disc inside;
-  padding-left: 0;
-  margin: 0;
-}
-
 .info-row {
   display: flex;
   justify-content: space-between;

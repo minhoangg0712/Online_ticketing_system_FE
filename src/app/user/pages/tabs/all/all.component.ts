@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TicketOrderService } from '../../../services/ticket-order.service';
+import { Router} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-all',
@@ -8,47 +11,23 @@ import { CommonModule } from '@angular/common';
   styleUrl: './all.component.css'
 })
 export class AllComponent {
-  tickets: any[] = [];
+  userId: string | null = null;
   selectedTab: string = 'all';
+  ticketOrders: any[] = [];
 
   setTab(tab: string) {
     this.selectedTab = tab;
     this.onTabChange(tab);
   }
-  constructor() { }
+  constructor(private router: Router,private ticketOrderService: TicketOrderService,private route: ActivatedRoute) { }
+
   ngOnInit(): void {
-    this.tickets = [
-      {
-        id: 1,
-        eventName: 'Liveshow Mỹ Tâm',
-        eventDate: '2025-06-30 20:00',
-        seatInfo: 'Ghế A12, Khu VIP',
-        location: 'Nhà hát Hòa Bình',
-        price: '1.200.000đ',
-        type: 'Vé điện tử',
-        status: 'Thành công'
-      },
-      {
-        id: 2,
-        eventName: 'Chung kết Rap Việt',
-        eventDate: '2025-07-05 19:00',
-        seatInfo: 'Ghế B5, Khu Standard',
-        location: 'Sân khấu Lan Anh',
-        price: '750.000đ',
-        type: 'Vé vật lý',
-        status: 'Thành công'
-      },
-      {
-        id: 3,
-        eventName: 'Hòa nhạc Sơn Tùng',
-        eventDate: '2025-08-10 18:30',
-        seatInfo: 'Ghế C1, Khu Premium',
-        location: 'Nhà hát lớn Hà Nội',
-        price: '980.000đ',
-        type: 'Vé điện tử',
-        status: 'Thất bại'
-      }
-    ];
+    this.userId = this.route.snapshot.paramMap.get('id');
+    if (this.userId !== null) {
+      this.loadAllOrders(this.userId);
+    } else {
+      console.error('User ID is null, cannot load orders.');
+    }
   }
 
   private onTabChange(tab: string) {
@@ -69,5 +48,20 @@ export class AllComponent {
   // Method để check xem tab có đang active không
   isTabActive(tab: string): boolean {
     return this.selectedTab === tab;
+  }
+
+  loadAllOrders(userId: string) {
+    this.ticketOrderService.getTicketsByUserId(+userId).subscribe({
+      next: (data) => {
+        // Sắp xếp theo ngày giảm dần (mới nhất lên đầu)
+        this.ticketOrders = data.sort((a: any, b: any) => {
+          return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime();
+        });
+        console.log('Orders loaded:', this.ticketOrders);
+      },
+      error: (err) => {
+        console.error('Error loading orders:', err);
+      }
+    });
   }
 }

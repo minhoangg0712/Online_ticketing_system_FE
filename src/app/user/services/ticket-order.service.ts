@@ -43,10 +43,18 @@ export class TicketOrderService {
     return this.http.post(`${this.apiUrl}/orders`, orderData);
   }
 
+  payOrder(orderData: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8080/api/orders', orderData);
+  }
+
   clearOrder() {
     if (isPlatformBrowser(this.platformId)) {
       sessionStorage.removeItem('orderData');
     }
     this.orderData = null;
+  }
+
+  getTicketsByUserId(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/tickets/user/${userId}`);
   }
 }

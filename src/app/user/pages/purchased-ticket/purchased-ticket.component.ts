@@ -6,6 +6,7 @@ import { CancelComponent } from '../tabs/cancel/cancel.component';
 import { ProcessingComponent } from '../tabs/processing/processing.component';
 import { SuccessComponent } from '../tabs/success/success.component';
 import { Router} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-purchased-ticket',
@@ -14,6 +15,7 @@ import { Router} from '@angular/router';
   styleUrl: './purchased-ticket.component.css'
 })
 export class PurchasedTicketComponent implements OnInit {
+  userId: string | null = null;
   selectedTab: string = 'all';
 
   setTab(tab: string) {
@@ -21,27 +23,24 @@ export class PurchasedTicketComponent implements OnInit {
     this.onTabChange(tab);
   }
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private route: ActivatedRoute) { }
 
-  ngOnInit(): void {}
-
+  ngOnInit() {
+    this.userId = this.route.snapshot.paramMap.get('id');
+  }
 
   private onTabChange(tab: string) {
     switch(tab) {
       case 'all':
-        console.log('Loading all tickets...');
         // Logic cho tab "Tất cả"
         break;
       case 'success':
-        console.log('Loading successful tickets...');
         // Logic cho tab "Thành công"
         break;
       case 'processing':
-        console.log('Loading processing tickets...');
         // Logic cho tab "Đang xử lý"
         break;
       case 'cancel':
-        console.log('Loading cancelled tickets...');
         // Logic cho tab "Đã hủy"
         break;
       default:

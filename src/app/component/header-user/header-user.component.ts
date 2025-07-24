@@ -5,6 +5,8 @@ import { AuthService } from '../../auth/services/auth.service';
 import { UserService } from '../../user/services/user.service';
 import { EventsService } from '../../user/services/events.service';
 import { FormsModule } from '@angular/forms';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common'
 
 @Component({
   selector: 'app-header-user',
@@ -17,11 +19,13 @@ export class HeaderUserComponent {
   private hideTimer: any;
   avatarUrl: string = '';
   searchKeyword: string = '';
+  id: number = 0;
 
   constructor(private router: Router, private authService: AuthService,
     private elementRef: ElementRef,
     private userService: UserService,
-    private eventService: EventsService
+    private eventService: EventsService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
@@ -55,6 +59,18 @@ export class HeaderUserComponent {
   goToHome() {
     this.router.navigate(['/home']);
   }
+
+  goToMyTickets() {
+    if (isPlatformBrowser(this.platformId)) {
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        this.router.navigate([`/purchased-ticket/${userId}`]);
+      } else {
+        console.error('userId not found in localStorage');
+      }
+    }
+  }
+
 
   logout(){
     this.authService.logout();

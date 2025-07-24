@@ -138,7 +138,7 @@
 .ticket-column {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 2rem;
 }
 
 .ticket-text-line1 {
@@ -161,26 +161,26 @@
 
 .middle-line1 {
   width: 5rem;
-  height: 1rem;
-  border-radius: 0.25rem;
-}
-
-.middle-line2 {
-  width: 5rem;
   height: 1.5rem;
   border-radius: 0.25rem;
 }
 
+/* .middle-line2 {
+  width: 5rem;
+  height: 1.5rem;
+  border-radius: 0.25rem;
+} */
+
 .right-line1 {
   width: 6rem;
-  height: 1rem;
+  height: 1.5rem;
   border-radius: 0.25rem;
 }
 
-.right-line2 {
+/* .right-line2 {
   width: 5rem;
-  height: 1.25rem;
+  height: 5rem;
   background-color: #6b7280;
   border-radius: 0.25rem;
-}
+} */
 

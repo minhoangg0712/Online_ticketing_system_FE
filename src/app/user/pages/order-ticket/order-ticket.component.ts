@@ -164,14 +164,25 @@ export class OrderTicketComponent implements OnInit, OnDestroy {
   }
 
   submitOrder() {
-    this.ticketOrderService.orderTickets(this.orderData).subscribe({
-      next: (res) => {
-        console.log('Đặt vé thành công:', res);
-        // Có thể redirect hoặc hiển thị thông báo
+    const paymentData = {
+      ...this.orderData,
+      returnUrl: 'https://url.ngrok-free.app/success',
+      cancelUrl: 'https://url.ngrok-free.app/cancel'
+    };
+
+    this.ticketOrderService.payOrder(paymentData).subscribe({
+      next: (res: any) => {
+        const checkoutUrl = res?.data?.checkoutUrl;
+        if (checkoutUrl) {
+          // 👉 Redirect người dùng sang trang thanh toán PayOS
+          window.location.href = checkoutUrl;
+        } else {
+          this.notification.showNotification('Không tìm thấy liên kết thanh toán!', 3000, 'error');
+        }
       },
       error: (err) => {
         console.error('Lỗi đặt vé:', err);
-        // Có thể hiển thị thông báo lỗi
+        this.notification.showNotification('Không thể đặt vé. Vui lòng thử lại.', 3000, 'error');
       }
     });
   }

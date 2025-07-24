@@ -29,7 +29,7 @@
         <i class="bi bi-caret-down-fill"></i>
       </div>
       <div class="dropdown-menu" [class.show]="isDropdownOpen">
-        <a href="#" class="dropdown-item">Vé đã mua</a>
+        <a class="dropdown-item" (click)="goToMyTickets()">Vé đã mua</a>
         <a href="#" class="dropdown-item">Sự kiện của tôi</a>
         <a href="/user-profile" class="dropdown-item">Tài khoản của tôi</a>
         <a href="#" class="dropdown-item logout" (click)="logout()">Đăng xuất</a>
