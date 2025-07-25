@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { SportsEventComponent } from '../../slides/sports-event/sports-event.component';
 import { WorkshopEventComponent } from '../../slides/workshop-event/workshop-event.component';
 import { OthersEventComponent } from '../../slides/others-event/others-event.component';
+import { ChatbotComponent } from '../../pop-up/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-home-user',
@@ -28,7 +29,8 @@ import { OthersEventComponent } from '../../slides/others-event/others-event.com
     SpecialEventComponent, 
     SportsEventComponent, 
     WorkshopEventComponent,
-    OthersEventComponent],
+    OthersEventComponent,
+    ChatbotComponent],
   templateUrl: './home-user.component.html',
   styleUrl: './home-user.component.css'
 })
