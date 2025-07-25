@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ChatbotService, ChatMessage } from '../../services/chatbot.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,8 +12,10 @@ import { NgModule } from '@angular/core';
 })
 export class ChatbotComponent implements OnInit {
   isOpen = false;
+  isLoading = false;
   userMessage = '';
   messages: ChatMessage[] = [];
+  @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
   constructor(private chatbotService: ChatbotService) {}
 
@@ -25,6 +27,7 @@ export class ChatbotComponent implements OnInit {
     this.isOpen = !this.isOpen;
 
     if (this.isOpen) {
+      this.scrollToBottom()
       this.chatbotService.addBotMessage('Tôi là Eventa Chatbot, xin chào quý khách! 👋');
       this.messages = this.chatbotService.getMessages();
     }
@@ -36,10 +39,29 @@ export class ChatbotComponent implements OnInit {
 
     this.chatbotService.addUserMessage(message);
     this.userMessage = '';
+    this.isLoading = true;
+
     this.messages = this.chatbotService.getMessages();
 
     this.chatbotService.chat(message).subscribe(() => {
       this.messages = this.chatbotService.getMessages();
+      this.isLoading = false; 
     });
   }
+
+  private scrollToBottom(): void {
+    if (this.chatContainer?.nativeElement) {
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    }
+  }
+
+
+  ngAfterViewChecked() {
+    if (this.isOpen) {
+      this.scrollToBottom();
+    }
+  }
+
+
+
 }
