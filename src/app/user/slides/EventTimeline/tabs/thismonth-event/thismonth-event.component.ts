@@ -22,36 +22,34 @@ export class ThismonthEventComponent implements OnInit {
   }
 
   loadEventsThisMonth() {
-  const now = new Date();
+    const now = new Date();
 
-  // Ngày bắt đầu tháng: 01/tháng hiện tại lúc 00:00
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+    // Chuyển sang UTC
+    const startOfMonthUTC = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1, 0, 0, 0));
+    const endOfMonthUTC = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59));
 
-  // Ngày kết thúc tháng: ngày cuối cùng trong tháng lúc 23:59:59.999
-  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    this.eventsService.getRecommendedEvents(
+      '',                // category
+      undefined,         // address
+      startOfMonthUTC.toISOString(),
+      endOfMonthUTC.toISOString()
+    ).subscribe(res => {
+      const events = res?.data?.listEvents || [];
 
-  this.eventsService.getRecommendedEvents(
-    '',                // category
-    undefined,         // address
-    startOfMonth.toISOString(),
-    endOfMonth.toISOString()
-  ).subscribe(res => {
-    const events = res?.data?.listEvents || [];
+      this.items = events.map((event: any) => ({
+        id: event.eventId,
+        eventName: event.eventName,
+        backgroundUrl: event.backgroundUrl,
+        startTime: event.startTime,
+        title: event.eventName,
+        price: event.minPrice,
+        date: this.formatDate(event.startTime)
+      }));
 
-    this.items = events.map((event: any) => ({
-      id: event.eventId,
-      eventName: event.eventName,
-      backgroundUrl: event.backgroundUrl,
-      startTime: event.startTime,
-      title: event.eventName,
-      price: event.minPrice,
-      date: this.formatDate(event.startTime)
-    }));
-
-    this.startIndex = 0;
-    this.updateVisibleItems();
-  });
-}
+      this.startIndex = 0;
+      this.updateVisibleItems();
+    });
+  }
 
   formatDate(isoDate: string): string {
     const date = new Date(isoDate);
