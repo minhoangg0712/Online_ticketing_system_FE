@@ -1,7 +1,7 @@
 .main-content {
   padding: 24px;
   box-sizing: border-box;
-  background: linear-gradient(135deg, #a2694b6e 0%, #000000 100%);
+  background: linear-gradient(135deg, #a2694b6e 30%, #000000 100%);
   min-height: 100vh;
 }
 
