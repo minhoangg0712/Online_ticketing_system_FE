@@ -16,7 +16,7 @@ body {
 }
 
 .sidebar {
-  width: 240px;
+  width: 250px;
   background: linear-gradient(135deg, #000000 0%, #a2694bbb 100%);
   position: fixed;
   top: 0;
@@ -35,6 +35,7 @@ body {
 
 .nav-links li {
   margin-bottom: 8px;
+  font-family: 'Inter', sans-serif;
 }
 
 .nav-item {
@@ -75,7 +76,7 @@ body {
 
 .main-content {
   flex: 1;
-  margin-left: 240px;
+  margin-left: 250px;
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s ease;
@@ -155,6 +156,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  font-family: 'Inter', sans-serif;
 }
 
 .user-info:hover {
