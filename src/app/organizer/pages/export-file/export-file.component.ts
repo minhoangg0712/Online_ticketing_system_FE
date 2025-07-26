@@ -20,6 +20,7 @@ export class ExportFileComponent implements OnInit {
   startDate: string = '';
   endDate: string = '';
   showFilter = false;
+  searchTerm: string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -65,6 +66,35 @@ export class ExportFileComponent implements OnInit {
       return eventTime >= start && eventTime <= end;
     });
     this.showFilter = false;
+  }
+
+  onSearchChange(): void {
+    if (!this.searchTerm.trim()) {
+      this.filteredEvents = [...this.events];
+    } else {
+      const searchLower = this.searchTerm.toLowerCase().trim();
+      this.filteredEvents = this.events.filter(event => {
+        // Tìm kiếm theo tên sự kiện
+        const nameMatch = event.eventName && event.eventName.toLowerCase().includes(searchLower);
+        
+        // Tìm kiếm theo địa điểm
+        const venueMatch = event.addressName && event.addressName.toLowerCase().includes(searchLower);
+        
+        // Tìm kiếm theo thể loại
+        const categoryMatch = event.category && event.category.toLowerCase().includes(searchLower);
+        
+        // Tìm kiếm theo mô tả
+        const descriptionMatch = event.description && event.description.toLowerCase().includes(searchLower);
+        
+        return nameMatch || venueMatch || categoryMatch || descriptionMatch;
+      });
+    }
+  }
+
+  // Xóa tìm kiếm
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.filteredEvents = [...this.events];
   }
 
   openDetail(event: any): void {
