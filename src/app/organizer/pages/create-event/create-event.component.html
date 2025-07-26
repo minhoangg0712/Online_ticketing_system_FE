@@ -9,7 +9,7 @@
         <input #eventLogoInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'eventLogo')">
         <ng-container *ngIf="!eventLogoPreview; else eventLogo">
           <div class="upload-placeholder">
-            <img src="assets/icons/upload-icon.svg" width="24" height="24" />
+            <i class="fa-solid fa-circle-plus"></i>
             <div class="text-center">Thêm logo sự kiện<br/>(720x958)</div>
           </div>
         </ng-container>
@@ -26,7 +26,7 @@
         <input #eventBackgroundInput type="file" accept="image/*" hidden (change)="onImageSelected($event, 'eventBackground')">
         <ng-container *ngIf="!eventBackgroundPreview; else background">
           <div class="upload-placeholder">
-            <img src="assets/icons/image-icon.svg" width="24" height="24" />
+            <i class="fa-solid fa-circle-plus"></i>
             <div class="text-center">Thêm ảnh nền sự kiện<br/>(1280x720)</div>
           </div>
         </ng-container>

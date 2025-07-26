@@ -457,7 +457,7 @@ select.input-field {
 }
 
 .btn-add {
-  background: linear-gradient(135deg, #ff7e42 0%, #e66d34 100%);
+  background-color: #ff7e42;
   color: white;
   border: none;
   padding: 0.7rem 1.2rem;
@@ -470,13 +470,11 @@ select.input-field {
   align-items: center;
   gap: 0.5rem;
   margin-top: 1rem;
-  box-shadow: 0 4px 12px rgba(255, 126, 66, 0.3);
   letter-spacing: 0.025em;
 }
 
 .btn-add:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(255, 126, 66, 0.3);
 }
 
 .remove-btn-row {
@@ -507,7 +505,7 @@ select.input-field {
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background-color: #ff7e42;
   color: white;
   border: none;
   padding: 0.7rem 1.2rem;
@@ -519,19 +517,16 @@ select.input-field {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
   letter-spacing: 0.025em;
 }
 
 .btn-submit:hover:not(:disabled) {
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .btn-submit:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .btn-submit:disabled {
@@ -580,7 +575,6 @@ select.input-field {
 
 .btn-cancel:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
 }
 
 .btn-cancel:disabled {
