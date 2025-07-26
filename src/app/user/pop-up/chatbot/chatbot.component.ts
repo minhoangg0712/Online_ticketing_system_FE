@@ -28,7 +28,7 @@ export class ChatbotComponent implements OnInit {
 
     if (this.isOpen) {
       this.scrollToBottom()
-      this.chatbotService.addBotMessage('Tôi là Eventa Chatbot, xin chào quý khách! 👋');
+      this.chatbotService.addBotMessage('Chào bạn! Mình là Eventa – trợ lý ảo luôn sẵn sàng hỗ trợ bạn 24/7 ');
       this.messages = this.chatbotService.getMessages();
     }
   }
