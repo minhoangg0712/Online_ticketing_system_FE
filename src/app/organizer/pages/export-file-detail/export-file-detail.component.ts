@@ -22,6 +22,7 @@ interface TicketTypeStats {
   soldQuantity: number;
   remainingQuantity: number;
   price: number;
+  revenue: number;
 }
 
 // Giao diện cho tổng thống kê
@@ -31,6 +32,7 @@ interface TicketStats {
   remainingTickets: number;
   totalRevenue: number;
   ticketTypes: TicketTypeStats[];
+  revenue?: number;
 }
 
 @Component({
@@ -128,7 +130,8 @@ export class ExportFileDetailComponent implements OnInit {
               totalQuantity: totalQuantity,
               soldQuantity: soldQuantity,
               remainingQuantity: totalQuantity - soldQuantity,
-              price: price
+              price: price,
+              revenue: soldQuantity * price
             });
           });
         }

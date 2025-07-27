@@ -49,6 +49,7 @@
             <th>Đã bán</th>
             <th>Còn lại</th>
             <th>Giá vé</th>
+            <th>Doanh thu</th>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +59,7 @@
             <td>{{ ticket.soldQuantity }}</td>
             <td>{{ ticket.remainingQuantity }}</td>
             <td>{{ formatCurrency(ticket.price) }}</td>
+            <td>{{ formatCurrency(ticket.revenue) }}</td>
           </tr>
         </tbody>
       </table>
