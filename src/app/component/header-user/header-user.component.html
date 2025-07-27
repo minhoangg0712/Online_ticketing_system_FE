@@ -9,6 +9,7 @@
       class="search-box" 
       placeholder="Bạn tìm gì hôm nay?" 
       [(ngModel)]="searchKeyword"
+      (keydown.enter)="searchByEventName()"
       />
       <i class="fas fa-search search-icon"
       (click)="searchByEventName()"></i>
