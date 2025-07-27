@@ -102,6 +102,7 @@ export class DetailTicketComponent implements OnInit {
           eventName: event.eventName,
           description: event.description,
           startTime: event.startTime,
+          ticketsSaleStartTime: event.ticketsSaleStartTime,
           backgroundUrl: event.backgroundUrl,
           organizerName: event.organizerName,
           organizerBio: event.organizerBio,
@@ -204,6 +205,13 @@ export class DetailTicketComponent implements OnInit {
     const eventDate = new Date(this.eventData.startTime);
     return now > eventDate;
   }
+
+  canBuyTicket(): boolean {
+    const now = new Date();
+    const startTime = new Date(this.eventData.ticketsSaleStartTime);
+    return now >= startTime;
+  }
+
 
   getGoogleMapUrl(addressDetail: string, addressName: string): string {
     const fullAddress = `${addressDetail}, ${addressName}`;
