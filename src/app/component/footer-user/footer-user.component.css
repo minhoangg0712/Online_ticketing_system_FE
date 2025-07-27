@@ -1,7 +1,7 @@
 .footer {
   background-color: #DDDDE3;
   padding: 40px 0 20px;
-  font-family: Inter, sans-serif;
+  font-family: 'Inter', sans-serif;
   color: #333;
   border-top: 1px solid #e0e0e0;
 }
@@ -99,7 +99,6 @@
   color: #ff7e42;
 }
 
-/* Right Section */
 .footer-right {
   display: flex;
   flex-direction: column;

@@ -11,7 +11,7 @@ html, body {
   align-items: center;
   height: 94vh; 
   background: linear-gradient(135deg, #fff6f2, #ffffff);
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   padding-top: 40px;
   overflow: hidden; 
 }
@@ -127,38 +127,36 @@ html, body {
   display: block;
 }
 
-/* Đảm bảo container của password có chiều cao cố định */
 .mb-3.position-relative {
-  min-height: 80px; /* Chiều cao tối thiểu để chứa input + error */
+  min-height: 80px;
 }
 
 .password-toggle {
   background: none;
   border: none;
   position: absolute;
-  top: 38px; /* Vị trí cố định từ top của container */
+  top: 38px; 
   right: 12px;
   cursor: pointer;
   color: #7f8c8d;
   transition: color 0.2s;
-  z-index: 10; /* Đảm bảo button luôn ở trên */
+  z-index: 10; 
 }
 
 .password-toggle:hover {
   color: #ff7e42;
 }
 
-/* Form Controls - Fixed width */
 .form-control {
-  width: 100%; /* Chiều rộng đồng nhất cho tất cả input */
+  width: 100%; 
   padding: 12px 16px;
   border: 1px solid #dcdde1;
   border-radius: 10px;
   font-size: 14px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   outline: none;
-  font-family: 'Segoe UI', sans-serif;
-  box-sizing: border-box; /* Đảm bảo padding được tính trong width */
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box; 
 }
 
 .mb-3.position-relative .form-control {
@@ -185,9 +183,8 @@ html, body {
   font-size: 12px;
 }
 
-/* Buttons - Centered */
 .btn {
-  width: 100%; /* Button có cùng chiều rộng với form-control */
+  width: 100%; 
   justify-content: center;
   display: flex;
   align-items: center;
@@ -199,7 +196,7 @@ html, body {
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
   font-family: 'Segoe UI', sans-serif;
-  margin: 0 auto; /* Center button */
+  margin: 0 auto; 
 }
 
 .btn-primary {
@@ -229,13 +226,11 @@ html, body {
   transform: translateY(-2px);
 }
 
-/* Messages */
 p {
   font-size: 14px;
   margin-bottom: 15px;
 }
 
-/* Alert */
 .alert {
   padding: 12px 16px;
   border-radius: 10px;
@@ -250,7 +245,6 @@ p {
   color: #0c5460;
 }
 
-/* Bootstrap utility classes */
 .d-flex {
   display: flex;
 }
@@ -307,7 +301,7 @@ p {
   .btn {
     font-size: 14px;
     padding: 10px;
-    width: 100%; /* Đảm bảo button full width trên mobile */
+    width: 100%; 
   }
   
   .mb-3 label {
