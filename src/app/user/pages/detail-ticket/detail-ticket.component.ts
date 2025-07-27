@@ -188,7 +188,7 @@ export class DetailTicketComponent implements OnInit {
       });
     } else {
       this.notification.showNotification(
-        'Bạn phải đăng nhập để sử dụng chức năng này.',
+        'Vui lòng đăng nhập để mua vé sự kiện này !',
         5000,
         "warning",
       );

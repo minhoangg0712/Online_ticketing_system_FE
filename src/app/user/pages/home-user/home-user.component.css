@@ -1,3 +1,7 @@
+.main-content {
+  font-family: 'Inter', sans-serif;
+}
+
 .sub-navbar {
   padding: 10px 0;
   border-bottom: 1px solid #000;
@@ -21,12 +25,13 @@
   white-space: nowrap;
   max-width: 1250px;
   width: 100%;
+  gap: 1rem;
 }
 
 .sub-nav-item {
-  margin-right: 30px;
   color: black;
   font-weight: 500;
+  font-size: 16px;
   cursor: pointer;
   transition: color 0.3s;
   white-space: nowrap;
@@ -102,6 +107,11 @@ button.btn-light {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.detail-button:hover {
+  background-color: #ff7e42;
+  color: white;
 }
 
 .arrow {

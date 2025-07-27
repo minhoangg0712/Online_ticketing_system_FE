@@ -44,7 +44,7 @@
   width: 320px;
   height: 460px;
   margin-right: 30%;
-  background: #ffffff;
+  background: #fafafa;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   display: flex;
@@ -162,18 +162,14 @@
 .loading-container {
   text-align: center;
   margin-top: 12px;
-}
-
-.loading-text {
-  color: #666;
-  font-size: 12px;
-  margin-bottom: 8px;
+  background-color: #fafafa;
 }
 
 .dot-loader {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #fafafa;
 }
 
 .dot-loader span {
@@ -221,7 +217,7 @@
   border-radius: 20px;
   outline: none;
   font-size: 14px;
-  font-family: 'Segoe UI', sans-serif; 
+  font-family: 'Inter', sans-serif; 
   background: #f0f2f5; 
 }
 
