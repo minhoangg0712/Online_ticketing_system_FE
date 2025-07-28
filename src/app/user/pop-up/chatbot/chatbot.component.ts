@@ -13,6 +13,7 @@ import { NgModule } from '@angular/core';
 export class ChatbotComponent implements OnInit {
   isOpen = false;
   isLoading = false;
+  showSuggestions = false;
   userMessage = '';
   messages: ChatMessage[] = [];
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
@@ -55,13 +56,27 @@ export class ChatbotComponent implements OnInit {
     }
   }
 
-
   ngAfterViewChecked() {
     if (this.isOpen) {
       this.scrollToBottom();
     }
   }
 
-
+  toggleSuggestions() {
+    this.showSuggestions = !this.showSuggestions;
+  }
+  suggestedQuestions: string[] = [
+    'Sự kiện nào đang được mở bán?',
+    'Làm sao để mua vé?',
+    'Tôi có thể thanh toán bằng phương thức nào?',
+    'Sau khi mua vé xong tôi sẽ nhận được vé như thế nào?',
+    'Tôi không nhận được vé thì phải làm sao?'
+  ];
+  
+  sendSuggestedQuestion(question: string) {
+    this.userMessage = question;
+    this.sendMessage(); // Gửi câu hỏi như người dùng tự gõ
+    this.showSuggestions = false;
+  }
 
 }
