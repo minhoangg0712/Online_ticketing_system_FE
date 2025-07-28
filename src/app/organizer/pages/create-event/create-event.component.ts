@@ -321,14 +321,15 @@ export class CreateEventComponent implements OnInit {
         ticketType: ticket.name,
         quantityTotal: ticket.quantity,
         price: ticket.price
-      }))
+      })),
+      discounts: this.ticketForm.value.discounts
     };
 
     const payload = { ...eventData, ...ticketData };
 
     this.createEventService.createEvent(payload, this.eventLogoFile, this.eventBackgroundFile)
       .pipe(
-        timeout(30000), // Set a timeout of 30 seconds for file upload
+        timeout(50000), // Set a timeout of 30 seconds for file upload
         catchError(err => {
           console.error('Request error:', err);
           this.isSubmitting = false;
