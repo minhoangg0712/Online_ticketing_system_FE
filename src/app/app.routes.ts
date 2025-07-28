@@ -24,6 +24,7 @@ import { PaymentTicketsComponent } from './user/pages/payment-tickets/payment-ti
 import { RegisterOrganizerComponent } from './auth/register-organizer/register-organizer.component';
 import { ExportFileDetailComponent } from './organizer/pages/export-file-detail/export-file-detail.component';
 import { SliderCaptchaComponent } from './user/pages/slider-captcha/slider-captcha.component';
+import { ReviewsEventComponent } from './organizer/pages/reviews-event/reviews-event.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -41,7 +42,8 @@ export const routes: Routes = [
       { path: 'export-file', component: ExportFileComponent },
       { path: 'create-event', component: CreateEventComponent },
       { path: 'organizer-profile', component: ProfileComponent },
-      { path: 'event-detail/:id', component: HomeOrganizerComponent },
+      { path: 'review-event', component: ExportFileDetailComponent },
+      { path: 'event-detail/:id', component: ReviewsEventComponent },
       { path: 'export-file-detail/:id', component: ExportFileDetailComponent },
     ]
   },
