@@ -82,7 +82,6 @@
       <div class="error-message" *ngIf="eventForm.get('venueName')?.invalid && eventForm.get('venueName')?.touched">
         Vui lòng nhập tên địa điểm
       </div>
-
       <div class="address-grid">
         <div class="address-row">
           <div>
@@ -110,7 +109,6 @@
             </select>
           </div>
         </div>
-
         <div class="address-row">
           <div style="flex: 1;">
             <label for="streetAddress">Số nhà, đường</label>
@@ -141,7 +139,7 @@
     <section class="section-description form-group">
       <label for="description">Thông tin sự kiện</label>
       <textarea id="description" class="input-textarea" rows="10" maxlength="500" placeholder="Mô tả chi tiết..."
-                formControlName="description" (input)="updateCharCount('description', $event)"></textarea>
+        formControlName="description" (input)="updateCharCount('description', $event)"></textarea>
       <div class="char-count">{{ getCharCount('description') }} / 500</div>
     </section>
   </form>
@@ -313,6 +311,83 @@
     <!-- Nút thêm loại vé -->
     <button type="button" class="btn-add" (click)="addTicket()">
       <i class="bi bi-plus-circle"></i> Thêm loại vé
+    </button>
+
+    <h2>Mã giảm giá</h2>
+    <div formArrayName="discounts">
+      <section 
+        class="ticket-box section-discount"
+        *ngFor="let discount of discounts.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div>
+          <label for="discountCode-{{ i }}">Mã giảm giá {{ i + 1 }}</label>
+          <input type="text" id="discountCode-{{ i }}" formControlName="discountCode"
+                placeholder="Nhập mã giảm giá" maxlength="30" class="input-field"
+                [class.error]="discount.get('discountCode')?.invalid && discount.get('discountCode')?.touched" />
+          <div class="error-message" *ngIf="discount.get('discountCode')?.invalid && discount.get('discountCode')?.touched">
+            Vui lòng nhập mã giảm giá
+          </div>
+        </div>
+
+        <div>
+          <label for="discountDescription-{{ i }}">Mô tả giảm giá</label>
+          <input type="text" id="discountDescription-{{ i }}" formControlName="discountDescription"
+                placeholder="Mô tả" maxlength="100" class="input-field"
+                [class.error]="discount.get('discountDescription')?.invalid && discount.get('discountDescription')?.touched" />
+          <div class="error-message" *ngIf="discount.get('discountDescription')?.invalid && discount.get('discountDescription')?.touched">
+            Vui lòng nhập mô tả
+          </div>
+        </div>
+
+        <div>
+          <label for="discountType-{{ i }}">Loại giảm giá</label>
+          <select id="discountType-{{ i }}" formControlName="discountType" class="input-field">
+            <option value="percentage">Phần trăm (%)</option>
+            <option value="fixed_amount">Số tiền cố định (VNĐ)</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="discountValue-{{ i }}">Giá trị giảm</label>
+          <input type="number" id="discountValue-{{ i }}" formControlName="discountValue"
+                placeholder="Giá trị" min="1" class="input-field"
+                [class.error]="discount.get('discountValue')?.invalid && discount.get('discountValue')?.touched" />
+          <div class="error-message" *ngIf="discount.get('discountValue')?.invalid && discount.get('discountValue')?.touched">
+            Vui lòng nhập giá trị giảm hợp lệ
+          </div>
+        </div>
+
+        <div>
+          <label for="discountValidFrom-{{ i }}">Ngày bắt đầu</label>
+          <input type="datetime-local" id="discountValidFrom-{{ i }}" formControlName="discountValidFrom" class="input-field" />
+        </div>
+
+        <div>
+          <label for="discountValidTo-{{ i }}">Ngày kết thúc</label>
+          <input type="datetime-local" id="discountValidTo-{{ i }}" formControlName="discountValidTo" class="input-field" />
+        </div>
+
+        <div>
+          <label for="discountMaxUses-{{ i }}">Số lượt sử dụng tối đa</label>
+          <input type="number" id="discountMaxUses-{{ i }}" formControlName="discountMaxUses"
+                placeholder="Số lượt" min="1" class="input-field"
+                [class.error]="discount.get('discountMaxUses')?.invalid && discount.get('discountMaxUses')?.touched" />
+          <div class="error-message" *ngIf="discount.get('discountMaxUses')?.invalid && discount.get('discountMaxUses')?.touched">
+            Số lượt sử dụng phải lớn hơn 0
+          </div>
+        </div>
+
+        <div class="remove-btn-row" *ngIf="discounts.length > 1">
+          <button type="button" class="btn-remove" (click)="removeDiscount(i)">
+            <i class="bi bi-trash"></i> Xóa
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <button type="button" class="btn-add" (click)="addDiscount()">
+      <i class="bi bi-plus-circle"></i> Thêm mã giảm giá
     </button>
 
     <!-- Nút submit và hủy -->

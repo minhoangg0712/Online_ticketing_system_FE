@@ -64,16 +64,16 @@ export class CreateEventComponent implements OnInit {
   districts: LocationData[] = [];
   wards: LocationData[] = [];
 
-  defaultEventDescription = `Thông tin sự kiện (mẫu) [Trình bày ngắn gọn sự kiện 10% Nội dung chính...]
+  defaultEventDescription = 
+  `Thông tin sự kiện (mẫu) [Trình bày ngắn gọn sự kiện 10% Nội dung chính...]
+  CÁC LƯU Ý KHI TẠO SỰ KIỆN:
+  - Khán giả: [Thông tin khách mời...]
+  - Thời gian/dự kiến diễn ra sự kiện: [Thời gian, quà tặng...]
 
-CÁC LƯU Ý KHI TẠO SỰ KIỆN:
-- Khán giả: [Thông tin khách mời...]
-- Thời gian/dự kiến diễn ra sự kiện: [Thời gian, quà tặng...]
-
-ĐỊA ĐIỂM DIỄN RA SỰ KIỆN:
-[Địa chỉ cụ thể]
-Lưu ý: dự kiến khách mời
-Lưu ý: dự kiến khách VVIP`;
+  ĐỊA ĐIỂM DIỄN RA SỰ KIỆN:
+  [Địa chỉ cụ thể]
+  Lưu ý: dự kiến khách mời
+  Lưu ý: dự kiến khách VVIP`;
 
   @Output() formChange = new EventEmitter<any>();
 
@@ -117,7 +117,8 @@ Lưu ý: dự kiến khách VVIP`;
       eventTime: ['', Validators.required],
       eventEndDate: ['', Validators.required],
       eventEndTime: ['', Validators.required],
-      tickets: this.fb.array([this.createTicketGroup()])
+      tickets: this.fb.array([this.createTicketGroup()]),
+      discounts: this.fb.array([this.createDiscount()])
     });
   }
 
@@ -560,7 +561,29 @@ Lưu ý: dự kiến khách VVIP`;
     control.setValue(numberValue, { emitEvent: false });
   }
   
-  
+  createDiscount(): FormGroup {
+  return this.fb.group({
+    discountCode: ['', Validators.required],
+    discountDescription: ['', Validators.required],
+    discountType: ['percentage', Validators.required],
+    discountValue: [null, [Validators.required, Validators.min(1)]],
+    discountValidFrom: ['', Validators.required],
+    discountValidTo: ['', Validators.required],
+    discountMaxUses: [1, [Validators.required, Validators.min(1)]],
+  });
+  }
+
+  get discounts(): FormArray {
+    return this.ticketForm.get('discounts') as FormArray;
+  }
+
+  addDiscount() {
+    this.discounts.push(this.createDiscount());
+  }
+
+  removeDiscount(index: number) {
+    this.discounts.removeAt(index);
+  }
 
   // Toast notification methods
   showSuccessToast(message: string): void {
