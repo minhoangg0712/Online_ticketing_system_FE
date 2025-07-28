@@ -58,4 +58,8 @@ export class NavOrganizerComponent implements OnInit {
   goToProfile(): void {
     this.router.navigate(['/organizer/organizer-profile']);
   }
+
+  goToReviewEvent(): void {
+    this.router.navigate(['/organizer/review-event']);
+  }
 }
