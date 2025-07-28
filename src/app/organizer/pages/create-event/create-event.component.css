@@ -470,7 +470,8 @@ select.input-field {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 10px;
+  margin-bottom: 2rem;
   letter-spacing: 0.025em;
 }
 
