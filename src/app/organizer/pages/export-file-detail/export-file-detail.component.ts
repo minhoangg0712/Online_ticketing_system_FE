@@ -3,6 +3,9 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Location, CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
 import { ListEventsService } from '../../services/list-events.service';
+import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import Chart from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 // Giao diện cho dữ liệu sự kiện
 interface EventData {
@@ -43,6 +46,8 @@ interface TicketStats {
   imports: [CommonModule, RouterModule, HttpClientModule]
 })
 export class ExportFileDetailComponent implements OnInit {
+  @ViewChild('pieChartCanvas', { static: false }) pieChartCanvas!: ElementRef<HTMLCanvasElement>;
+  pieChart: Chart | null = null;
   eventId!: number;
   eventData: EventData | null = null;
 
@@ -77,6 +82,13 @@ export class ExportFileDetailComponent implements OnInit {
 
     this.loadEventData();
     this.loadTicketStatistics();
+  }
+
+  ngAfterViewInit(): void {
+    // Vẽ pie chart nếu đã có dữ liệu
+    if (!this.isLoadingStats && this.ticketStats.ticketTypes.length > 0) {
+      this.renderPieChart();
+    }
   }
 
   goBack(): void {
@@ -131,7 +143,7 @@ export class ExportFileDetailComponent implements OnInit {
               soldQuantity: soldQuantity,
               remainingQuantity: totalQuantity - soldQuantity,
               price: price,
-              revenue: soldQuantity * price
+              revenue: soldQuantity * price,
             });
           });
         }
@@ -149,8 +161,11 @@ export class ExportFileDetailComponent implements OnInit {
           ticketTypes: ticketTypesStats
         };
 
-        console.log('Parsed ticket stats:', this.ticketStats); // Debug log
+        console.log('Parsed ticket stats:', this.ticketStats); 
         this.isLoadingStats = false;
+
+        // Vẽ lại pie chart khi có dữ liệu
+        setTimeout(() => this.renderPieChart(), 0);
       },
       error: err => {
         console.error('Lỗi khi tải thống kê vé:', err);
@@ -158,6 +173,92 @@ export class ExportFileDetailComponent implements OnInit {
       }
     });
   }
+renderPieChart(): void {
+  if (!this.pieChartCanvas) return;
+  const ctx = this.pieChartCanvas.nativeElement.getContext('2d');
+  if (!ctx) return;
+
+  if (this.pieChart) {
+    this.pieChart.destroy();
+  }
+
+  const labels = this.ticketStats.ticketTypes.map(t => t.ticketType);
+  const data = this.ticketStats.ticketTypes.map(t => t.soldQuantity);
+  const backgroundColors = [
+    '#ff7e42', '#3498db', '#2ecc71', '#e74c3c',
+    '#9b59b6', '#f1c40f', '#1abc9c', '#34495e'
+  ];
+  const total = data.reduce((a, b) => a + b, 0);
+
+  this.pieChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Số vé đã bán',
+        data,
+        backgroundColor: backgroundColors.slice(0, labels.length),
+        borderRadius: 6,
+        barThickness: 40
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false // ẩn vì label đã hiển thị theo trục
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context: any) {
+              const value = context.parsed.y;
+              return `${context.label}: ${value} vé`;
+            }
+          }
+        },
+        datalabels: {
+          anchor: 'end',
+          align: 'start',
+          color: '#ffffffff',
+          font: {
+            weight: 'bold',
+            size: 13
+          },
+          formatter: function(value: number, context: any) {
+            // value là số vé đã bán của loại đó
+            // tổng số vé đã bán là tổng các cột
+            const dataset = context.chart.data.datasets[0].data;
+            const totalSold = dataset.reduce((a: number, b: number) => a + b, 0);
+            const percent = totalSold ? ((value / totalSold) * 100).toFixed(1) : 0;
+            return `${percent}%`;
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#fff'
+          },
+          grid: {
+            color: '#444'
+          }
+        },
+        y: {
+          beginAtZero: true,
+          max: data.reduce((a, b) => a + b, 0),
+          ticks: {
+            color: '#fff'
+          },
+          grid: {
+            color: '#444'
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+  }
+
 
   formatCurrency(amount: number): string {
     return new Intl.NumberFormat('vi-VN', {
