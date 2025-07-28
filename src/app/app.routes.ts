@@ -25,6 +25,7 @@ import { RegisterOrganizerComponent } from './auth/register-organizer/register-o
 import { ExportFileDetailComponent } from './organizer/pages/export-file-detail/export-file-detail.component';
 import { SliderCaptchaComponent } from './user/pages/slider-captcha/slider-captcha.component';
 import { ReviewsEventComponent } from './organizer/pages/reviews-event/reviews-event.component';
+import { ReviewTicketComponent } from './user/pages/review-ticket/review-ticket.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -49,41 +50,16 @@ export const routes: Routes = [
   },
 
   // Home và các route liên quan
-  {
-    path: 'home', component: HomeUserComponent
-  },
-  {
-    path: 'detail-ticket/:id',
-    component: DetailTicketComponent
-  },
-  {
-    path: 'select-ticket/:id',
-    component: SelectTicketComponent
-  },
-  {
-    path: 'user-profile',
-    component: UserProfileComponent
-  },
-  {
-    path: 'purchased-ticket/:id',
-    component: PurchasedTicketComponent
-  },
-  {
-    path: 'order-ticket',
-    component: OrderTicketComponent
-  },
-  {
-    path: 'search-events',
-    component: SearchEventsComponent
-  },
-  {
-    path: 'payment-tickets',
-    component: PaymentTicketsComponent
-  },
-  {
-    path: 'slider-captcha',
-    component: SliderCaptchaComponent
-  },
+  { path: 'home', component: HomeUserComponent },
+  { path: 'detail-ticket/:id', component: DetailTicketComponent },
+  { path: 'select-ticket/:id', component: SelectTicketComponent },
+  { path: 'user-profile', component: UserProfileComponent },
+  { path: 'purchased-ticket/:id', component: PurchasedTicketComponent },
+  { path: 'order-ticket', component: OrderTicketComponent },
+  { path: 'search-events', component: SearchEventsComponent },
+  { path: 'payment-tickets', component: PaymentTicketsComponent },
+  { path: 'slider-captcha', component: SliderCaptchaComponent },
+  { path: 'review-ticket/:id', component: ReviewTicketComponent },
 
   {
     path: 'admin',
