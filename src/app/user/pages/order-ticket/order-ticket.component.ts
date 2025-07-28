@@ -6,19 +6,52 @@ import { LoadingComponent } from '../../pop-up/loading/loading.component';
 import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
 import { Router } from '@angular/router';
 import { EventsService } from '../../services/events.service';
+import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { CanComponentDeactivate } from '../../../auth/services/pending-changes.guard';
 
 @Component({
   selector: 'app-order-ticket',
-  imports: [ CommonModule, LoadingComponent, ToastNotificationComponent],
+  imports: [ CommonModule, LoadingComponent, ToastNotificationComponent, FormsModule],
   templateUrl: './order-ticket.component.html',
   styleUrl: './order-ticket.component.css'
 })
-export class OrderTicketComponent implements OnInit, OnDestroy {
+export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeactivate {
+
+  async canDeactivate(): Promise<boolean> {
+    const result = await Swal.fire({
+      title: 'Bạn có chắc muốn rời khỏi trang?',
+      text: 'Dữ liệu đặt vé sẽ bị huỷ!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Rời khỏi',
+      cancelButtonText: 'Ở lại',
+      reverseButtons: true,
+      customClass: {
+        popup: 'my-swal-popup',
+        title: 'my-swal-title',
+        htmlContainer: 'my-swal-text',
+        confirmButton: 'my-swal-confirm',
+        cancelButton: 'my-swal-cancel'
+      }
+    });
+
+    if (result.isConfirmed) {
+      sessionStorage.removeItem('orderData');
+      sessionStorage.removeItem(this.STORAGE_KEY);
+      this.resetTimer();
+      return true;
+    }
+
+    return false;
+  }
+
   orderData: any;
   isLoading: boolean = true;
   @ViewChild('notification') notification!: ToastNotificationComponent;
   showNotification = false;
   eventDetail: any;
+  discountCode: string = '';
 
   minutes: string = '15';
   seconds: string = '00';
@@ -166,6 +199,7 @@ export class OrderTicketComponent implements OnInit, OnDestroy {
   submitOrder() {
     const paymentData = {
       ...this.orderData,
+      discountCode: this.discountCode,
       returnUrl: 'https://url.ngrok-free.app/success',
       cancelUrl: 'https://url.ngrok-free.app/cancel'
     };
@@ -174,7 +208,6 @@ export class OrderTicketComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         const checkoutUrl = res?.data?.checkoutUrl;
         if (checkoutUrl) {
-          // 👉 Redirect người dùng sang trang thanh toán PayOS
           window.location.href = checkoutUrl;
         } else {
           this.notification.showNotification('Không tìm thấy liên kết thanh toán!', 3000, 'error');

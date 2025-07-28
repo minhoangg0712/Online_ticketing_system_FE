@@ -26,6 +26,7 @@ import { ExportFileDetailComponent } from './organizer/pages/export-file-detail/
 import { SliderCaptchaComponent } from './user/pages/slider-captcha/slider-captcha.component';
 import { ReviewsEventComponent } from './organizer/pages/reviews-event/reviews-event.component';
 import { ReviewTicketComponent } from './user/pages/review-ticket/review-ticket.component';
+import { PendingChangesGuard } from './auth/services/pending-changes.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -55,7 +56,7 @@ export const routes: Routes = [
   { path: 'select-ticket/:id', component: SelectTicketComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'purchased-ticket/:id', component: PurchasedTicketComponent },
-  { path: 'order-ticket', component: OrderTicketComponent },
+  { path: 'order-ticket', component: OrderTicketComponent, canDeactivate: [PendingChangesGuard] },
   { path: 'search-events', component: SearchEventsComponent },
   { path: 'payment-tickets', component: PaymentTicketsComponent },
   { path: 'slider-captcha', component: SliderCaptchaComponent },
