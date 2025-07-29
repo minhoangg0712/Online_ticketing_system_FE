@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable,forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 export class AdminService {
   private apiUrl = 'http://localhost:8080/api/users';
   private eventsApiUrl = 'http://localhost:8080/api/events';
+  private ordersApiUrl = 'http://localhost:8080/api/orders';
 
   constructor(private http: HttpClient) {}
 
@@ -267,5 +268,50 @@ getEventsByStatus(status: string): Observable<any> {
 
   exportEventPdf(eventId: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/events/${eventId}/report/pdf`, { responseType: 'blob' });
+  }
+   // Lấy danh sách đơn hàng
+
+  getOrders(params: {
+    status?: string,
+    startAmount?: number,
+    endAmount?: number,
+    startTime?: string,
+    endTime?: string,
+    page?: number,
+    size?: number
+  }): Observable<any> {
+    let queryParams = new HttpParams();
+    if (params.status) queryParams = queryParams.set('status', params.status);
+    if (params.startAmount !== undefined && params.startAmount !== null) {
+      queryParams = queryParams.set('startAmount', params.startAmount.toString());
+    }
+    if (params.endAmount !== undefined && params.endAmount !== null) {
+      queryParams = queryParams.set('endAmount', params.endAmount.toString());
+    }
+    if (params.startTime) queryParams = queryParams.set('startTime', params.startTime);
+    if (params.endTime) queryParams = queryParams.set('endTime', params.endTime);
+    queryParams = queryParams.set('page', (params.page || 0).toString());
+    queryParams = queryParams.set('size', (params.size || 10).toString());
+
+    return this.http.get<any>(`${this.ordersApiUrl}/list`, { params: queryParams });
+  }
+
+  getOrderCountByStatus(status: string): Observable<number> {
+    return this.getOrders({ status }).pipe(
+      map(response => {
+        if (response && response.data && response.data.listOrders && Array.isArray(response.data.listOrders)) {
+          return response.data.totalItems || response.data.listOrders.length;
+        }
+        return 0;
+      })
+    );
+  }
+
+   getOrderDetail(orderPayOSCode: number): Observable<any> {
+    return this.http.get<any>(`${this.ordersApiUrl}/${orderPayOSCode}`);
+  }
+  cancelOrder(orderPayOSCode: number, cancellationReason: string): Observable<any> {
+    const body = { cancellationReason: cancellationReason || 'Đã hủy bởi quản trị viên' };
+    return this.http.put<any>(`${this.ordersApiUrl}/${orderPayOSCode}`, body);
   }
 }

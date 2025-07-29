@@ -24,13 +24,13 @@ import { PaymentTicketsComponent } from './user/pages/payment-tickets/payment-ti
 import { RegisterOrganizerComponent } from './auth/register-organizer/register-organizer.component';
 import { ExportFileDetailComponent } from './organizer/pages/export-file-detail/export-file-detail.component';
 import { SliderCaptchaComponent } from './user/pages/slider-captcha/slider-captcha.component';
-
+import { OrdersRequestComponent } from './admin/pages/orders-request/orders-request.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'register-organizer', component: RegisterOrganizerComponent },
-  
+
   {
     path: 'organizer',
     component: NavOrganizerComponent,
@@ -91,6 +91,7 @@ export const routes: Routes = [
       { path: '', component: DashboardComponent },
       { path: 'approval-request', component: ApprovalRequestComponent },
       { path: 'user-management', component: UserManagementComponent },
+      { path: 'orders-request', component: OrdersRequestComponent },
     ],
   },
 
