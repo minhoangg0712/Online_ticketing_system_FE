@@ -38,9 +38,13 @@
         <div class="left-panel">
             <div class="box">
               <p class="box-title">Mã khuyến mãi</p>
-
-              <!-- Ô nhập mã khuyến mãi -->
-              <input type="text" [(ngModel)]="discountCode" placeholder="Nhập mã khuyến mãi" class="promo-input" />
+              
+              <div class="promo-box-v1">
+                <div class="promo-input-group-v1">
+                  <input type="text" [(ngModel)]="discountCode" placeholder="Nhập mã khuyến mãi" class="promo-input" />
+                  <button class="promo-button-v1">Áp dụng</button>
+                </div>
+              </div>    
             </div>
         </div>
 

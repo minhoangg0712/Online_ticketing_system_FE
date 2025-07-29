@@ -190,21 +190,48 @@ body {
   margin: 0 0 1.75rem 0;
 }
 
-.promo-button {
-  font-size: 1rem;
-  border: 1px solid black;
-  border-radius: 9999px;
-  padding: 0.25rem 0.75rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: transparent;
+.promo-box-v1 {
+  background: linear-gradient(135deg, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+        
+.promo-input-group-v1 {
+  display: flex;
+  border: 2px solid #e9ecef;
+  border-radius: 25px;
+  overflow: hidden;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.promo-input-group-v1:focus-within {
+  border-color: #fb8442;
+  box-shadow: 0 0 0 3px rgba(251, 132, 66, 0.1);
+}
+
+.promo-input{
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+}
+
+.promo-button-v1 {
+  background: linear-gradient(135deg, #fb8442, #ff6b35);
+  border: none;
+  padding: 12px 20px;
+  color: white;
+  font-weight: 500;
   cursor: pointer;
 }
 
-.promo-icon {
-  font-size: 14px;
-  font-weight: bold;
+.promo-button-v1:hover {
+  background: linear-gradient(135deg, #ff6b35, #fb8442);
 }
 
 .info-row {
@@ -221,9 +248,6 @@ body {
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
-
-
-
 
 .total-row {
   display: flex;

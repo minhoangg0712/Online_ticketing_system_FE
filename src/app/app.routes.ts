@@ -24,14 +24,11 @@ import { PaymentTicketsComponent } from './user/pages/payment-tickets/payment-ti
 import { RegisterOrganizerComponent } from './auth/register-organizer/register-organizer.component';
 import { ExportFileDetailComponent } from './organizer/pages/export-file-detail/export-file-detail.component';
 import { SliderCaptchaComponent } from './user/pages/slider-captcha/slider-captcha.component';
-<<<<<<< HEAD
 import { OrdersRequestComponent } from './admin/pages/orders-request/orders-request.component';
-=======
 import { ReviewsEventComponent } from './organizer/pages/reviews-event/reviews-event.component';
 import { ReviewTicketComponent } from './user/pages/review-ticket/review-ticket.component';
 import { PendingChangesGuard } from './auth/services/pending-changes.guard';
 
->>>>>>> c9cd21859e3c707595e13d11bec49c5ea136d1f8
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

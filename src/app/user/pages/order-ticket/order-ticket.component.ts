@@ -39,6 +39,7 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
     if (result.isConfirmed) {
       sessionStorage.removeItem('orderData');
       sessionStorage.removeItem(this.STORAGE_KEY);
+      clearInterval(this.interval);
       this.resetTimer();
       return true;
     }
@@ -196,6 +197,8 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
     });
   }
 
+  
+
   submitOrder() {
     const paymentData = {
       ...this.orderData,
@@ -214,8 +217,14 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
         }
       },
       error: (err) => {
-        console.error('Lỗi đặt vé:', err);
-        this.notification.showNotification('Không thể đặt vé. Vui lòng thử lại.', 3000, 'error');
+        const errorMsg = err?.error?.message;
+
+        if (errorMsg === 'Discount code not found') {
+          this.notification.showNotification('Mã giảm giá không hợp lệ. Vui lòng kiểm tra lại!', 3000, 'warning');
+        } else {
+          console.error('Lỗi đặt vé:', err);
+          this.notification.showNotification('Không thể đặt vé. Vui lòng thử lại.', 3000, 'error');
+        }
       }
     });
   }
