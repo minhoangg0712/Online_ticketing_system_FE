@@ -1,3 +1,31 @@
+/* Pagination styles */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+}
+.pagination-container .btn {
+  min-width: 36px;
+  padding: 7px 0;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #ff7e42;
+  background: #fff;
+  color: #ff7e42;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+.pagination-container .btn.active,
+.pagination-container .btn:hover:not(:disabled) {
+  background: #ff7e42;
+  color: #fff;
+}
+.pagination-container .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .event-container {
   max-width: 100%;
   height: 100%;
