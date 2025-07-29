@@ -24,7 +24,14 @@ import { PaymentTicketsComponent } from './user/pages/payment-tickets/payment-ti
 import { RegisterOrganizerComponent } from './auth/register-organizer/register-organizer.component';
 import { ExportFileDetailComponent } from './organizer/pages/export-file-detail/export-file-detail.component';
 import { SliderCaptchaComponent } from './user/pages/slider-captcha/slider-captcha.component';
+<<<<<<< HEAD
 import { OrdersRequestComponent } from './admin/pages/orders-request/orders-request.component';
+=======
+import { ReviewsEventComponent } from './organizer/pages/reviews-event/reviews-event.component';
+import { ReviewTicketComponent } from './user/pages/review-ticket/review-ticket.component';
+import { PendingChangesGuard } from './auth/services/pending-changes.guard';
+
+>>>>>>> c9cd21859e3c707595e13d11bec49c5ea136d1f8
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -41,47 +48,23 @@ export const routes: Routes = [
       { path: 'export-file', component: ExportFileComponent },
       { path: 'create-event', component: CreateEventComponent },
       { path: 'organizer-profile', component: ProfileComponent },
+      { path: 'review-event', component: ReviewsEventComponent },
       { path: 'event-detail/:id', component: HomeOrganizerComponent },
       { path: 'export-file-detail/:id', component: ExportFileDetailComponent },
     ]
   },
 
   // Home và các route liên quan
-  {
-    path: 'home', component: HomeUserComponent
-  },
-  {
-    path: 'detail-ticket/:id',
-    component: DetailTicketComponent
-  },
-  {
-    path: 'select-ticket/:id',
-    component: SelectTicketComponent
-  },
-  {
-    path: 'user-profile',
-    component: UserProfileComponent
-  },
-  {
-    path: 'purchased-ticket/:id',
-    component: PurchasedTicketComponent
-  },
-  {
-    path: 'order-ticket',
-    component: OrderTicketComponent
-  },
-  {
-    path: 'search-events',
-    component: SearchEventsComponent
-  },
-  {
-    path: 'payment-tickets',
-    component: PaymentTicketsComponent
-  },
-  {
-    path: 'slider-captcha',
-    component: SliderCaptchaComponent
-  },
+  { path: 'home', component: HomeUserComponent },
+  { path: 'detail-ticket/:id', component: DetailTicketComponent },
+  { path: 'select-ticket/:id', component: SelectTicketComponent },
+  { path: 'user-profile', component: UserProfileComponent },
+  { path: 'purchased-ticket/:id', component: PurchasedTicketComponent },
+  { path: 'order-ticket', component: OrderTicketComponent, canDeactivate: [PendingChangesGuard] },
+  { path: 'search-events', component: SearchEventsComponent },
+  { path: 'payment-tickets', component: PaymentTicketsComponent },
+  { path: 'slider-captcha', component: SliderCaptchaComponent },
+  { path: 'review-ticket/:id', component: ReviewTicketComponent },
 
   {
     path: 'admin',

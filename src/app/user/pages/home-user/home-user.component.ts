@@ -73,6 +73,7 @@ export class HomeUserComponent implements OnInit {
       'Nhạc sống': 'Music',
       'Sân khấu & Nghệ thuật': 'Theatre-Arts',
       'Thể Thao': 'Sport',
+      'Workshop': 'Workshop',
       'Khác': 'Other'
     };
 

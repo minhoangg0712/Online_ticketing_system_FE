@@ -102,6 +102,7 @@ export class DetailTicketComponent implements OnInit {
           eventName: event.eventName,
           description: event.description,
           startTime: event.startTime,
+          ticketsSaleStartTime: event.ticketsSaleStartTime,
           backgroundUrl: event.backgroundUrl,
           organizerName: event.organizerName,
           organizerBio: event.organizerBio,
@@ -188,7 +189,7 @@ export class DetailTicketComponent implements OnInit {
       });
     } else {
       this.notification.showNotification(
-        'Bạn phải đăng nhập để sử dụng chức năng này.',
+        'Vui lòng đăng nhập để mua vé sự kiện này !',
         5000,
         "warning",
       );
@@ -204,6 +205,13 @@ export class DetailTicketComponent implements OnInit {
     const eventDate = new Date(this.eventData.startTime);
     return now > eventDate;
   }
+
+  canBuyTicket(): boolean {
+    const now = new Date();
+    const startTime = new Date(this.eventData.ticketsSaleStartTime);
+    return now >= startTime;
+  }
+
 
   getGoogleMapUrl(addressDetail: string, addressName: string): string {
     const fullAddress = `${addressDetail}, ${addressName}`;

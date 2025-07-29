@@ -3,7 +3,7 @@
   width: 100%;
   background-color: #ff7e42;
   box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   position: relative;
 }
 
@@ -60,6 +60,7 @@
   transform: translateY(-50%);
   color: #999;
   font-size: 16px;
+  cursor: pointer;
 }
 
 /* Navigation Buttons */

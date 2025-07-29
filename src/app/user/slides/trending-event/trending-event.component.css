@@ -19,7 +19,6 @@
   color: black;
   font-size: clamp(16px, 4vw, 18px);
   font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .carousel-container {

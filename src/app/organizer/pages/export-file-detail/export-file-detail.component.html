@@ -15,8 +15,8 @@
     </div>
 
     <div class="event-info-section">
+      <h3>Thông tin sự kiện</h3>
       <div class="info-card">
-        <h3>Thông tin sự kiện</h3>
         <div class="info-grid">
           <div class="info-item">
             <span class="label">Thời gian:</span>
@@ -49,6 +49,7 @@
             <th>Đã bán</th>
             <th>Còn lại</th>
             <th>Giá vé</th>
+            <th>Doanh thu</th>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +59,7 @@
             <td>{{ ticket.soldQuantity }}</td>
             <td>{{ ticket.remainingQuantity }}</td>
             <td>{{ formatCurrency(ticket.price) }}</td>
+            <td>{{ formatCurrency(ticket.revenue) }}</td>
           </tr>
         </tbody>
       </table>
@@ -79,6 +81,17 @@
       </button>
     </div>
 
+    <div class="charts-section" *ngIf="!isLoadingStats">
+      <h3 >Tỉ lệ vé bán ra</h3>
+      <div class="charts-wrapper">
+        <div class="chart-box">
+          <canvas #pieChartCanvas width="320" height="320"></canvas>
+        </div>
+        <div class="chart-content">
+        </div>
+      </div>
+    </div>
+    
     <!-- Loading stats -->
     <div *ngIf="isLoadingStats" class="loading-stats">
       <div class="loading-spinner"></div>

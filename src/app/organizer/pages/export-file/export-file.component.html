@@ -60,7 +60,7 @@
   </div>
 
   <div class="event-list" *ngIf="!isLoadingList && filteredEvents.length > 0">
-    <div class="event-card" *ngFor="let event of filteredEvents">
+    <div class="event-card" *ngFor="let event of pagedEvents">
       <div class="event-details">
         <h3 class="event-name">
           {{ event.eventName }}
@@ -78,6 +78,18 @@
            Xem chi tiết
         </a>
       </div>
+    </div>
+
+    <!-- Pagination controls -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <button class="btn" (click)="prevPage()" [disabled]="currentPage === 1">&laquo;</button>
+      <button class="btn"
+              *ngFor="let page of [].constructor(totalPages); let i = index"
+              [class.active]="currentPage === (i+1)"
+              (click)="goToPage(i+1)">
+        {{ i + 1 }}
+      </button>
+      <button class="btn" (click)="nextPage()" [disabled]="currentPage === totalPages">&raquo;</button>
     </div>
   </div>
 </div>

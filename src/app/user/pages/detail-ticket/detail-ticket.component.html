@@ -30,12 +30,13 @@
         </div>
         <button
           class="buy-btn"
-          [disabled]="isAllTicketsSoldOut() || eventHasEnded()"
+          [disabled]="isAllTicketsSoldOut() || eventHasEnded() || !canBuyTicket()"
           (click)="needLoginToBuyTicket()"
         >
           {{ 
             eventHasEnded() ? 'Sự kiện đã kết thúc' :
-            isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' 
+            isAllTicketsSoldOut() ? 'Đã hết vé' :
+            !canBuyTicket() ? 'Vé chưa được mở bán' : 'Mua vé ngay'
           }}
         </button>
       </div>
@@ -60,12 +61,13 @@
 <div *ngIf="showHeader" class="sticky-header">
   <span>{{ eventData.eventName }}</span>
   <span> <i class="bi bi-geo-alt"></i> {{ eventData.addressDetail }} </span>
-  <button [disabled]="isAllTicketsSoldOut() || eventHasEnded()"
+  <button [disabled]="isAllTicketsSoldOut() || eventHasEnded() || !canBuyTicket()"
           (click)="needLoginToBuyTicket()"> 
           <i class="bi bi-ticket-detailed"></i> 
           {{ 
             eventHasEnded() ? 'Sự kiện đã kết thúc' :
-            isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' 
+            isAllTicketsSoldOut() ? 'Đã hết vé' :
+            !canBuyTicket() ? 'Vé chưa được mở bán' : 'Mua vé ngay' 
           }}
         </button>
 </div>
@@ -112,11 +114,12 @@
             <span>{{ eventData.startTime | date:'HH:mm dd-MM-yyyy' }}</span>
           </div>
             <button type="button" class="buy-now-button" 
-              [disabled]="isAllTicketsSoldOut() || eventHasEnded()"
+              [disabled]="isAllTicketsSoldOut() || eventHasEnded() || !canBuyTicket()"
               (click)="needLoginToBuyTicket()"> 
                 {{ 
-                eventHasEnded() ? 'Sự kiện đã kết thúc' :
-                isAllTicketsSoldOut() ? 'Đã hết vé' : 'Mua vé ngay' 
+                  eventHasEnded() ? 'Sự kiện đã kết thúc' :
+                  isAllTicketsSoldOut() ? 'Đã hết vé' :
+                  !canBuyTicket() ? 'Vé chưa được mở bán' : 'Mua vé ngay' 
                 }}
             </button>
         </div>

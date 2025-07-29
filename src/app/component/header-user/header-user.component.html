@@ -9,6 +9,7 @@
       class="search-box" 
       placeholder="Bạn tìm gì hôm nay?" 
       [(ngModel)]="searchKeyword"
+      (keydown.enter)="searchByEventName()"
       />
       <i class="fas fa-search search-icon"
       (click)="searchByEventName()"></i>
@@ -30,7 +31,6 @@
       </div>
       <div class="dropdown-menu" [class.show]="isDropdownOpen">
         <a class="dropdown-item" (click)="goToMyTickets()">Vé đã mua</a>
-        <a href="#" class="dropdown-item">Sự kiện của tôi</a>
         <a href="/user-profile" class="dropdown-item">Tài khoản của tôi</a>
         <a href="#" class="dropdown-item logout" (click)="logout()">Đăng xuất</a>
       </div>

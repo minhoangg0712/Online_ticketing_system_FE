@@ -36,17 +36,19 @@ export class HeaderUserComponent {
     } else {}
   }
 
-
   // Hàm tìm kiếm
   searchByEventName() {
     const trimmedKeyword = this.searchKeyword.trim();
+
     if (trimmedKeyword) {
-      // Điều hướng sang trang search-events với query param
       this.router.navigate(['/search-events'], {
         queryParams: { name: trimmedKeyword }
       });
+    } else {
+      this.router.navigate(['/search-events']);
     }
   }
+
 
   goToLogin() {
     this.router.navigate(['/login']);
