@@ -59,22 +59,6 @@ export class SelectTicketComponent {
           };
         });
 
-        const fullAddress = event.address || event.addressName || '';
-
-        const parts = fullAddress.split(',').map((part: string) => part.trim());
-
-        // Đảm bảo có ít nhất 3 phần để lấy SECC - Q7
-        let addressDetail = '';
-        let addressName = '';
-
-        if (parts.length >= 3) {
-          addressDetail = parts[1]; // phần SECC - Q7
-          // ghép lại Quận 7 + từ Ward 8 trở đi
-          addressName = [parts[0], ...parts.slice(2)].join(', ');
-        } else {
-          addressName = fullAddress; // fallback
-        }
-
         this.eventData = {
           id: event.eventId,
           eventName: event.eventName,
@@ -84,11 +68,7 @@ export class SelectTicketComponent {
           organizerName: event.organizerName,
           organizerBio: event.organizerBio,
           organizerAvatarUrl: event.organizerAvatarUrl,
-
-          // ✅ Tách theo yêu cầu
-          addressDetail: addressDetail,
-          addressName: addressName,
-
+          address: event.address,
           price,
           ticketPrices,
         };

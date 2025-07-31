@@ -59,8 +59,8 @@ app-root {
 /* Cancel button (Hủy đơn) */
 .my-swal-cancel {
   background-color: #ffffff !important;
-  color: #28a745 !important;
-  border: 1.5px solid #28a745 !important;
+  color: #ff7e42 !important;
+  border: 1.5px solid #ff7e42 !important;
   border-radius: 25px !important;
   padding: 10px 24px !important;
   font-size: 16px !important;
@@ -72,13 +72,11 @@ app-root {
 
 .my-swal-cancel:hover {
   background-color: #f8f9fa !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2) !important;
 }
 
 /* Confirm button (Ở lại) */
 .my-swal-confirm {
-  background-color: #28a745 !important;
+  background-color: #ff7e42 !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 25px !important;
@@ -91,9 +89,7 @@ app-root {
 }
 
 .my-swal-confirm:hover {
-  background-color: #218838 !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
+  background-color: #ffa56d !important;
 }
 
 /* Icon styling */

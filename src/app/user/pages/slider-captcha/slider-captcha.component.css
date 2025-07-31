@@ -192,7 +192,7 @@
     }
 
     .success-message {
-      color: #4caf50;
+      color: #ff7e42;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -244,13 +244,13 @@
     }
 
     .verify-btn {
-      background: #4285f4;
+      background: #ff7e42;
       color: white;
       flex: 1;
     }
 
     .verify-btn:hover:not(:disabled) {
-      background: #3367d6;
+      background: #ffa56d;
     }
 
     .verify-btn:disabled, .refresh-btn:disabled {

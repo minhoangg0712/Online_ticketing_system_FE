@@ -82,7 +82,7 @@
 }
 
 .ticket-name {
-  color: #22c55e;
+  color: #ff7e42;
   font-weight: bold;
 }
 
@@ -179,7 +179,7 @@
 }
 
 .summary-item span:last-child {
-  color: #4caf50;
+  color: #ff7e42;
   font-weight: 600;
   font-size: 14px;
 }
@@ -236,13 +236,13 @@
 }
 
 .checkout-btn:not(:disabled) {
-  background-color: #22c55e;
+  background-color: #ff7e42;
   color: white;
   cursor: pointer;
 }
 
 .checkout-btn:not(:disabled):hover {
-  background-color: #16a34a;
+  background-color: #ffa56d;
 }
 
 .icon {
