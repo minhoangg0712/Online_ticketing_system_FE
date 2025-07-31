@@ -10,7 +10,7 @@
         <p class="event-info"><span class="label">Bắt đầu:</span> {{ event.startTime | date:'dd/MM/yyyy, HH:mm' }}</p>
         <p class="event-info"><span class="label">Kết thúc:</span> {{ event.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
         <p class="event-info"><span class="label">Cập nhật:</span> {{ event.updateAt | date:'dd/MM/yyyy, HH:mm' }}</p>
-        <p class="event-info"><span class="label">Trạng thái duyệt:</span> 
+        <p class="event-info"><span class="label">Trạng thái:</span> 
           <span class="status" [ngClass]="{
             'status-approved': event.approvalStatus === 'approved',
             'status-pending': event.approvalStatus === 'pending',
@@ -53,7 +53,7 @@
       <p *ngIf="selectedEvent.approvalStatus === 'rejected' && selectedEvent.rejectReason">
         <strong>Lý do từ chối duyệt:</strong> {{ selectedEvent.rejectReason }}
       </p>
-      <p><strong>Trạng thái duyệt:</strong> {{ selectedEvent.approvalStatus | statusTranslate }}</p>
+      <p><strong>Trạng thái:</strong> {{ selectedEvent.approvalStatus | statusTranslate }}</p>
     </div>
   </div>  
 </div>
