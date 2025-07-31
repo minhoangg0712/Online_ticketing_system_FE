@@ -10,7 +10,7 @@
         <p class="event-info"><span class="label">Bắt đầu:</span> {{ event.startTime | date:'dd/MM/yyyy, HH:mm' }}</p>
         <p class="event-info"><span class="label">Kết thúc:</span> {{ event.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
         <p class="event-info"><span class="label">Cập nhật:</span> {{ event.updateAt | date:'dd/MM/yyyy, HH:mm' }}</p>
-        <p class="event-info"><span class="label">Trạng thái duyệt:</span> 
+        <p class="event-info"><span class="label">Trạng thái:</span> 
           <span class="status" [ngClass]="{
             'status-approved': event.approvalStatus === 'approved',
             'status-pending': event.approvalStatus === 'pending',
@@ -21,6 +21,18 @@
       <div class="event-actions">
         <button class="btn btn-view" (click)="openDetail(event)">Xem chi tiết</button>
       </div>
+    </div>
+
+    <!-- Pagination controls -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <button class="btn" (click)="prevPage()" [disabled]="currentPage === 1">&laquo;</button>
+      <button class="btn"
+              *ngFor="let page of [].constructor(totalPages); let i = index"
+              [class.active]="currentPage === (i+1)"
+              (click)="goToPage(i+1)">
+        {{ i + 1 }}
+      </button>
+      <button class="btn" (click)="nextPage()" [disabled]="currentPage === totalPages">&raquo;</button>
     </div>
   </div>
 
