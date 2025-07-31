@@ -523,7 +523,7 @@ select.input-field {
 }
 
 .btn-submit:hover:not(:disabled) {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  background-color: #ff7e42eb;
   transform: translateY(-2px);
 }
 
