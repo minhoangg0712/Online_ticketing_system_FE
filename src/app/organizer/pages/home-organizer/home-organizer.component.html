@@ -25,6 +25,12 @@
     <div class="filter-tab">
       <button 
         class="filter-btn" 
+        [ngClass]="{ 'active': selectedTab === 'ongoing' }"
+        (click)="setTab('ongoing')">
+        Đang diễn ra
+      </button>
+      <button 
+        class="filter-btn" 
         [ngClass]="{ 'active': selectedTab === 'upcoming' }"
         (click)="setTab('upcoming')">
         Sắp tới
@@ -46,6 +52,12 @@
 
   <!-- Nội dung động -->
   <div class="events-list">
+    <app-ongoing 
+      *ngIf="selectedTab === 'ongoing'" 
+      [events]="filteredEvents"
+      (eventsSelected)="onEventSelected($event)">
+    </app-ongoing>  
+
     <app-upcoming 
       *ngIf="selectedTab === 'upcoming'" 
       [events]="filteredEvents"

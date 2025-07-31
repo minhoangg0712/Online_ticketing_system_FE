@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { OngoingComponent } from '../../tabs/ongoing/ongoing.component';
 import { UpcomingComponent } from '../../tabs/upcoming/upcoming.component';
 import { PastComponent } from '../../tabs/past/past.component';
 import { PendingComponent } from '../../tabs/pending/pending.component';
@@ -15,6 +16,7 @@ import { ListEventsService } from '../../services/list-events.service';
     RouterModule,
     CommonModule,
     FormsModule,
+    OngoingComponent, 
     UpcomingComponent,
     PastComponent,
     PendingComponent,
@@ -23,9 +25,11 @@ import { ListEventsService } from '../../services/list-events.service';
   styleUrl: './home-organizer.component.css'
 })
 export class HomeOrganizerComponent implements OnInit {
-  selectedTab: string = 'upcoming';
+  selectedTab: string = 'ongoing';
+  readonly TABS = ['upcoming', 'ongoing', 'past', 'pending'];
   events: any[] = [];
   filteredEvents: any[] = [];
+  tabEvents: { [key: string]: any[] } = {};
   eventId!: number;
   eventData: any;
   selectedEvent: any = null;
@@ -53,12 +57,9 @@ export class HomeOrganizerComponent implements OnInit {
       .subscribe({
         next: res => {
           this.events = res.data.listEvents;
-          this.filteredEvents = [...this.events]; // Khởi tạo filtered events
-          console.log("Danh sách sự kiện:", this.events);
+          this.updateTabEvents();
+          this.filteredEvents = [...this.tabEvents[this.selectedTab] || []];
         },
-        error: err => {
-          console.error('Lỗi khi tải danh sách sự kiện:', err);
-        }
       });
 
     // 2. Gọi API lấy sự kiện theo ID nếu cần
@@ -69,17 +70,15 @@ export class HomeOrganizerComponent implements OnInit {
         next: data => {
           this.eventData = data.data;
           this.selectedEvent = this.eventData;
-          console.log("Chi tiết sự kiện:", this.eventData);
         },
-        error: err => {
-          console.error('Lỗi khi lấy chi tiết sự kiện:', err);
-        }
       });
     }
   }
 
   setTab(tab: string) {
     this.selectedTab = tab;
+    this.filteredEvents = [...this.tabEvents[tab] || []];
+    this.onSearchChange(); // Áp dụng tìm kiếm nếu có
   }
 
   onEventSelected(event: any) {
@@ -88,29 +87,39 @@ export class HomeOrganizerComponent implements OnInit {
 
   // Tìm kiếm theo tên sự kiện
   onSearchChange(): void {
+    const baseEvents = this.tabEvents[this.selectedTab] || [];
     if (!this.searchTerm.trim()) {
-      this.filteredEvents = [...this.events];
+      this.filteredEvents = [...baseEvents];
     } else {
       const searchLower = this.searchTerm.toLowerCase().trim();
-      this.filteredEvents = this.events.filter(event => {
+      this.filteredEvents = baseEvents.filter(event => {
         // Tìm kiếm theo tên sự kiện
         const nameMatch = event.eventName && event.eventName.toLowerCase().includes(searchLower);
-        
         // Tìm kiếm theo địa điểm
         const venueMatch = event.addressName && event.addressName.toLowerCase().includes(searchLower);
-        
         // Tìm kiếm theo thể loại
         const categoryMatch = event.category && event.category.toLowerCase().includes(searchLower);
-        
         // Tìm kiếm theo mô tả
         const descriptionMatch = event.description && event.description.toLowerCase().includes(searchLower);
-        
         return nameMatch || venueMatch || categoryMatch || descriptionMatch;
       });
     }
   }
 
-  // Xóa tìm kiếm
+  // Cập nhật danh sách sự kiện cho từng tab
+  updateTabEvents() {
+    this.tabEvents = {
+      // Đang diễn ra: status = 'upcoming', approvalStatus = 'approved'
+      ongoing: this.events.filter(e => e.status === 'upcoming' && (e.approvalStatus === 'approved' || e.approval_status === 'approved')),
+      // Sắp tới: status = 'upcoming', approvalStatus != 'approved'
+      upcoming: this.events.filter(e => e.status === 'upcoming' && (e.approvalStatus !== 'approved' && e.approval_status !== 'approved')),
+      // Đã qua: status = 'completed'
+      past: this.events.filter(e => e.status === 'completed'),
+      // Chờ duyệt: approvalStatus = 'pending'
+      pending: this.events.filter(e => e.approvalStatus === 'pending' || e.approval_status === 'pending'),
+    };
+  }
+
   clearSearch(): void {
     this.searchTerm = '';
     this.filteredEvents = [...this.events];
