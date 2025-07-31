@@ -40,7 +40,7 @@
               <div class="promo-box-v1">
                 <div class="promo-input-group-v1">
                   <input type="text" [(ngModel)]="discountCode" placeholder="Nhập mã khuyến mãi" class="promo-input" />
-                  <button class="promo-button-v1">Áp dụng</button>
+                  <button class="promo-button-v1" (click)="applyDiscount()">Áp dụng</button>
                 </div>
               </div>    
             </div>
@@ -77,7 +77,7 @@
                   <hr class="event-divider" />
                 <div class="total-row">
                   <span>Tổng tiền</span>
-                  <span>{{ orderData?.totalAmount | number: '1.0-0' }} đ</span>
+                  <span>{{ getFinalAmount() | number: '1.0-0' }} đ</span>
                 </div>
                 <button class="pay-button" type="button" (click)="submitOrder()">
                 Thanh toán

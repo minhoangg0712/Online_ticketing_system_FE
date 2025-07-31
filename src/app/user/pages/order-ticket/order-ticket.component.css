@@ -266,6 +266,10 @@ body {
   cursor: pointer;
 }
 
+.pay-button:hover {
+  background-color: #ff6b35;
+}
+
 .price-row {
   font-size: 0.95rem;
   color: #333;

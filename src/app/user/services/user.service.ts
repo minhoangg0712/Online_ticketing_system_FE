@@ -13,6 +13,7 @@ import { AuthService } from '../../auth/services/auth.service';
 export class UserService {
 
   private apiUrl = 'http://localhost:8080/api/users';
+  private reviewUrl = 'http://localhost:8080/api/review';
 
   constructor( private http: HttpClient,
     private router: Router,
@@ -77,5 +78,17 @@ export class UserService {
     formData.append('file', file); // key là 'file'
 
     return this.http.post(`${this.apiUrl}/upload-profile-picture`, formData);
+  }
+
+  uploadReview(eventId: number, reviewData: any): Observable<any> {
+    return this.http.post(`${this.reviewUrl}/upload/${eventId}`, reviewData);
+  }
+  
+  getReviewsByEvent(eventId: number): Observable<any> {
+    return this.http.get(`${this.reviewUrl}/event/${eventId}`);
+  }
+
+  getDiscountByCode(code: string) {
+    return this.http.get<any>(`http://localhost:8080/api/discounts/${code}`);
   }
 }

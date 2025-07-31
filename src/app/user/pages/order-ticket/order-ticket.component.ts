@@ -9,6 +9,7 @@ import { EventsService } from '../../services/events.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { CanComponentDeactivate } from '../../../auth/services/pending-changes.guard';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-order-ticket',
@@ -19,6 +20,10 @@ import { CanComponentDeactivate } from '../../../auth/services/pending-changes.g
 export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeactivate {
 
   async canDeactivate(): Promise<boolean> {
+    if (this.forceNavigate) {
+      return true; // Bỏ qua Swal nếu đang tự động chuyển trang
+    }
+
     const result = await Swal.fire({
       title: 'Bạn có chắc muốn rời khỏi trang?',
       text: 'Dữ liệu đặt vé sẽ bị huỷ!',
@@ -47,11 +52,14 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
     return false;
   }
 
+  forceNavigate = false;
   orderData: any;
   isLoading: boolean = true;
+  isDiscountValid: boolean = false;
   @ViewChild('notification') notification!: ToastNotificationComponent;
   showNotification = false;
   eventDetail: any;
+  discountAmount: number = 0;
   discountCode: string = '';
 
   minutes: string = '15';
@@ -63,7 +71,8 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object,
     private ticketOrderService: TicketOrderService,
-    private eventsService: EventsService) {
+    private eventsService: EventsService,
+    private userService: UserService) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
@@ -86,10 +95,9 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
         }
       }
 
-      // Nếu orderData có eventId thì bạn có thể gọi loadEventDetail ở đây (nếu cần)
       const eventId = this.orderData?.eventId;
       if (eventId) {
-        this.loadEventDetail(eventId); // Gọi hàm của bạn
+        this.loadEventDetail(eventId);
       }
 
       this.isLoading = false;
@@ -175,12 +183,11 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
 
     const eventId = this.orderData?.eventId; 
 
-    // Hiển thị thông báo
     this.notification.showNotification('Hết thời gian đặt vé. Vui lòng chọn lại vé !', 3000, 'warning');
 
-    // Chuyển hướng sau 3 giây (thời gian hiển thị thông báo)
     setTimeout(() => {
       if (eventId) {
+        this.forceNavigate = true;
         this.router.navigate(['/select-ticket', eventId]);
       }
     }, 3000);
@@ -197,7 +204,82 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
     });
   }
 
-  
+  applyDiscount() {
+    const codeInput = this.discountCode.trim();
+
+    if (!codeInput) {
+      this.discountAmount = 0;
+      this.isDiscountValid = false;
+      this.notification.showNotification('Vui lòng nhập mã giảm giá!', 3000, 'warning');
+      return;
+    }
+
+    this.userService.getDiscountByCode(codeInput).subscribe({
+      next: (res) => {
+        const discount = res?.data;
+        const orderEventId = this.orderData?.eventId;
+        const discountEventId = discount?.event?.eventId;
+
+        if (!orderEventId || !discountEventId || orderEventId !== discountEventId) {
+          this.discountAmount = 0;
+          this.isDiscountValid = false;
+          this.notification.showNotification('Mã giảm giá không áp dụng cho sự kiện này.', 3000, 'warning');
+          return;
+        }
+
+        const now = new Date();
+        const validFrom = new Date(discount.validFrom);
+        const validTo = new Date(discount.validTo);
+
+        if (now < validFrom) {
+          this.discountAmount = 0;
+          this.isDiscountValid = false;
+          this.notification.showNotification('Mã giảm giá chưa bắt đầu áp dụng.', 3000, 'warning');
+          return;
+        }
+
+        if (now > validTo) {
+          this.discountAmount = 0;
+          this.isDiscountValid = false;
+          this.notification.showNotification('Mã giảm giá đã hết hạn. Vui lòng chọn mã khác!', 3000, 'warning');
+          return;
+        }
+
+        if (discount.maxUsage == 0) {
+          this.discountAmount = 0;
+          this.isDiscountValid = false;
+          this.notification.showNotification('Mã giảm giá đã hết lượt sử dụng.', 3000, 'warning');
+          return;
+        }
+
+        const total = this.orderData?.totalAmount || 0;
+
+        if (discount.discountType === 'percentage') {
+          this.discountAmount = Math.floor((discount.value / 100) * total);
+        } else if (discount.discountType === 'fixed_amount') {
+          this.discountAmount = discount.value;
+        }
+
+        this.isDiscountValid = true;
+
+        this.notification.showNotification(
+          `Đã áp dụng mã. Giảm ${this.discountAmount.toLocaleString()} đ`,
+          3000,
+          'success'
+        );
+      },
+      error: () => {
+        this.discountAmount = 0;
+        this.isDiscountValid = false;
+        this.notification.showNotification('Mã giảm giá không hợp lệ.', 3000, 'error');
+      }
+    });
+  }
+
+  getFinalAmount(): number {
+    const total = this.orderData?.totalAmount || 0;
+    return Math.max(total - this.discountAmount, 0);
+  }
 
   submitOrder() {
     const paymentData = {
@@ -211,20 +293,15 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
       next: (res: any) => {
         const checkoutUrl = res?.data?.checkoutUrl;
         if (checkoutUrl) {
+          this.notification.showNotification('Đang chuyển hướng đến trang thanh toán...', 3000, 'info');
           window.location.href = checkoutUrl;
         } else {
           this.notification.showNotification('Không tìm thấy liên kết thanh toán!', 3000, 'error');
         }
       },
       error: (err) => {
-        const errorMsg = err?.error?.message;
-
-        if (errorMsg === 'Discount code not found') {
-          this.notification.showNotification('Mã giảm giá không hợp lệ. Vui lòng kiểm tra lại!', 3000, 'warning');
-        } else {
-          console.error('Lỗi đặt vé:', err);
-          this.notification.showNotification('Không thể đặt vé. Vui lòng thử lại.', 3000, 'error');
-        }
+        console.error('Lỗi đặt vé:', err);
+        this.notification.showNotification('Không thể đặt vé. Vui lòng thử lại.', 3000, 'error');
       }
     });
   }
