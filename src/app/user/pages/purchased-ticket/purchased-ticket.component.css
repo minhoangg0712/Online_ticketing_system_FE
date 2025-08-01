@@ -1,15 +1,16 @@
 .purchased-wrapper {
   display: flex;
-  background: linear-gradient(135deg, #fff6f2, #ffffff);
   color: white;
 }
 
 .sidebar {
   width: 270px;
+  background: #fff6f2;
 }
 
 .content {
   flex: 1;
+  background: #fff6f2;
 }
 
 .container {

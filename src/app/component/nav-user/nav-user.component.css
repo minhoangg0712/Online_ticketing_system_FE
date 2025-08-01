@@ -3,7 +3,7 @@
   align-items: flex-start;
   gap: 1rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #fff6f2, #ffffff);
+  background: 135deg, #fff6f2;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
   flex-direction: row; /* mặc định là row */
