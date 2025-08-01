@@ -1,4 +1,5 @@
-<div class="account-wrapper">
+<app-loading [show]="isLoading"></app-loading>
+<div *ngIf="!isLoading" class="account-wrapper">
 
     <div class="sidebar">
         <app-nav-user></app-nav-user>

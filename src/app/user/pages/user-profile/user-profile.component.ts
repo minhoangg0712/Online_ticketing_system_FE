@@ -6,16 +6,18 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingComponent } from '../../pop-up/loading/loading.component';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [NavUserComponent, CommonModule, ReactiveFormsModule, ToastNotificationComponent],
+  imports: [NavUserComponent, CommonModule, ReactiveFormsModule, ToastNotificationComponent, LoadingComponent],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent {
   profileForm!: FormGroup;
   originalProfileData: any;
+  isLoading: boolean = true;
   selectedFile: File | null = null;
   @ViewChild('notification') notification!: ToastNotificationComponent;
   
@@ -57,6 +59,7 @@ export class UserProfileComponent {
           address: data.address,
           avatarUrl: data.avatarUrl
         });
+        this.isLoading = false;
       },
       error: (err) => {
         // console.error('Lỗi khi lấy thông tin người dùng:', err);
