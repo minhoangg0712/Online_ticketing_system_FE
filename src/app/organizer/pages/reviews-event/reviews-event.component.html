@@ -3,8 +3,18 @@
     <h2>Danh sách sự kiện</h2>
     <div *ngIf="isLoadingEvents">Đang tải danh sách sự kiện...</div>
     <ul *ngIf="!isLoadingEvents">
-        <li *ngFor="let event of events" (click)="selectEvent(event)" style="cursor:pointer; margin-bottom: 10px;">
-        <strong>{{ event.eventName }}</strong> <span *ngIf="event.startTime">({{ event.startTime | date:'dd/MM/yyyy' }})</span>
+        <li *ngFor="let event of events" (click)="selectEvent(event)" style="cursor:pointer; margin-bottom: 18px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <strong>{{ event.eventName }}</strong>
+            </div>
+            <div *ngIf="event.reviewDetails && event.reviewDetails.length > 0 && getAverageRating(event.reviewDetails) !== null" class="event-rating">
+                {{ getAverageRating(event.reviewDetails) }} <span class="star">★</span>
+            </div>
+            <div *ngIf="!event.reviewDetails || event.reviewDetails.length === 0" class="event-no-rating">
+              Chưa có đánh giá
+            </div>
+          </div>
         </li>
         <li *ngIf="events.length === 0">Không có sự kiện nào.</li>
     </ul>
@@ -13,6 +23,7 @@
     <div *ngIf="selectedEvent" class="event-reviews">
     <button (click)="backToList()">&larr; Quay lại danh sách</button>
     <h2>Đánh giá sự kiện: {{ selectedEvent.eventName }}</h2>
+
     <div *ngIf="isLoadingReviews">Đang tải đánh giá...</div>
     <ul *ngIf="!isLoadingReviews && reviews && reviews.length > 0" class="review-list">
         <li *ngFor="let review of reviews">
@@ -20,7 +31,7 @@
         <div class="review-content">
             <div class="review-header">
             <span class="review-user">{{ review.userFullName || 'Ẩn danh' }}</span>
-            <span *ngIf="review.rating" class="review-rating">{{ review.rating }}/5</span>
+            <span *ngIf="review.rating !== undefined && review.rating !== null" class="review-rating">{{ review.rating }}/5</span>
             <span *ngIf="review.reviewDate" class="review-date">{{ review.reviewDate | date:'dd/MM/yyyy HH:mm' }}</span>
             </div>
             <div class="review-comment">{{ review.comment }}</div>

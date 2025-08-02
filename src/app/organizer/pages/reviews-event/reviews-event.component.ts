@@ -29,9 +29,24 @@ export class ReviewsEventComponent implements OnInit {
     this.isLoadingEvents = true;
     this.listEventsService.getEventsByOrganizer().subscribe({
       next: res => {
-        console.log('Danh sách sự kiện trả về:', res);
         this.events = res?.data?.listEvents || [];
         this.isLoadingEvents = false;
+
+        this.events.forEach(event => {
+          const eventId = event.id || event.eventId;
+          if (eventId && event.status === 'completed') {
+            this.reviewsService.getReviewsByEventId(eventId).subscribe({
+              next: reviewRes => {
+                event.reviewDetails = reviewRes?.reviewDetails || [];
+              },
+              error: err => {
+                event.reviewDetails = [];
+              }
+            });
+          } else {
+            event.reviewDetails = [];
+          }
+        });
       },
       error: err => {
         console.error('Lỗi khi lấy danh sách sự kiện:', err);
@@ -41,8 +56,10 @@ export class ReviewsEventComponent implements OnInit {
   }
 
   selectEvent(event: any) {
+    if (event.status !== 'completed') {
+      return;
+    }
     this.selectedEvent = event;
-    console.log('Sự kiện được chọn:', event);
     this.fetchReviews(event.id || event.eventId);
   }
 
@@ -50,19 +67,28 @@ export class ReviewsEventComponent implements OnInit {
     this.isLoadingReviews = true;
     this.reviewsService.getReviewsByEventId(eventId).subscribe({
       next: res => {
-        console.log('Kết quả reviews trả về:', res);
         this.reviews = res?.reviewDetails || [];
         this.isLoadingReviews = false;
       },
       error: err => {
         this.isLoadingReviews = false;
-        console.error('Lỗi khi lấy đánh giá sự kiện:', err);
       }
     });
+  }
+
+  getAverageRating(reviewsArr?: any[]): number | null {
+    const arr = Array.isArray(reviewsArr) ? reviewsArr : this.reviews;
+    if (!Array.isArray(arr) || arr.length === 0) return null;
+    const sum = arr.reduce((acc: number, r: any) => acc + (typeof r.rating === 'number' ? r.rating : 0), 0);
+    return Math.round((sum / arr.length) * 100) / 100;
   }
 
   backToList() {
     this.selectedEvent = null;
     this.reviews = [];
+  }
+
+  trackByEventId(index: number, event: any): number {
+    return event.id || event.eventId;
   }
 }

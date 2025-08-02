@@ -50,12 +50,44 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+
 .event-list li strong {
   font-size: 1.25rem;
   font-weight: 700;
   color: #fff;
   margin-right: 10px;
   letter-spacing: 0.5px;
+}
+
+/* Average rating and no-review styles in event list */
+.event-list .event-rating {
+  font-size: 1.08rem;
+  color: #ffb347;
+  font-weight: 700;
+  background: rgba(255, 126, 66, 0.08);
+  border-radius: 8px;
+  padding: 4px 12px 4px 10px;
+  margin-left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(255, 126, 66, 0.08);
+}
+.event-list .event-rating .star {
+  color: gold;
+  font-size: 1.15em;
+  margin-left: 2px;
+}
+.event-list .event-no-rating {
+  font-size: 1.05rem;
+  color: #bbb;
+  font-weight: 400;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 4px 12px 4px 10px;
+  margin-left: 18px;
+  display: flex;
+  align-items: center;
 }
 
 .event-list li span {
