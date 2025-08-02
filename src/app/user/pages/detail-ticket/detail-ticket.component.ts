@@ -5,6 +5,7 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { ToastNotificationComponent } from '../../pop-up/toast-notification/toast-notification.component';
 import { ActivatedRoute } from '@angular/router';
 import { EventsService } from '../../services/events.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-detail-ticket',
@@ -17,6 +18,10 @@ export class DetailTicketComponent implements OnInit {
   eventData: any = {};
   ticketList: any[] = [];
   events: any[] = [];
+  reviews: any[] = [];
+  averageRating: number = 0;
+  totalReviews: number = 0;
+  stars: string[] = [];
 
   expanded = false;
   showHeader = false;
@@ -40,7 +45,8 @@ export class DetailTicketComponent implements OnInit {
   }
 
   constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute,
-    private eventsService: EventsService) { }
+    private eventsService: EventsService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -53,7 +59,8 @@ export class DetailTicketComponent implements OnInit {
       }
     });
 
-    this.loadEvents(); // Gọi 1 lần duy nhất
+    this.loadEvents();
+    this.loadReviews(this.eventId);
   }
 
   loadEventDetail(id: number): void {
@@ -218,5 +225,46 @@ export class DetailTicketComponent implements OnInit {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
   }
 
+  loadReviews(id: number) {
+    this.userService.getReviewsByEvent(id).subscribe({
+      next: (data) => {
+        this.reviews = data.reviewDetails;
+
+        if (this.reviews.length > 0) {
+          this.totalReviews = this.reviews.length;
+          const sum = this.reviews.reduce((acc, review) => acc + review.rating, 0);
+          this.averageRating = Math.round((sum / this.totalReviews) * 10) / 10;
+
+          this.generateStars();
+        } else {
+          this.totalReviews = 0;
+          this.averageRating = 0;
+          this.stars = [];
+        }
+      },
+      error: (err) => {
+        console.error('Lỗi khi lấy review:', err);
+      }
+    });
+  }
+
+  generateStars() {
+    this.stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= Math.floor(this.averageRating)) {
+        this.stars.push('full');
+      } else if (i - this.averageRating < 1 && this.averageRating % 1 >= 0.5) {
+        this.stars.push('half');
+      } else {
+        this.stars.push('empty');
+      }
+    }
+  }
+
+  goToReview(eventId: number) {
+    this.router.navigate(['/review-ticket', eventId]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
   onNotificationClose() {}
 }

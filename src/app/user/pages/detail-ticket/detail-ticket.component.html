@@ -1,6 +1,5 @@
 <div class="container">
   <div class="card">
-    <!-- Left Panel -->
     <div class="left-panel">
       <div>
         <h2 class="title">{{ eventData.eventName }}</h2>
@@ -45,7 +44,6 @@
       <div class="circle bottom-right"></div>
     </div>
 
-    <!-- Right Panel -->
     <div class="right-panel">
       <img
         [src]="eventData.backgroundUrl"
@@ -74,10 +72,21 @@
 
 <div class="main-content">
   <div class="tp-content"> 
-    <!-- Giới thiệu -->
     <div class="left-container">
       <div class="tp-container">
-        <h2 class="tp-title">Giới thiệu</h2>
+          <div class="header-info">
+            <h2 class="tp-title">Giới thiệu</h2>
+            <div class="rating-box">
+              <ng-container *ngFor="let star of stars">
+                <span *ngIf="star === 'full'" class="star full">★</span>
+                <span *ngIf="star === 'half'" class="star half">★</span>
+                <span *ngIf="star === 'empty'" class="star empty">☆</span>
+              </ng-container>
+              <span>{{ averageRating }}/5 ({{ totalReviews }} đánh giá)</span>
+              <button class="btn-rate" (click)="goToReview(eventId)">Xem đánh giá</button>
+            </div>
+          </div>
+        
         <div class="tp-intro-text">
           <p>{{ eventData.description }}</p>
         </div>
@@ -102,7 +111,6 @@
         </div>
       </div>
 
-      <!-- Thông tin vé -->
       <div class="ticket-container">
         <div class="ticket-header">
           Thông tin vé
@@ -170,7 +178,6 @@
   <div class="event-listing-container">
     <h2 class="section-title">Có thể bạn cũng thích</h2>
     
-    <!-- First row of events -->
     <div class="events-grid">
       <div 
         class="event-card" 
@@ -193,7 +200,6 @@
       </div>
     </div>
 
-    <!-- Second row of events -->
     <div class="events-grid">
       <div 
         class="event-card" 
@@ -214,7 +220,6 @@
       </div>
     </div>
 
-    <!-- Promotional banner -->
     <div class="promotional-banner">
       <img 
         [src]="promotionalBannerUrl" 
@@ -223,7 +228,6 @@
       />
     </div>
 
-    <!-- Third row of events -->
     <div class="events-grid">
       <div 
         class="event-card" 
@@ -244,7 +248,6 @@
       </div>
     </div>
 
-    <!-- Load more button -->
     <div class="load-more-container">
       <button 
         class="load-more-btn"
@@ -255,7 +258,6 @@
     </div>
   </div>
 </div>
-<!-- Thêm dòng này vào cuối file HTML -->
 <app-toast-notification 
   #notification
   (onClose)="onNotificationClose()">

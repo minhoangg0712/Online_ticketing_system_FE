@@ -241,12 +241,17 @@ body {
   z-index: 1;
 }
 
-.tp-title {
-  font-size: 20px;
-  font-weight: bold;
+.header-info {
+  display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid #ccc;
   padding-bottom: 10px;
   margin-bottom: 20px;
+}
+
+.tp-title {
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .tp-intro-text {
@@ -836,3 +841,37 @@ body {
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
+.rating-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.star {
+  font-size: 18px;
+  color: gold;
+}
+
+.star.half {
+  background: linear-gradient(90deg, gold 50%, lightgray 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-rate {
+  background-color: #ff7e42;
+  border: none;
+  font-size: 16px;
+  padding: 5px 10px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-rate:hover {
+  background-color: #e86b33;
+}
+
+
+
