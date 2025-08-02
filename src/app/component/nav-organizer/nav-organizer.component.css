@@ -142,6 +142,7 @@ body {
 }
 
 .user-dropdown {
+  font-family: 'Inter', sans-serif;
   position: relative;
   display: flex;
   align-items: center;
