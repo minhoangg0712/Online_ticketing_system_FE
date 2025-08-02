@@ -2,19 +2,34 @@ import { Component, OnInit } from '@angular/core';
 import { ReviewsService } from '../../services/reviews.service';
 import { ListEventsService } from '../../services/list-events.service';
 import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reviews-event',
   templateUrl: './reviews-event.component.html',
   styleUrl: './reviews-event.component.css',
-  imports: [CommonModule, DatePipe]
+  standalone: true,
+  imports: [CommonModule, DatePipe, FormsModule]
 })
 export class ReviewsEventComponent implements OnInit {
   events: any[] = [];
+  filteredEvents: any[] = [];
   selectedEvent: any = null;
   reviews: any[] = [];
   isLoadingEvents = false;
   isLoadingReviews = false;
+  searchTerm: string = '';
+  selectedStar: number | null = null;
+  showFilter = false;
+
+  // Phân trang
+  currentPage: number = 1;
+  toggleFilter(): void {
+    this.showFilter = !this.showFilter;
+  }
+  pageSize: number = 10;
+  totalPages: number = 1;
+  pagedEvents: any[] = [];
 
   constructor(
     private listEventsService: ListEventsService,
@@ -23,6 +38,7 @@ export class ReviewsEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchEvents();
+    this.filteredEvents = [...this.events];
   }
 
   fetchEvents() {
@@ -31,6 +47,9 @@ export class ReviewsEventComponent implements OnInit {
       next: res => {
         this.events = res?.data?.listEvents || [];
         this.isLoadingEvents = false;
+
+        this.filteredEvents = [...this.events];
+        this.updatePagedEvents();
 
         this.events.forEach(event => {
           const eventId = event.id || event.eventId;
@@ -53,6 +72,12 @@ export class ReviewsEventComponent implements OnInit {
         this.isLoadingEvents = false;
       }
     });
+  }
+  updatePagedEvents(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.pagedEvents = this.filteredEvents.slice(startIndex, endIndex);
+    this.totalPages = Math.ceil(this.filteredEvents.length / this.pageSize);
   }
 
   selectEvent(event: any) {
@@ -90,5 +115,43 @@ export class ReviewsEventComponent implements OnInit {
 
   trackByEventId(index: number, event: any): number {
     return event.id || event.eventId;
+  }
+
+  onSearchChange(): void {
+    let filtered = [...this.events];
+    if (this.searchTerm.trim()) {
+      const searchLower = this.searchTerm.toLowerCase().trim();
+      filtered = filtered.filter(event => {
+        const nameMatch = event.eventName && event.eventName.toLowerCase().includes(searchLower);
+        const venueMatch = event.addressName && event.addressName.toLowerCase().includes(searchLower);
+        const categoryMatch = event.category && event.category.toLowerCase().includes(searchLower);
+        const descriptionMatch = event.description && event.description.toLowerCase().includes(searchLower);
+        return nameMatch || venueMatch || categoryMatch || descriptionMatch;
+      });
+    }
+    if (this.selectedStar) {
+      filtered = filtered.filter(event => {
+        if (!event.reviewDetails || event.reviewDetails.length === 0) return false;
+        const avg = this.getAverageRating(event.reviewDetails);
+        return avg !== null && Math.floor(avg) === this.selectedStar;
+      });
+    }
+    this.filteredEvents = filtered;
+    this.currentPage = 1;
+    this.updatePagedEvents();
+  }
+
+  // Xóa tìm kiếm
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.filteredEvents = [...this.events];
+    this.currentPage = 1;
+    this.updatePagedEvents();
+  }
+  // Xử lý thay đổi bộ lọc số sao
+  onStarFilterChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.selectedStar = value ? Number(value) : null;
+    this.onSearchChange();
   }
 }

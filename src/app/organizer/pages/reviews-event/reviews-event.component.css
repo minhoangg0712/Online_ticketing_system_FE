@@ -1,4 +1,3 @@
-/* Reviews container */
 .reviews-container {
   max-width: 100%;
   height: 100%;
@@ -7,8 +6,137 @@
   font-family: 'Segoe UI', sans-serif;
   color: #fff;
   box-sizing: border-box;
-  background: linear-gradient(135deg, #a2694b6e 0%, #000000 100%);
+  background: linear-gradient(135deg, #a2694b6e 0%, #000000 100%); 
 }
+
+.search-filter-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 30px;
+}
+
+/* Search section */
+.search-section {
+  flex: 1;
+  max-width: 380px;
+}
+
+/* Search input wrapper */
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ cho hiện đại */
+}
+
+.search-icon {
+  color: #888;
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #333;
+  background: transparent;
+}
+
+.clear-search-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+
+.clear-search-btn:hover {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.clear-search-btn i {
+  font-size: 16px;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.btn {
+  background: #fff;
+  color: #ff7e42;
+  border: 1px solid #ff7e42;
+  font-weight: 600;
+  padding: 9px 22px;
+  font-size: 15px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn:hover {
+  background: #ff7e42;
+  color: #fff;
+}
+
+.filter-popup {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  min-width: 150px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 16px 18px;
+  border-radius: 10px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ⭐ Star Filter Select */
+.star-filter-select {
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1.5px solid #ff7e42;
+  background-color: #fff;
+  color: #333;
+  font-weight: 500;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(255, 126, 66, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.star-filter-select:focus {
+  border-color: #e06c38;
+  box-shadow: 0 2px 10px rgba(255, 126, 66, 0.18);
+}
+
+.star-filter-select option {
+  font-size: 15px;
+  color: #333;
+}
+
 
 /* Event list */
 .event-list {
@@ -242,6 +370,16 @@
   .review-list li {
     padding: 16px 8px;
   }
+
+  .star-filter-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .star-filter-wrapper label,
+  .star-filter-wrapper select {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -266,6 +404,16 @@
   .event-reviews button {
     width: 100%;
     text-align: center;
+  }
+
+  .star-filter-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .star-filter-wrapper label,
+  .star-filter-wrapper select {
+    font-size: 13px;
   }
 }
 
@@ -306,5 +454,11 @@
   .event-reviews button {
     font-size: 13px;
     padding: 7px 8px;
+  }
+
+  .star-filter-wrapper label,
+  .star-filter-wrapper select {
+    font-size: 12px;
+    padding: 4px 8px;
   }
 }
