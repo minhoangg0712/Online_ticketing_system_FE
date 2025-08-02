@@ -25,6 +25,25 @@
       </div>
     </div>
 
+      <ng-container *ngIf="croppingType">
+      <div class="cropper-overlay">
+        <div class="cropper-container">
+          <h3>Cắt ảnh đại diện</h3>
+          <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="1"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+          ></image-cropper>
+          <div class="cropper-actions">
+            <button type="button" (click)="saveCroppedImage()">Lưu</button>
+            <button type="button" (click)="cancelCrop()">Hủy</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
     <!-- Form thông tin tổ chức -->
     <form class="form-section" [formGroup]="profileForm">
       <div class="form-group">

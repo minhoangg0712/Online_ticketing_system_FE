@@ -259,6 +259,73 @@ input[readonly] {
   background: linear-gradient(135deg, #d4edda, #c3e6cb);
 }
 
+.cropper-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* full screen */
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5); /* darken background */
+  z-index: 1300;
+  animation: fadeIn 0.3s ease;
+}
+
+.cropper-container {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 90%;
+  width: 480px;
+  max-height: 928px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: scaleIn 0.3s ease;
+}
+
+.cropper-container h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.cropper-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.cropper-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cropper-actions button:first-child {
+  background-color: #ff7e42;
+  color: #fff;
+}
+
+.cropper-actions button:first-child:hover {
+  background-color: #e66d34;
+}
+
+.cropper-actions button:last-child {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.cropper-actions button:last-child:hover {
+  background-color: #e0e0e0;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .account-info-container {

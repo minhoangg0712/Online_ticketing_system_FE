@@ -3,17 +3,21 @@ import { UserService } from '../../../user/services/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ToastNotificationComponent } from '../../../user/pop-up/toast-notification/toast-notification.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, ReactiveFormsModule, ToastNotificationComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToastNotificationComponent, ImageCropperModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
+  croppingType: 'avatar' | null = null;
+  imageChangedEvent: any = null;
+  croppedImage: string = '';
   profileForm!: FormGroup;
   selectedFile: File | null = null;
   originalProfileData: any;
@@ -57,7 +61,6 @@ export class ProfileComponent {
         });
       },
       error: (err) => {
-      //  console.error('Lỗi khi lấy thông tin người dùng:', err);
       }
     });
   }
@@ -114,23 +117,46 @@ export class ProfileComponent {
     if (fileInput.files && fileInput.files.length > 0) {
       const file = fileInput.files[0];
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-
       if (!allowedTypes.includes(file.type)) {
         this.notification.showNotification('Chỉ chấp nhận các định dạng ảnh JPG, JPEG, PNG!', 5000, 'warning');
         this.selectedFile = null;
         return;
       }
-
       this.selectedFile = file;
-
-      // ✅ Tạo ảnh preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        // Cập nhật giá trị avatarUrl trong form để hiển thị
-        this.profileForm.get('avatarUrl')?.setValue(reader.result);
-      };
-      reader.readAsDataURL(file);
+      this.croppingType = 'avatar';
+      this.imageChangedEvent = event;
     }
+  }
+
+  imageCropped(event: any) {
+    this.croppedImage = event.base64;
+  }
+
+  saveCroppedImage() {
+    if (!this.croppedImage) return;
+    this.profileForm.get('avatarUrl')?.setValue(this.croppedImage);
+    // Chuyển base64 về file để upload
+    this.selectedFile = this.base64ToFile(this.croppedImage, this.selectedFile?.name || 'avatar.png');
+    this.cancelCrop();
+  }
+
+  cancelCrop() {
+    this.croppingType = null;
+    this.imageChangedEvent = null;
+    this.croppedImage = '';
+  }
+
+  base64ToFile(base64: string, filename: string): File {
+    const arr = base64.split(',');
+    const mimeMatch = arr[0].match(/:(.*?);/);
+    const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
   }
 
   updateProfileOnly(profileData: any) {
@@ -151,7 +177,7 @@ export class ProfileComponent {
       next: (res) => {
         this.notification.showNotification('Cập nhật ảnh đại diện thành công', 5000, 'success');
         console.log(res);
-        this.selectedFile = null; // reset sau khi upload
+        this.selectedFile = null;
       },
       error: (err: HttpErrorResponse) => {
         this.notification.showNotification('Không upload được ảnh đại diện!', 5000, 'error');
