@@ -26,6 +26,7 @@ export class UserManagementComponent implements OnInit {
   usersToDisable: number[] = [];
   selectedUser: any = null;
   actionType: 'delete' | 'disable' | null = null;
+  selectedUsers: number[] = [];
 
   constructor(
     private adminService: AdminService,
@@ -39,8 +40,9 @@ export class UserManagementComponent implements OnInit {
   loadUsers(): void {
     this.adminService.getUsers().subscribe({
       next: (response) => {
-        console.log('Dữ liệu người dùng:', response.data.listUsers); // Debug dữ liệu API
+        console.log('Dữ liệu người dùng:', response.data.listUsers);
         this.users = response.data.listUsers ?? [];
+        this.selectedUsers = [];
       },
       error: (error) => {
         console.error('Lỗi khi lấy danh sách người dùng:', error);
@@ -50,8 +52,37 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
+  isUserSelected(userId: number): boolean {
+    return this.selectedUsers.includes(userId);
+  }
+
+  toggleUserSelection(userId: number): void {
+    if (this.selectedUsers.includes(userId)) {
+      this.selectedUsers = this.selectedUsers.filter(id => id !== userId);
+    } else {
+      this.selectedUsers.push(userId);
+    }
+  }
+
+  toggleSelectAll(event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.selectedUsers = this.users.map(user => user.id);
+    } else {
+      this.selectedUsers = [];
+    }
+  }
+
+  // Kiểm tra xem các người dùng được chọn có thể vô hiệu hóa hay không
+  canDisableSelectedUsers(): boolean {
+    return this.selectedUsers.every(userId => {
+      const user = this.users.find(u => u.id === userId);
+      return user && user.status === 'active';
+    });
+  }
+
   showUserDetails(user: any): void {
-    console.log('Người dùng được chọn:', user); // Debug dữ liệu người dùng
+    console.log('Người dùng được chọn:', user);
     this.selectedUser = user;
     this.showDetailModal = true;
   }
@@ -61,18 +92,16 @@ export class UserManagementComponent implements OnInit {
     this.selectedUser = null;
   }
 
-  // Sanitize image URL for security
   getSafeImageUrl(url: string | null | undefined): SafeUrl | null {
     if (url) {
-      console.log('URL ảnh:', url); // Debug URL ảnh
+      console.log('URL ảnh:', url);
       return this.sanitizer.bypassSecurityTrustUrl(url);
     }
     return null;
   }
 
-  // Handle image load errors
   handleImageError(event: Event): void {
-    console.log('Lỗi tải ảnh:', (event.target as HTMLImageElement).src); // Debug lỗi tải ảnh
+    console.log('Lỗi tải ảnh:', (event.target as HTMLImageElement).src);
     (event.target as HTMLImageElement).src = 'assets/default-profile.png';
   }
 
@@ -155,14 +184,14 @@ export class UserManagementComponent implements OnInit {
 
     this.adminService.deleteUsers(userIds).subscribe({
       next: (response) => {
-        console.log('Xóa người dùng thành công:', response);
+        console.log('Xóa nhiều người dùng thành công:', response);
         this.modalMessage = `Xóa ${userIds.length} người dùng thành công!`;
         this.showSuccessModal = true;
         this.loadUsers();
         this.isDeleting = false;
       },
       error: (error) => {
-        console.error('Lỗi khi xóa người dùng:', error);
+        console.error('Lỗi khi xóa nhiều người dùng:', error);
         this.modalMessage = 'Có lỗi xảy ra khi xóa người dùng. Vui lòng thử lại!';
         this.showErrorModal = true;
         this.isDeleting = false;
@@ -195,14 +224,14 @@ export class UserManagementComponent implements OnInit {
 
     this.adminService.disableUsers(userIds).subscribe({
       next: (response) => {
-        console.log('Vô hiệu hóa người dùng thành công:', response);
+        console.log('Vô hiệu hóa nhiều người dùng thành công:', response);
         this.modalMessage = `Vô hiệu hóa ${userIds.length} người dùng thành công!`;
         this.showSuccessModal = true;
         this.loadUsers();
         this.isDisabling = false;
       },
       error: (error) => {
-        console.error('Lỗi khi vô hiệu hóa người dùng:', error);
+        console.error('Lỗi khi vô hiệu hóa nhiều người dùng:', error);
         this.modalMessage = 'Có lỗi xảy ra khi vô hiệu hóa người dùng. Vui lòng thử lại!';
         this.showErrorModal = true;
         this.isDisabling = false;
@@ -229,7 +258,6 @@ export class UserManagementComponent implements OnInit {
     this.modalMessage = '';
   }
 
-  // Phương thức backward compatibility
   confirmDeleteUser_old = this.confirmDeleteUser;
   confirmDeleteMultipleUsers_old = this.confirmDeleteMultipleUsers;
   proceedWithDelete = this.proceedWithAction;

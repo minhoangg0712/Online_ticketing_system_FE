@@ -117,36 +117,7 @@
             </div>
           </div>
 
-          <!-- Batch Actions -->
-          <div class="row mb-3" *ngIf="selectedEvents.length > 0">
-            <div class="col-12">
-              <div class="alert alert-info">
-                <strong>{{ selectedEvents.length }}</strong> sự kiện được chọn
-                <div class="float-right">
-                  <button class="btn btn-success btn-sm mr-1" (click)="batchApprove()">
-                    <i class="fas fa-check mr-1"></i>
-                    Duyệt hàng loạt
-                  </button>
-                  <button class="btn btn-warning btn-sm mr-1" (click)="showRejectModal = true">
-                    <i class="fas fa-times mr-1"></i>
-                    Từ chối hàng loạt
-                  </button>
-                  <button class="btn btn-danger btn-sm" (click)="openConfirmModal('batchDelete')">
-                    <i class="fas fa-trash mr-1"></i>
-                    Xóa hàng loạt
-                  </button>
-                  <button class="btn btn-primary btn-sm mr-1" (click)="batchExportExcel()">
-                    <i class="fas fa-file-excel mr-1"></i>
-                    Xuất Excel
-                  </button>
-                  <button class="btn btn-primary btn-sm" (click)="batchExportPdf()">
-                    <i class="fas fa-file-pdf mr-1"></i>
-                    Xuất PDF
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         <!-- Events Table -->
@@ -360,7 +331,7 @@
       </div>
       <div class="modal-body" *ngIf="selectedEvent">
         <div class="row">
-         <div class="col-md-4">
+         <div class="col-md-4 box-img-event">
             <!-- Logo sự kiện -->
             <img
               [src]="selectedEvent.imageUrl || 'https://via.placeholder.com/300x200/007bff/ffffff?text=Event'"
