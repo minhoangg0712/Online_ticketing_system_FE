@@ -29,7 +29,6 @@
                       </span>
                       <span class="menu-icon" (click)="toggleMenu(r.reviewId, $event)">⋮</span>
                       <div class="menu" *ngIf="activeMenuId === r.reviewId">
-                        <button (click)="editReview(r)">Chỉnh sửa</button>
                         <button (click)="deleteReview(r)">Xóa</button>
                       </div>
                     </div>
@@ -54,14 +53,9 @@
             placeholder="Chia sẻ cảm nhận của bạn..."
             [(ngModel)]="comment"
           ></textarea>
-          <div class="form-buttons">
             <button (click)="submitReview()" class="btn-edit">
               {{ isEditing ? 'Cập nhật đánh giá' : 'Gửi đánh giá' }}
             </button>
-            <button *ngIf="isEditing && hasMyReview" class="btn-cancel-edit" (click)="cancelEdit()">
-              Hủy chỉnh sửa
-            </button>
-          </div>
         </div>
     </div>
 

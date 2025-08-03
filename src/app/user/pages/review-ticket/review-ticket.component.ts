@@ -31,8 +31,7 @@ export class ReviewTicketComponent implements OnInit {
   hasMyReview = false;
 
   @ViewChild('notification') notification!: ToastNotificationComponent;
-  showNotification = false;
-
+  
   constructor(private router: Router,private route: ActivatedRoute,
     private eventsService: EventsService,
     private userService: UserService,
@@ -43,6 +42,7 @@ export class ReviewTicketComponent implements OnInit {
       this.eventId = +params['id'];
       this.loadEventDetail(this.eventId);
     });
+
     if (isPlatformBrowser(this.platformId)) {
       const storedId = localStorage.getItem('userId');
       this.currentUserId = storedId ? Number(storedId) : null;
@@ -87,11 +87,7 @@ export class ReviewTicketComponent implements OnInit {
   loadReviews(id: number) {
     this.userService.getReviewsByEvent(id).subscribe({
       next: (res) => {
-        let currentUserId: number | null = null;
-        if (isPlatformBrowser(this.platformId)) {
-          const storedId = localStorage.getItem('userId');
-          currentUserId = storedId ? Number(storedId) : null;
-        }
+        let currentUserId = this.currentUserId
 
         const allReviews = (res?.data.reviewDetails || []) as {
           reviewId: number;
@@ -128,19 +124,6 @@ export class ReviewTicketComponent implements OnInit {
     this.selectedRating = rating;
   }
 
-  editReview(review: any) {
-    if (review.userId !== this.currentUserId) {
-      this.notification.showNotification('Bạn không có quyền chỉnh sửa đánh giá của người khác',
-        3000,
-        "warning");
-      return;
-    }
-
-    this.isEditing = true;
-    this.editingReviewId = review.reviewId;
-    this.selectedRating = review.rating;
-    this.comment = review.comment;
-  }
 
   deleteReview(review: any) {
     if (review.userId !== this.currentUserId) {
@@ -157,13 +140,6 @@ export class ReviewTicketComponent implements OnInit {
   cancelDelete() {
     this.showDeletePopup = false;
     this.reviewToDelete = null;
-  }
-
-  cancelEdit() {
-    this.isEditing = false;
-    this.editingReviewId = null;
-    this.selectedRating = 0;
-    this.comment = '';
   }
 
   confirmDelete() {
@@ -183,11 +159,7 @@ export class ReviewTicketComponent implements OnInit {
         this.comment = '';
       },
       error: (err) => {
-        console.error('Lỗi khi xóa review:', err);
-        this.notification.showNotification('Xóa đánh giá thất bại!',
-          3000,
-          "error"
-        );
+        console.error('Lỗi khi xóa đánh giá:', err);
       }
     });
   }
@@ -220,10 +192,7 @@ export class ReviewTicketComponent implements OnInit {
           this.loadReviews(this.eventId);
         },
         error: (err) => {
-          this.notification.showNotification('Cập nhật đánh giá thất bại!',
-            3000,
-            "warning"
-          );
+          console.error('Lỗi khi cập nhật đánh giá:', err);
         }
       });
     } else {

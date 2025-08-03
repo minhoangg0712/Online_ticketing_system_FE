@@ -151,34 +151,16 @@ textarea {
   font-size: 1rem;
 }
 
-.form-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.form-buttons button {
+.btn-edit {
+  background: #ff7e42;
+  color: white;
   padding: 12px 20px;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
-  flex: 1;
-  width: 180px;
+  width: 100%;
+  margin-top: 10px;
   cursor: pointer;
-}
-
-.btn-cancel-edit {
-  background: #ccc;
-  color: #333;
-}
-
-.btn-cancel-edit:hover {
-  background: #bbb;
-}
-
-.btn-edit {
-  background: #ff7e42;
-  color: white;
 }
 
 button:hover {
