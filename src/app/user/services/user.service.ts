@@ -83,7 +83,15 @@ export class UserService {
   uploadReview(eventId: number, reviewData: any): Observable<any> {
     return this.http.post(`${this.reviewUrl}/upload/${eventId}`, reviewData);
   }
-  
+
+  updateReview(reviewId: number, reviewData: { rating: number; comment: string }): Observable<any> {
+    return this.http.put(`${this.reviewUrl}/update/${reviewId}`, reviewData);
+  }
+
+  deleteReview(reviewId: number): Observable<any> {
+    return this.http.delete(`${this.reviewUrl}/delete/${reviewId}`);
+  }
+
   getReviewsByEvent(eventId: number): Observable<any> {
     return this.http.get(`${this.reviewUrl}/event/${eventId}`);
   }

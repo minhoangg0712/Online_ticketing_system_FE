@@ -227,8 +227,8 @@ export class DetailTicketComponent implements OnInit {
 
   loadReviews(id: number) {
     this.userService.getReviewsByEvent(id).subscribe({
-      next: (data) => {
-        this.reviews = data.reviewDetails;
+      next: (res) => {
+        this.reviews = res?.data.reviewDetails;
 
         if (this.reviews.length > 0) {
           this.totalReviews = this.reviews.length;

@@ -55,6 +55,6 @@ export class TicketOrderService {
   }
 
   getTicketsByUserId(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/tickets/user/${userId}`);
+    return this.http.get<any>(`${this.apiUrl}/users/ticket/${userId}`);
   }
 }
