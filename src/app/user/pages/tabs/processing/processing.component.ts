@@ -1,34 +1,39 @@
-import { Component} from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TicketOrderService } from '../../../services/ticket-order.service';
-import { Router} from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { StatusTranslatePipe } from '../../../../status-translate.pipe';
 
 @Component({
   selector: 'app-processing',
-  imports: [CommonModule],
+  imports: [CommonModule, StatusTranslatePipe],
   templateUrl: './processing.component.html',
   styleUrl: './processing.component.css'
 })
 export class ProcessingComponent {
-  userId: string | null = null;
+  userId!: number;
   ticketOrders: any[] = [];
 
-  constructor(private router: Router,private ticketOrderService: TicketOrderService,private route: ActivatedRoute) { }
+  constructor(private ticketOrderService: TicketOrderService,
+    @Inject(PLATFORM_ID) private platformId: object) { }
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('id');
-    if (this.userId !== null) {
-      this.loadProcessingOrders(this.userId);
-    } else {
-      console.error('User ID is null, cannot load orders.');
+    if (isPlatformBrowser(this.platformId)) {
+      const storedId = localStorage.getItem('userId');
+      if (storedId) {
+        this.userId = +storedId;
+        this.loadProcessingTickets(this.userId);
+      } else {
+        console.error('No userId found in localStorage');
+      }
     }
   }
 
-  loadProcessingOrders(userId: string) {
-    this.ticketOrderService.getTicketsByUserId(+userId).subscribe({
-      next: (data) => {
-        this.ticketOrders = data
+  loadProcessingTickets(userId: number) {
+    this.ticketOrderService.getTicketsByUserId(userId).subscribe({
+      next: (res) => {
+        const orders = res.data || [];
+        this.ticketOrders = orders
           .filter((order: any) => order.status === 'pending')
           .sort((a: any, b: any) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
       },

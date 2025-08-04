@@ -6,7 +6,6 @@ import { CancelComponent } from '../tabs/cancel/cancel.component';
 import { ProcessingComponent } from '../tabs/processing/processing.component';
 import { SuccessComponent } from '../tabs/success/success.component';
 import { Router} from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-purchased-ticket',
@@ -14,8 +13,8 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './purchased-ticket.component.html',
   styleUrl: './purchased-ticket.component.css'
 })
+
 export class PurchasedTicketComponent implements OnInit {
-  userId: string | null = null;
   selectedTab: string = 'all';
 
   setTab(tab: string) {
@@ -23,11 +22,9 @@ export class PurchasedTicketComponent implements OnInit {
     this.onTabChange(tab);
   }
 
-  constructor(private router: Router,private route: ActivatedRoute) { }
+  constructor(private router: Router) { }
 
-  ngOnInit() {
-    this.userId = this.route.snapshot.paramMap.get('id');
-  }
+  ngOnInit() {}
 
   private onTabChange(tab: string) {
     switch(tab) {

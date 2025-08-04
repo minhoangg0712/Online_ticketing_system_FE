@@ -28,6 +28,10 @@ import { OrdersRequestComponent } from './admin/pages/orders-request/orders-requ
 import { ReviewsEventComponent } from './organizer/pages/reviews-event/reviews-event.component';
 import { ReviewTicketComponent } from './user/pages/review-ticket/review-ticket.component';
 import { PendingChangesGuard } from './auth/services/pending-changes.guard';
+import { AllComponent } from './user/pages/tabs/all/all.component';
+import { SuccessComponent } from './user/pages/tabs/success/success.component';
+import { ProcessingComponent } from './user/pages/tabs/processing/processing.component';
+import { CancelComponent } from './user/pages/tabs/cancel/cancel.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -56,7 +60,18 @@ export const routes: Routes = [
   { path: 'detail-ticket/:id', component: DetailTicketComponent },
   { path: 'select-ticket/:id', component: SelectTicketComponent },
   { path: 'user-profile', component: UserProfileComponent },
-  { path: 'purchased-ticket/:id', component: PurchasedTicketComponent },
+  {
+  path: 'purchased-ticket',
+  component: PurchasedTicketComponent,
+  children: [
+    { path: 'all', component: AllComponent },
+    { path: 'success', component: SuccessComponent },
+    { path: 'processing', component: ProcessingComponent },
+    { path: 'cancel', component: CancelComponent },
+    { path: '', redirectTo: 'all', pathMatch: 'full' }
+  ]
+}
+,
   { path: 'order-ticket', component: OrderTicketComponent, canDeactivate: [PendingChangesGuard] },
   { path: 'search-events', component: SearchEventsComponent },
   { path: 'payment-tickets', component: PaymentTicketsComponent },

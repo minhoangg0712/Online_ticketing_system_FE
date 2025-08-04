@@ -16,7 +16,6 @@ import { isPlatformBrowser } from '@angular/common'
 })
 export class HeaderUserComponent {
   isDropdownOpen = false;
-  private hideTimer: any;
   avatarUrl: string = '';
   searchKeyword: string = '';
   id: number = 0;
@@ -63,14 +62,7 @@ export class HeaderUserComponent {
   }
 
   goToMyTickets() {
-    if (isPlatformBrowser(this.platformId)) {
-      const userId = localStorage.getItem('userId');
-      if (userId) {
-        this.router.navigate([`/purchased-ticket/${userId}`]);
-      } else {
-        console.error('userId not found in localStorage');
-      }
-    }
+    this.router.navigate([`/purchased-ticket`]);
   }
 
 
