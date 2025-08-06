@@ -86,4 +86,20 @@ export class UpcomingComponent {
   closeDetail() {
     this.selectedEvent = null;
   }
+  
+  asNumber(value: unknown): number {
+    return Number(value);
+  }
+
+  trackByEventId(index: number, event: any): any {
+    return event?.eventId || index;
+  }
+
+  get ticketPriceList(): { type: string; price: number }[] {
+    if (!this.selectedEvent?.ticketPrices) return [];
+    return Object.entries(this.selectedEvent.ticketPrices).map(([type, price]) => ({
+      type,
+      price: Number(price)
+    }));
+  }
 }

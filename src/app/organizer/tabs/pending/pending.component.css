@@ -42,6 +42,28 @@
 
 .event-details {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.ticket-prices {
+  margin: 0 0 16px 0;
+}
+
+.ticket-prices li {
+  font-size: 15px;
+  margin: 8px 0;
+  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+}
+
+.ticket-prices .label {
+  font-weight: 600;
+  color: #ffffff;
+  min-width: 120px; 
+  display: inline-block;
 }
 
 .event-name {

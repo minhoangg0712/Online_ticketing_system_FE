@@ -9,7 +9,7 @@
         <h3 class="event-name">{{ event.eventName }}</h3>
         <p class="event-info"><span class="label">Bắt đầu:</span> {{ event.startTime | date:'dd/MM/yyyy, HH:mm' }}</p>
         <p class="event-info"><span class="label">Kết thúc:</span> {{ event.endTime | date:'dd/MM/yyyy, HH:mm' }}</p>
-        <p class="event-info"><span class="label">Trạng thái duyệt:</span>
+        <p class="event-info"><span class="label">Trạng thái:</span>
           <span class="status" [ngClass]="{
             'status-approved': event.approvalStatus === 'approved',
             'status-pending': event.approvalStatus === 'pending',
@@ -36,15 +36,17 @@
         <p><strong>Địa điểm:</strong> {{ selectedEvent.address }}</p>
         <p><strong>Danh mục:</strong> {{ selectedEvent.category }}</p>
         <p><strong>Mô tả:</strong> {{ selectedEvent.description }}</p>
-        <p><strong>Trạng thái duyệt:</strong> {{ selectedEvent.approvalStatus | statusTranslate }}</p>
+        <p><strong>Trạng thái:</strong> {{ selectedEvent.approvalStatus | statusTranslate }}</p>
         <p *ngIf="selectedEvent.approvalStatus === 'rejected' && selectedEvent.rejectReason">
           <strong>Lý do từ chối:</strong> {{ selectedEvent.rejectReason }}
         </p>
         <div class="ticket-prices" *ngIf="selectedEvent.ticketPrices">
-          <strong>Giá vé:</strong>
-          <ul>
-            <li *ngFor="let ticket of selectedEvent.ticketPrices | keyvalue">
-              {{ ticket.key }}: {{ asNumber(ticket.value) | number:'1.0-0' }} VND
+          <p *ngIf="ticketPriceList.length">
+            <strong>Giá vé:</strong>
+          </p>
+          <ul class="ticket-price">
+            <li *ngFor="let ticket of ticketPriceList">
+              <span class="label">{{ ticket.type }}:</span> {{ ticket.price | number:'1.0-0' }} VND
             </li>
           </ul>
         </div>
