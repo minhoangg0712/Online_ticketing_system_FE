@@ -7,7 +7,6 @@ import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-// Giao diện cho dữ liệu sự kiện
 interface EventData {
   id: number;
   eventName: string;
@@ -18,7 +17,6 @@ interface EventData {
   description: string;
 }
 
-// Giao diện cho dữ liệu thống kê vé
 interface TicketTypeStats {
   ticketType: string;
   totalQuantity: number;
@@ -28,7 +26,6 @@ interface TicketTypeStats {
   revenue: number;
 }
 
-// Giao diện cho tổng thống kê
 interface TicketStats {
   totalTickets: number;
   soldTickets: number;
@@ -63,6 +60,8 @@ export class ExportFileDetailComponent implements OnInit {
   isLoadingStats = true;
   isDownloadingPdf = false;
   isDownloadingExcel = false;
+  isDownloadingBuyerPdf = false;
+  isDownloadingBuyerExcel = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -206,7 +205,7 @@ renderPieChart(): void {
       responsive: true,
       plugins: {
         legend: {
-          display: false // ẩn vì label đã hiển thị theo trục
+          display: false
         },
         tooltip: {
           callbacks: {
@@ -225,8 +224,6 @@ renderPieChart(): void {
             size: 13
           },
           formatter: function(value: number, context: any) {
-            // value là số vé đã bán của loại đó
-            // tổng số vé đã bán là tổng các cột
             const dataset = context.chart.data.datasets[0].data;
             const totalSold = dataset.reduce((a: number, b: number) => a + b, 0);
             const percent = totalSold ? ((value / totalSold) * 100).toFixed(1) : 0;
@@ -317,5 +314,50 @@ renderPieChart(): void {
           if (type === 'excel') this.isDownloadingExcel = false;
         }
       });
+  }
+
+  downloadBuyerReport(type: 'pdf' | 'excel'): void {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error('Không tìm thấy token!');
+    return;
+  }
+
+  const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+  const mimeType =
+    type === 'pdf'
+      ? 'application/pdf'
+      : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  const fileExt = type === 'pdf' ? 'pdf' : 'xlsx';
+
+  if (type === 'pdf') this.isDownloadingBuyerPdf = true;
+  if (type === 'excel') this.isDownloadingBuyerExcel = true;
+
+  this.http
+    .get(`http://localhost:8080/api/events/${this.eventId}/report/buyer-${type}`, {
+      headers,
+      responseType: 'blob'
+    })
+    .subscribe({
+      next: data => {
+        const blob = new Blob([data], { type: mimeType });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `buyers_event_${this.eventId}.${fileExt}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        if (type === 'pdf') this.isDownloadingBuyerPdf = false;
+        if (type === 'excel') this.isDownloadingBuyerExcel = false;
+      },
+      error: err => {
+        console.error(`Lỗi khi tải danh sách người mua (${type.toUpperCase()}):`, err);
+        if (type === 'pdf') this.isDownloadingBuyerPdf = false;
+        if (type === 'excel') this.isDownloadingBuyerExcel = false;
+      }
+    });
   }
 }
