@@ -1,17 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReviewsService } from '../../services/reviews.service';
 import { ListEventsService } from '../../services/list-events.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastNotificationComponent } from '../../../user/pop-up/toast-notification/toast-notification.component';
 
 @Component({
   selector: 'app-reviews-event',
   templateUrl: './reviews-event.component.html',
   styleUrl: './reviews-event.component.css',
   standalone: true,
-  imports: [CommonModule, DatePipe, FormsModule]
+  imports: [CommonModule, DatePipe, FormsModule, ToastNotificationComponent]
 })
 export class ReviewsEventComponent implements OnInit {
+  @ViewChild('notification') notification!: ToastNotificationComponent;
+
+  shownotification: boolean = false;
+
   events: any[] = [];
   filteredEvents: any[] = [];
   selectedEvent: any = null;
@@ -82,6 +87,7 @@ export class ReviewsEventComponent implements OnInit {
 
   selectEvent(event: any) {
     if (event.status !== 'completed') {
+      this.notification.showNotification('Không thể xem đánh giá khi sự kiện chưa kết thúc!', 5000, 'warning');
       return;
     }
     this.selectedEvent = event;
@@ -154,4 +160,5 @@ export class ReviewsEventComponent implements OnInit {
     this.selectedStar = value ? Number(value) : null;
     this.onSearchChange();
   }
+  onNotificationClose() {}
 }
