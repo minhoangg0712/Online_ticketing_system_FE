@@ -13,7 +13,7 @@
         <img [src]="item.backgroundUrl || '/assets/default.jpg'" class="event-image" />
         <div class="event-details">
           <div class="event-title">{{ item.eventName  }}</div>
-          <div class="event-price">Từ {{ item.price | number:'1.0-0' }}đ</div>
+          <div class="event-price">Từ {{ item.price | number:'1.0-0' }} VNĐ</div>
           <div class="event-date">
             <span class="material-icons">calendar_today</span>
             <span>{{ item.startTime | date: 'dd/MM/yyyy' }}</span>
