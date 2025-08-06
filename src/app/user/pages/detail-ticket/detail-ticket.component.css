@@ -851,8 +851,3 @@ body {
   background-color: #e86b33;
 }
 
-.btn-rate:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-

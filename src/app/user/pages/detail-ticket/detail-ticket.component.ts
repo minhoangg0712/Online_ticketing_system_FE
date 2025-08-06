@@ -275,8 +275,17 @@ export class DetailTicketComponent implements OnInit {
   }
 
   goToReview(eventId: number) {
-    this.router.navigate(['/review-ticket', eventId]);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if(!this.eventHasEnded()){
+      this.notification.showNotification(
+        'Sự kiện chưa kết thúc. Chưa thể đánh giá sự kiện !',
+        5000,
+        "warning",
+      );
+    }
+    else{
+      this.router.navigate(['/review-ticket', eventId]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
   
   onNotificationClose() {}
