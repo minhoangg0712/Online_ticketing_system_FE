@@ -11,20 +11,55 @@ export class AdminService {
   private eventsApiUrl = 'http://localhost:8080/api/events';
   private ordersApiUrl = 'http://localhost:8080/api/orders';
 
+  private reviewsApiUrl = 'http://localhost:8080/api/review'; // Thêm biến cho review
   constructor(private http: HttpClient) {}
 
   // ==================== USER METHODS ====================
 
   // Lấy danh sách người dùng
-  getUsers(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+   getUsers(): Observable<any> {
+    return this.http.get<any>(this.apiUrl, { withCredentials: true }).pipe(
+      map(response => {
+        console.log('Raw API response:', JSON.stringify(response, null, 2));
+        if (response && response.data && response.data.listUsers) {
+          response.data.listUsers = response.data.listUsers.map((user: any) => ({
+            id: user.id,
+            fullName: user.fullName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            gender: user.gender,
+            address: user.address,
+            role: user.role,
+            status: user.status,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+            avatarUrl: user.avatarUrl,
+            bio: user.bio
+          }));
+        }
+        return response;
+      })
+    );
   }
 
-  // Lấy thông tin chi tiết người dùng
   getUserById(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${userId}`);
+    return this.http.get<any>(`${this.apiUrl}/${userId}`, { withCredentials: true }).pipe(
+      map(user => ({
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        gender: user.gender,
+        address: user.address,
+        role: user.role,
+        status: user.status,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        avatarUrl: user.avatarUrl,
+        bio: user.bio
+      }))
+    );
   }
-
   // Lấy số lượng người dùng
   getUserCount(): Observable<number> {
     return this.http.get<any>(this.apiUrl).pipe(
@@ -79,7 +114,23 @@ export class AdminService {
   disableUser(userId: number): Observable<any> {
     return this.disableUsers([userId]);
   }
+  // Lấy đánh giá theo userId
+  getReviewsByUserId(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.reviewsApiUrl}/user/${userId}`, { withCredentials: true });
+  }
 
+  // Phê duyệt người tổ chức
+// Phê duyệt người tổ chức
+approveOrganizer(userId: number): Observable<any> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+
+  return this.http.post<any>(`${this.apiUrl}/admin/approve-organizer?userId=${userId}`, null, {
+    headers,
+    withCredentials: true
+  });
+}
   // ==================== EVENT METHODS ====================
 
   // Lấy danh sách tất cả sự kiện
