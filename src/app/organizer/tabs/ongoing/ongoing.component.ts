@@ -1,4 +1,4 @@
-import { Component , Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatusTranslatePipe } from '../../../status-translate.pipe';
 import { ListEventsService } from '../../services/list-events.service';
@@ -6,17 +6,16 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-ongoing',
+  standalone: true,
   imports: [CommonModule, StatusTranslatePipe, RouterModule],
   templateUrl: './ongoing.component.html',
-  styleUrl: './ongoing.component.css'
+  styleUrls: ['./ongoing.component.css']
 })
-export class OngoingComponent {
+export class OngoingComponent implements OnChanges {
   @Input() events: any[] = [];
 
   selectedEvent: any = null;
   isLoadingDetail: boolean = false;
-
-  // Phân trang
   currentPage: number = 1;
   pageSize: number = 10;
   totalPages: number = 1;
@@ -24,60 +23,78 @@ export class OngoingComponent {
 
   constructor(private listEventsService: ListEventsService) {}
 
-  ngOnChanges() {
-    this.currentPage = 1;
-    this.updatePagedEvents();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['events']) {
+      this.currentPage = 1;
+      this.updatePagedEvents();
+    }
   }
 
-  ngDoCheck() {
-    this.updatePagedEvents();
-  }
-
-  updatePagedEvents() {
+  updatePagedEvents(): void {
     const events = this.events || [];
-    this.totalPages = Math.ceil(events.length / this.pageSize) || 1;
-    if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
+    this.totalPages = Math.max(1, Math.ceil(events.length / this.pageSize));
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages;
+    }
     const startIdx = (this.currentPage - 1) * this.pageSize;
     const endIdx = startIdx + this.pageSize;
     this.pagedEvents = events.slice(startIdx, endIdx);
   }
 
-  goToPage(page: number) {
+  goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     this.updatePagedEvents();
   }
 
-  prevPage() {
+  prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.updatePagedEvents();
     }
   }
 
-  nextPage() {
+  nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.updatePagedEvents();
     }
   }
 
-  openDetail(event: any) {
-    const eventId = event.eventId;
-    this.isLoadingDetail = true;
+  openDetail(event: any): void {
+    if (!event?.eventId) return;
 
-    this.listEventsService.getEventById(eventId).subscribe({
+    this.isLoadingDetail = true;
+    this.listEventsService.getEventById(event.eventId).subscribe({
       next: (res) => {
+        console.log('Dữ liệu chi tiết sự kiện nhận được:', res.data);
         this.selectedEvent = res.data;
         this.isLoadingDetail = false;
       },
       error: (err) => {
+        console.error('Lỗi khi lấy chi tiết sự kiện:', err);
         this.isLoadingDetail = false;
       }
     });
   }
 
-  closeDetail() {
+  closeDetail(): void {
     this.selectedEvent = null;
+  }
+
+  asNumber(value: unknown): number {
+    return Number(value);
+  }
+
+  trackByEventId(index: number, event: any): any {
+    return event?.eventId || index;
+  }
+
+  get ticketPriceList(): { type: string; price: number }[] {
+    if (!this.selectedEvent?.ticketPrices) return [];
+    return Object.entries(this.selectedEvent.ticketPrices).map(([type, price]) => ({
+      type,
+      price: Number(price)
+    }));
   }
 }
