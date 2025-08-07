@@ -1,37 +1,41 @@
-import { Component} from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TicketOrderService } from '../../../services/ticket-order.service';
-import { Router} from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { StatusTranslatePipe } from '../../../../status-translate.pipe';
 
 @Component({
   selector: 'app-cancel',
-  imports: [CommonModule],
+  imports: [CommonModule, StatusTranslatePipe],
   templateUrl: './cancel.component.html',
   styleUrl: './cancel.component.css'
 })
-export class CancelComponent {
-  userId: string | null = null;
+export class CancelComponent implements OnInit {
+  userId!: number;
   ticketOrders: any[] = [];
 
-  constructor(private router: Router,private ticketOrderService: TicketOrderService,private route: ActivatedRoute) { }
+  constructor(private ticketOrderService: TicketOrderService,
+    @Inject(PLATFORM_ID) private platformId: object) { }
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('id');
-    if (this.userId !== null) {
-      this.loadProcessingOrders(this.userId);
-    } else {
-      console.error('User ID is null, cannot load orders.');
+    if (isPlatformBrowser(this.platformId)) {
+      const storedId = localStorage.getItem('userId');
+      if (storedId) {
+        this.userId = +storedId;
+        this.loadCancelledTickets(this.userId);
+      } else {
+        console.error('No userId found in localStorage');
+      }
     }
   }
 
-  loadProcessingOrders(userId: string) {
-    this.ticketOrderService.getTicketsByUserId(+userId).subscribe({
-      next: (data) => {
-        this.ticketOrders = data
+  loadCancelledTickets(userId: number) {
+    this.ticketOrderService.getTicketsByUserId(userId).subscribe({
+      next: (res) => {
+        const orders = res.data || [];
+        this.ticketOrders = orders
           .filter((order: any) => order.status === 'cancelled')
           .sort((a: any, b: any) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
-          console.log('Cancelled orders:', this.ticketOrders);
       },
       error: (err) => {
         console.error('Error loading pending orders:', err);

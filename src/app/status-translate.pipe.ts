@@ -10,7 +10,10 @@ export class StatusTranslatePipe implements PipeTransform {
     const statusMap: { [key: string]: string } = {
       'approved': 'Đã duyệt',
       'pending': 'Đang chờ',
-      'rejected': 'Bị từ chối'
+      'rejected': 'Bị từ chối',
+      'paid': 'Thành công',
+      'cancelled': 'Đã huỷ',
+
       };
     return statusMap[value] || value;
   }

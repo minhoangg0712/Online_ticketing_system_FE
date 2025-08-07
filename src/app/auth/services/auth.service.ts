@@ -95,6 +95,10 @@ export class AuthService {
 
   // Lấy userid
   getUserId(): number | null { 
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+
     const token = localStorage.getItem('token'); 
     if (!token) return null; 
 
@@ -109,6 +113,7 @@ export class AuthService {
 
   /*Lưu token vào localStorage */
   setToken(token: string): void { 
+    
     localStorage.setItem('token', token); 
     const decodedToken = this.decodeToken(token); 
     if (decodedToken) { 

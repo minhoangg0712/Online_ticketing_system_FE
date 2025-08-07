@@ -1,54 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TicketOrderService } from '../../../services/ticket-order.service';
+import { isPlatformBrowser } from '@angular/common';
+import { StatusTranslatePipe } from '../../../../status-translate.pipe';
 
 @Component({
   selector: 'app-success',
-  imports: [ CommonModule],
+  imports: [ CommonModule, StatusTranslatePipe],
   templateUrl: './success.component.html',
   styleUrl: './success.component.css'
 })
-export class SuccessComponent {
-  tickets: any[] = [];
+export class SuccessComponent implements OnInit {
+  userId!: number;
+  ticketOrders: any[] = [];
   selectedTab: string = 'all';
 
   setTab(tab: string) {
     this.selectedTab = tab;
     this.onTabChange(tab);
   }
-  constructor() { }
+  constructor(private ticketOrderService: TicketOrderService,
+    @Inject(PLATFORM_ID) private platformId: object) { }
+
   ngOnInit(): void {
-    this.tickets = [
-      {
-        id: 1,
-        eventName: 'Live Concert Sơn Tùng M-TP',
-        eventDate: '2025-07-20 20:00',
-        seatInfo: 'Ghế D10, Khu VIP',
-        location: 'SVĐ Mỹ Đình',
-        price: '1.500.000đ',
-        type: 'Vé điện tử',
-        status: 'Thành công'
-      },
-      {
-        id: 2,
-        eventName: 'Nhạc kịch Broadway - Phantom of the Opera',
-        eventDate: '2025-08-15 19:30',
-        seatInfo: 'Ghế E3, Khu Balcony',
-        location: 'Nhà hát TP.HCM',
-        price: '1.000.000đ',
-        type: 'Vé vật lý',
-        status: 'Thành công'
-      },
-      {
-        id: 3,
-        eventName: 'Gala Hài Kịch 2025',
-        eventDate: '2025-09-01 18:00',
-        seatInfo: 'Ghế F6, Khu Standard',
-        location: 'Sân khấu Trống Đồng',
-        price: '450.000đ',
-        type: 'Vé điện tử',
-        status: 'Thất bại'
+    if (isPlatformBrowser(this.platformId)) {
+      const storedId = localStorage.getItem('userId');
+      if (storedId) {
+        this.userId = +storedId;
+        this.loadSuccessTickets(this.userId);
+      } else {
+        console.error('No userId found in localStorage');
       }
-    ];
+    }
   }
 
   private onTabChange(tab: string) {
@@ -69,5 +52,20 @@ export class SuccessComponent {
   // Method để check xem tab có đang active không
   isTabActive(tab: string): boolean {
     return this.selectedTab === tab;
+  }
+
+  loadSuccessTickets(userId: number) {
+    this.ticketOrderService.getTicketsByUserId(userId).subscribe({
+      next: (res) => {
+        const orders = res.data || [];
+        this.ticketOrders = orders
+          .filter((order: any) => order.status === 'paid')
+          .sort((a: any, b: any) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
+          console.log("Đã load được success tickets", this.ticketOrders)
+      },
+      error: (err) => {
+        console.error('Error loading pending orders:', err);
+      }
+    });
   }
 }

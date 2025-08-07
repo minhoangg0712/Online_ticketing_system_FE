@@ -68,6 +68,10 @@ export class DetailTicketComponent implements OnInit {
       next: (res) => {
         const event = res?.data;
 
+        if (this.eventHasEnded()) {
+          this.loadReviews(id);
+        }
+        
         const ticketPricesObj = event.ticketPrices || {};
         const ticketsSoldObj = event.ticketsSold || {};
         const ticketsTotalObj = event.ticketsTotal || {};
@@ -109,6 +113,7 @@ export class DetailTicketComponent implements OnInit {
           eventName: event.eventName,
           description: event.description,
           startTime: event.startTime,
+          endTime: event.endTime,
           ticketsSaleStartTime: event.ticketsSaleStartTime,
           backgroundUrl: event.backgroundUrl,
           organizerName: event.organizerName,
@@ -208,10 +213,18 @@ export class DetailTicketComponent implements OnInit {
   }
 
   eventHasEnded(): boolean {
+    if (!this.eventData?.endTime) return false;
+
     const now = new Date();
-    const eventDate = new Date(this.eventData.startTime);
-    return now > eventDate;
+
+    let end = new Date(this.eventData.endTime);
+
+    // Nếu bạn chắc chắn endTime là UTC, và muốn xét theo giờ VN (UTC+7):
+    end = new Date(end.getTime() + 7 * 60 * 60 * 1000);
+
+    return now > end;
   }
+
 
   canBuyTicket(): boolean {
     const now = new Date();
@@ -243,7 +256,7 @@ export class DetailTicketComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Lỗi khi lấy review:', err);
+        // console.error('Lỗi khi lấy review:', err);
       }
     });
   }
@@ -262,8 +275,17 @@ export class DetailTicketComponent implements OnInit {
   }
 
   goToReview(eventId: number) {
-    this.router.navigate(['/review-ticket', eventId]);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if(!this.eventHasEnded()){
+      this.notification.showNotification(
+        'Sự kiện chưa kết thúc. Chưa thể đánh giá sự kiện !',
+        5000,
+        "warning",
+      );
+    }
+    else{
+      this.router.navigate(['/review-ticket', eventId]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
   
   onNotificationClose() {}

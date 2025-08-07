@@ -35,13 +35,11 @@ export class PendingComponent {
 
     this.listEventsService.getEventById(eventId.toString()).subscribe({
       next: (res) => {
-        console.log('Dữ liệu chi tiết sự kiện nhận được:', res.data);
         this.selectedEvent = res.data;
         this.editableEvent = JSON.parse(JSON.stringify(res.data));
         this.isLoadingDetail = false;
       },
       error: (err) => {
-        console.error('Lỗi khi lấy chi tiết sự kiện:', err);
         this.isLoadingDetail = false;
       }
     });
@@ -93,12 +91,23 @@ export class PendingComponent {
           this.closeDetail();
         },
         error: (err) => {
-          console.error('Lỗi khi cập nhật sự kiện:', err);
         }
       });
   }
   
   asNumber(value: unknown): number {
     return Number(value);
+  }
+
+  trackByEventId(index: number, event: any): any {
+    return event?.eventId || index;
+  }
+
+  get ticketPriceList(): { type: string; price: number }[] {
+    if (!this.selectedEvent?.ticketPrices) return [];
+    return Object.entries(this.selectedEvent.ticketPrices).map(([type, price]) => ({
+      type,
+      price: Number(price)
+    }));
   }
 }

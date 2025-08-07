@@ -67,7 +67,7 @@
             isAllTicketsSoldOut() ? 'Đã hết vé' :
             !canBuyTicket() ? 'Vé chưa được mở bán' : 'Mua vé ngay' 
           }}
-        </button>
+  </button>
 </div>
 
 <div class="main-content">
@@ -76,13 +76,26 @@
       <div class="tp-container">
           <div class="header-info">
             <h2 class="tp-title">Giới thiệu</h2>
-            <div class="rating-box">
-              <ng-container *ngFor="let star of stars">
-                <span *ngIf="star === 'full'" class="star full">★</span>
-                <span *ngIf="star === 'half'" class="star half">★</span>
-                <span *ngIf="star === 'empty'" class="star empty">☆</span>
+            <div class="rating-box" >
+              <!-- Nếu sự kiện đã kết thúc: hiển thị theo dữ liệu -->
+              <ng-container *ngIf="eventHasEnded(); else showEmptyStars">
+                <ng-container *ngFor="let star of stars">
+                  <span *ngIf="star === 'full'" class="star full">★</span>
+                  <span *ngIf="star === 'half'" class="star half">★</span>
+                  <span *ngIf="star === 'empty'" class="star empty">☆</span>
+                </ng-container>
+                <span>{{ averageRating }}/5 ({{ totalReviews }} đánh giá)</span>
               </ng-container>
-              <span>{{ averageRating }}/5 ({{ totalReviews }} đánh giá)</span>
+
+              <!-- Nếu sự kiện chưa kết thúc: hiển thị 5 sao rỗng -->
+              <ng-template #showEmptyStars>
+                <span class="star empty">☆</span>
+                <span class="star empty">☆</span>
+                <span class="star empty">☆</span>
+                <span class="star empty">☆</span>
+                <span class="star empty">☆</span>
+                <span>Chưa có đánh giá</span>
+              </ng-template>
               <button class="btn-rate" (click)="goToReview(eventId)">Xem đánh giá</button>
             </div>
           </div>
@@ -262,5 +275,3 @@
   #notification
   (onClose)="onNotificationClose()">
 </app-toast-notification>
-
-<!-- Thêm chỉ hiện rating và nút đánh giá khi sự kiện đã kết thúc -->

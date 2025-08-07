@@ -15,9 +15,15 @@
       <ng-container *ngFor="let ticket of order.tickets">
         <div class="horizontal-ticket">
           <div class="left">
-            <div class="stub-circle"></div>
             <div class="stub-line1">{{ ticket.ticketType }}</div>
-            <div class="stub-line2">{{ order.status }}</div>
+            <div class="stub-line2" 
+              [ngClass]="{
+                'paid':  order.status === 'paid',
+                'cancelled':  order.status === 'cancelled',
+                'pending':  order.status === 'pending'
+              }">
+                {{ order.status | statusTranslate }}
+            </div>
           </div>
 
           <div class="dashed-line"></div>
@@ -34,10 +40,6 @@
                   {{ ticket.unitPrice | number:'1.0-0' }}đ x {{ ticket.quantity }}
                 </div>
               </div>
-            </div>
-
-            <div class="ticket-column">
-              <div class="middle-line1">{{ ticket.ticketType }}</div>
             </div>
 
             <div class="ticket-column right-content">

@@ -139,18 +139,6 @@
   color: #ff7e42;
 }
 
-/* Company Info Section */
-.company-info {
-  margin: 10px 0 0 0;
-  padding: 15px 0;
-  border-radius: 5px;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-.company-info p {
-  margin: 0 0 5px 0;
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {

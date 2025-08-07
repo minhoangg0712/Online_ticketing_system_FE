@@ -6,12 +6,6 @@
   font-family: 'Inter', sans-serif;
 }
 
-.ticket-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .status-toggle {
   display: flex;
   justify-content: center;
@@ -38,6 +32,15 @@
   padding-bottom: 0.25rem;
 }
 
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
 .horizontal-ticket {
   background-color: #374151;
   border-radius: 0.5rem;
@@ -58,19 +61,13 @@
   white-space: nowrap;
 }
 
-.stub-circle {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 9999px;
-}
-
 .stub-line1, .stub-line2 {
   height: 0.75rem;
   border-radius: 0.25rem;
 }
 
 .stub-line1 {
-  width: 4rem;
+  width: 8rem;
 }
 
 .stub-line2 {
@@ -159,11 +156,6 @@
   border-radius: 0.25rem;
 }
 
-.middle-line1 {
-  width: 5rem;
-  height: 1.5rem;
-  border-radius: 0.25rem;
-}
 
 /* .middle-line2 {
   width: 5rem;
