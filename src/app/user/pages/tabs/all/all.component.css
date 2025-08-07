@@ -140,11 +140,6 @@
   background-color: #4b5563;
 }
 
-.ticket-icon.no-qr {
- 
-}
-
-
 .ticket-column {
   display: flex;
   flex-direction: column;
@@ -169,23 +164,9 @@
   border-radius: 0.25rem;
 }
 
-
-/* .middle-line2 {
-  width: 5rem;
-  height: 1.5rem;
-  border-radius: 0.25rem;
-} */
-
 .right-line1 {
   width: 6rem;
   height: 1.5rem;
   border-radius: 0.25rem;
 }
-
-/* .right-line2 {
-  width: 5rem;
-  height: 5rem;
-  background-color: #6b7280;
-  border-radius: 0.25rem;
-} */
 
