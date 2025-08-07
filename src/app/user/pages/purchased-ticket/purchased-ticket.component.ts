@@ -29,16 +29,12 @@ export class PurchasedTicketComponent implements OnInit {
   private onTabChange(tab: string) {
     switch(tab) {
       case 'all':
-        // Logic cho tab "Tất cả"
         break;
       case 'success':
-        // Logic cho tab "Thành công"
         break;
       case 'processing':
-        // Logic cho tab "Đang xử lý"
         break;
       case 'cancel':
-        // Logic cho tab "Đã hủy"
         break;
       default:
         console.log('Unknown tab:', tab);

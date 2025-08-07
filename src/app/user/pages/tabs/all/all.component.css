@@ -125,12 +125,25 @@
   gap: 1.5rem;
 }
 
-.ticket-icon {
-  width: 3rem;
-  height: 3rem;
+.ticket-icon.qr {
+  width: 6rem;
+  height: 6rem;
   background-color: #4b5563;
   border-radius: 0.5rem;
 }
+
+.ticket-icon.qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background-color: #4b5563;
+}
+
+.ticket-icon.no-qr {
+ 
+}
+
 
 .ticket-column {
   display: flex;

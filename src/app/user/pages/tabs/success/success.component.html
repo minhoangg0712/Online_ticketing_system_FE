@@ -40,7 +40,13 @@
 
           <div class="main">
             <div class="ticket-left-content">
-              <div class="ticket-icon"></div>
+              <div class="ticket-icon">
+                <img
+                  *ngIf="ticket.qrCode"
+                  [src]="'data:image/png;base64,' + ticket.qrCode"
+                  alt="QR Code"
+                />
+              </div>
               <div class="ticket-column">
                 <div class="ticket-text-line1">{{ ticket.eventName }}</div>
                 <div class="ticket-text-line2">

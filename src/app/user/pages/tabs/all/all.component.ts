@@ -14,10 +14,13 @@ import { StatusTranslatePipe } from '../../../../status-translate.pipe';
 export class AllComponent implements OnInit {
   userId!: number;
   selectedTab: string = 'all';
+  allTickets: any[] = [];
   ticketOrders: any[] = [];
 
-  constructor(private ticketOrderService: TicketOrderService,
-    @Inject(PLATFORM_ID) private platformId: object) {}
+  constructor(
+    private ticketOrderService: TicketOrderService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -36,19 +39,6 @@ export class AllComponent implements OnInit {
     this.onTabChange(tab);
   }
 
-  private onTabChange(tab: string) {
-    switch (tab) {
-      case 'coming':
-        console.log('Loading all tickets...');
-        break;
-      case 'ended':
-        console.log('Loading successful tickets...');
-        break;
-      default:
-        console.log('Unknown tab:', tab);
-    }
-  }
-
   isTabActive(tab: string): boolean {
     return this.selectedTab === tab;
   }
@@ -57,15 +47,47 @@ export class AllComponent implements OnInit {
     this.ticketOrderService.getTicketsByUserId(userId).subscribe({
       next: (res) => {
         const orders = res.data || [];
-        this.ticketOrders = orders.sort((a: any, b: any) => {
+        this.allTickets = orders.sort((a: any, b: any) => {
           const dateA = a.orderDate ? new Date(a.orderDate).getTime() : 0;
           const dateB = b.orderDate ? new Date(b.orderDate).getTime() : 0;
           return dateB - dateA;
         });
+        this.applyFilter();
       },
       error: (err) => {
         console.error('Error loading orders:', err);
       }
     });
+  }
+
+  private onTabChange(tab: string) {
+    this.applyFilter();
+  }
+
+  private applyFilter() {
+    const now = new Date().getTime();
+
+    switch (this.selectedTab) {
+      case 'coming':
+        this.ticketOrders = this.allTickets.filter(order =>
+          order.tickets?.every((ticket: any) =>
+            new Date(ticket.eventStartTime).getTime() > now
+          )
+        );
+        break;
+
+      case 'ended':
+        this.ticketOrders = this.allTickets.filter(order =>
+          order.tickets?.every((ticket: any) =>
+            new Date(ticket.eventEndTime).getTime() < now
+          )
+        );
+        break;
+
+      case 'all':
+      default:
+        this.ticketOrders = [...this.allTickets];
+        break;
+    }
   }
 }

@@ -100,14 +100,9 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  margin-right: 6rem;
 }
 
-.ticket-icon {
-  width: 3rem;
-  height: 3rem;
-  background-color: #4b5563;
-  border-radius: 0.5rem;
-}
 
 .ticket-column {
   display: flex;
@@ -133,21 +128,9 @@
   border-radius: 0.25rem;
 }
 
-/* .middle-line2 {
-  width: 5rem;
-  height: 1.5rem;
-  border-radius: 0.25rem;
-} */
 
 .right-line1 {
   width: 6rem;
   height: 1.5rem;
   border-radius: 0.25rem;
 }
-
-/* .right-line2 {
-  width: 5rem;
-  height: 5rem;
-  background-color: #6b7280;
-  border-radius: 0.25rem;
-} */

@@ -32,7 +32,15 @@
 
           <div class="main">
             <div class="ticket-left-content">
-              <div class="ticket-icon"></div>
+              <div class="ticket-icon" 
+                [ngClass]="order.status === 'paid' && ticket.qrCode ? 'ticket-icon qr' : 'ticket-icon no-qr'"
+              >
+                <img
+                  [src]="'data:image/png;base64,' + ticket.qrCode"
+                  alt="QR Code"
+                  *ngIf="order.status === 'paid' "
+                />
+              </div>
               <div class="ticket-column">
                 <div class="ticket-text-line1">{{ ticket.eventName }}</div>
                 <div class="ticket-text-line2">

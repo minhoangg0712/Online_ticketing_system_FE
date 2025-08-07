@@ -55,7 +55,7 @@
     <div class="event-card" *ngFor="let event of events" (click)="goToEventDetail(event.eventId)">
       <img [src]="event.backgroundUrl" [alt]="event.alt" />
       <h3>{{ event.eventName }}</h3>
-      <p class="price">Từ {{ event.minPrice | number:'1.0-0'}}</p>
+      <p class="price">Từ {{ event.minPrice | number:'1.0-0'}} VNĐ</p>
       <p class="date">
         <i class="far fa-calendar-alt"></i>
         {{ event.startTime | date: 'dd/MM/yyyy'}}
