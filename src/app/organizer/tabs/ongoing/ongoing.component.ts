@@ -67,12 +67,10 @@ export class OngoingComponent implements OnChanges {
     this.isLoadingDetail = true;
     this.listEventsService.getEventById(event.eventId).subscribe({
       next: (res) => {
-        console.log('Dữ liệu chi tiết sự kiện nhận được:', res.data);
         this.selectedEvent = res.data;
         this.isLoadingDetail = false;
       },
       error: (err) => {
-        console.error('Lỗi khi lấy chi tiết sự kiện:', err);
         this.isLoadingDetail = false;
       }
     });
