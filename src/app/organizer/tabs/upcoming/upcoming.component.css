@@ -67,11 +67,6 @@
   gap: 20px;
 }
 
-.images-container {
-  flex: 0 0 auto; 
-  max-width: 100px; 
-}
-
 .event-logo {
   width: 100%;
   height: auto;
@@ -111,10 +106,13 @@
   color: #ffffff;
   letter-spacing: 0.5px;
 }
+
 .images-container {
   display: flex;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  flex: 0 0 auto; 
+  max-width: 150px; 
 }
 
 .event-info {
