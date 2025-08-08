@@ -188,7 +188,28 @@ getEventsByStatus(status: string): Observable<any> {
       })
     );
   }
-
+  getReviewsByEventId(eventId: number): Observable<any> {
+    return this.http.get<any>(`${this.reviewsApiUrl}/event/${eventId}`, { withCredentials: true }).pipe(
+      map(response => {
+        console.log('Reviews response:', JSON.stringify(response, null, 2));
+        if (response && response.data && response.data.reviewDetails) {
+          return response.data.reviewDetails.map((review: any) => ({
+            reviewId: review.reviewId,
+            userId: review.userId,
+            userFullName: review.userFullName,
+            userProfilePicture: review.userProfilePicture,
+            rating: review.rating,
+            comment: review.comment,
+            reviewDate: review.reviewDate ? new Date(review.reviewDate).toLocaleString('vi-VN') : 'Không xác định'
+          }));
+        }
+        return [];
+      })
+    );
+  }
+  deleteReview(reviewId: number): Observable<any> {
+    return this.http.delete<any>(`${this.reviewsApiUrl}/delete/${reviewId}`, { withCredentials: true });
+  }
   // Duyệt sự kiện
   approveEvent(eventId: number): Observable<any> {
     const headers = new HttpHeaders({

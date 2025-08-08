@@ -1,0 +1,47 @@
+
+/* Đảm bảo bảng responsive và có thanh trượt ngang */
+.table-responsive {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Định dạng bảng */
+.table {
+  width: 100%;
+  min-width: 800px; /* Đảm bảo bảng đủ rộng để hiển thị các cột */
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap; /* Ngăn ngắt dòng trong các cột ngắn */
+}
+
+/* Định dạng cột Tên sự kiện để chứa logo */
+.table td:nth-child(2) {
+  white-space: normal; /* Cho phép ngắt dòng nếu tên sự kiện dài */
+}
+
+/* Định dạng hình ảnh trong bảng */
+.table img {
+  max-width: 30px;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* Định dạng badge và select */
+select.form-control {
+  font-size: 14px;
+}
+
+/* Đảm bảo modal không vượt quá kích thước màn hình */
+.modal-dialog {
+  max-width: 90vw;
+}
+
+/* Căn chỉnh nội dung trong cột Tên sự kiện */
+.table .d-flex {
+  align-items: center;
+}

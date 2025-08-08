@@ -1,0 +1,172 @@
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Quản lý sự kiện đã hoàn thành</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Quản lý sự kiện</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Danh sách sự kiện đã hoàn thành</h3>
+    </div>
+    <div class="card-body p-0">
+      <div *ngIf="isLoading" class="text-center p-3">
+        <i class="fas fa-spinner fa-spin"></i> Đang tải...
+      </div>
+      <div class="table-responsive" style="overflow-x: auto;">
+        <table class="table table-striped table-bordered" *ngIf="!isLoading">
+          <thead>
+            <tr>
+              <th style="min-width: 80px;">Event ID</th>
+              <th style="min-width: 200px;">Tên sự kiện</th>
+              <th style="min-width: 100px;">Trạng thái</th>
+
+              <th style="min-width: 120px;">Trạng thái phê duyệt</th>
+              <th style="min-width: 140px;">Thời gian bắt đầu</th>
+              <th style="min-width: 140px;">Thời gian kết thúc</th>
+              <th style="min-width: 150px;">Người tổ chức</th>
+              <th style="min-width: 100px;">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of completedEvents; let i = index">
+              <td>{{ event.eventId }}</td>
+              <td>{{ event.eventName }}</td>
+              <td>
+                <span class="badge badge-success">{{ event.status }}</span>
+              </td>
+
+              <td>
+                <span class="badge" [ngClass]="{
+                  'badge-success': event.approvalStatus === 'approved',
+                  'badge-warning': event.approvalStatus === 'pending',
+                  'badge-danger': event.approvalStatus === 'rejected'
+                }">{{ event.approvalStatus }}</span>
+              </td>
+              <td>{{ event.startTime }}</td>
+              <td>{{ event.endTime }}</td>
+              <td>{{ event.organizerName }}</td>
+              <td>
+                <button class="btn btn-info btn-sm" (click)="viewReviews(event.eventId, event.eventName)">
+                  <i class="fas fa-eye mr-1"></i>Xem đánh giá
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="completedEvents.length === 0 && !isLoading">
+              <td colspan="9" class="text-center">Không có sự kiện nào phù hợp</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal đánh giá -->
+<div class="modal fade" [class.show]="showReviewsModal" [style.display]="showReviewsModal ? 'block' : 'none'" tabindex="-1"
+  role="dialog" aria-labelledby="reviewsModalLabel" [attr.aria-hidden]="!showReviewsModal" aria-modal="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+        <h5 class="modal-title" id="reviewsModalLabel">
+          <i class="fas fa-star mr-2"></i>Đánh giá cho sự kiện: {{ selectedEventName }}
+        </h5>
+        <button type="button" class="close text-white" (click)="closeReviewsModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <div *ngIf="isLoadingReviews" class="text-center p-3">
+          <i class="fas fa-spinner fa-spin"></i> Đang tải đánh giá...
+        </div>
+        <div class="table-responsive" style="overflow-x: auto;">
+          <table class="table table-striped table-bordered" *ngIf="!isLoadingReviews">
+            <thead>
+              <tr>
+                <th style="min-width: 80px;">Review ID</th>
+                <th style="min-width: 150px;">Tên người dùng</th>
+                <th style="min-width: 100px;">Hình ảnh</th>
+                <th style="min-width: 100px;">Điểm đánh giá</th>
+                <th style="min-width: 200px;">Bình luận</th>
+                <th style="min-width: 140px;">Ngày đánh giá</th>
+                <th style="min-width: 100px;">Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let review of selectedEventReviews">
+                <td>{{ review.reviewId }}</td>
+                <td>{{ review.userFullName }}</td>
+                <td>
+                  <img *ngIf="review.userProfilePicture" [src]="getSafeImageUrl(review.userProfilePicture)"
+                    style="width: 30px; height: 30px; object-fit: cover;" alt="Profile Picture"
+                    (error)="handleImageError($event)">
+                </td>
+                <td>{{ review.rating }}/5</td>
+                <td>{{ review.comment }}</td>
+                <td>{{ review.reviewDate }}</td>
+                <td>
+                  <button class="btn btn-danger btn-sm" (click)="deleteReview(review.reviewId)">
+                    <i class="fas fa-trash mr-1"></i>Xóa
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="selectedEventReviews.length === 0 && !isLoadingReviews">
+                <td colspan="7" class="text-center">Không có đánh giá nào</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeReviewsModal()">
+          <i class="fas fa-times mr-1"></i>Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal lỗi -->
+<div class="modal fade" [class.show]="showErrorModal" [style.display]="showErrorModal ? 'block' : 'none'" tabindex="-1"
+  role="dialog" aria-labelledby="errorModalLabel" [attr.aria-hidden]="!showErrorModal" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="errorModalLabel">
+          <i class="fas fa-exclamation-triangle mr-2"></i>Lỗi
+        </h5>
+        <button type="button" class="close text-white" (click)="closeErrorModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fas fa-exclamation-triangle text-danger" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <p class="mb-0">{{ modalMessage }}</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-danger" (click)="closeErrorModal()">
+          <i class="fas fa-times mr-1"></i>Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop cho modal -->
+<div class="modal-backdrop fade" [class.show]="showErrorModal || showReviewsModal"
+  [style.display]="showErrorModal || showReviewsModal ? 'block' : 'none'" (click)="closeErrorModal(); closeReviewsModal()">
+</div>
+

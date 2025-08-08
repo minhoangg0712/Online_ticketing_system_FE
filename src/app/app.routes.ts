@@ -33,6 +33,8 @@ import { SuccessComponent } from './user/pages/tabs/success/success.component';
 import { ProcessingComponent } from './user/pages/tabs/processing/processing.component';
 import { CancelComponent } from './user/pages/tabs/cancel/cancel.component';
 
+import { EventsComponent } from './admin/pages/events/events.component';
+
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -87,6 +89,8 @@ export const routes: Routes = [
       { path: 'approval-request', component: ApprovalRequestComponent },
       { path: 'user-management', component: UserManagementComponent },
       { path: 'orders-request', component: OrdersRequestComponent },
+      { path: 'events', component: EventsComponent }
+
     ],
   },
 
