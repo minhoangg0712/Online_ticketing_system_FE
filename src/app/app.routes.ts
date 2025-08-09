@@ -32,7 +32,7 @@ import { AllComponent } from './user/pages/tabs/all/all.component';
 import { SuccessComponent } from './user/pages/tabs/success/success.component';
 import { ProcessingComponent } from './user/pages/tabs/processing/processing.component';
 import { CancelComponent } from './user/pages/tabs/cancel/cancel.component';
-
+import { TermForOrganizerComponent } from './organizer/pages/term-for-organizer/term-for-organizer.component';
 import { EventsComponent } from './admin/pages/events/events.component';
 
 export const routes: Routes = [
@@ -54,6 +54,7 @@ export const routes: Routes = [
       { path: 'review-event', component: ReviewsEventComponent },
       { path: 'event-detail/:id', component: HomeOrganizerComponent },
       { path: 'export-file-detail/:id', component: ExportFileDetailComponent },
+      { path: 'legal-document', component: TermForOrganizerComponent }
     ]
   },
 

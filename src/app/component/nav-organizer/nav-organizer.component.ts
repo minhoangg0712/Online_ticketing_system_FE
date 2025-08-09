@@ -32,11 +32,8 @@ export class NavOrganizerComponent implements OnInit {
   }
 
   logout() {
-  // Xóa token hoặc session
   localStorage.removeItem('token');
-  // Điều hướng về trang đăng nhập
   this.router.navigate(['/login']);
-  // Hoặc thêm đoạn gọi API logout nếu cần
 }
 
   goToEvents(): void {
