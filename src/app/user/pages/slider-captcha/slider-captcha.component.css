@@ -4,7 +4,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: linear-gradient(135deg, #ffe4d9, #fefefe);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -153,6 +153,18 @@
       cursor: grabbing;
       transform: translateY(-50%) scale(1.1);
     }
+
+    .slider-icon {
+      background: #ffffff;
+      display: flex;             
+      align-items: center;        
+      justify-content: center;    
+      width: 5px;                 
+      height: 5px;
+      border-radius: 50%;
+      color: white;
+    }
+
 
     .slider-target {
       position: absolute;
