@@ -24,7 +24,7 @@
 }
 
 .contact-section h2 {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   margin: 0 0 8px 0;
   color: #333;
@@ -32,12 +32,12 @@
 
 .contact-section p {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
 }
 
 .hotline-number {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   margin-top: 5px;
 }
@@ -90,7 +90,7 @@
 
 .service-section a {
   text-decoration: none;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   color:black;
 }
@@ -112,7 +112,7 @@
 }
 
 .policy-header h4 {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   margin: 0 0 10px 0;
 }
@@ -130,9 +130,10 @@
 
 .policy-list a {
   text-decoration: none;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   color:black;
+  cursor: pointer;
 }
 
 .policy-list a:hover {

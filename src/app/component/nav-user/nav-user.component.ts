@@ -38,14 +38,7 @@ export class NavUserComponent {
   }
 
   navigateToPurchasedTickets() {
-    if (isPlatformBrowser(this.platformId)) {
-      const userId = localStorage.getItem('userId');
-      if (userId) {
-        this.router.navigate([`/purchased-ticket/${userId}`]);
-      } else {
-        console.error('userId not found in localStorage');
-      }
-    }
+    this.router.navigate([`/purchased-ticket/`]);
   }
 
   navigateToSelectTicket() {

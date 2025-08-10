@@ -34,6 +34,10 @@ import { ProcessingComponent } from './user/pages/tabs/processing/processing.com
 import { CancelComponent } from './user/pages/tabs/cancel/cancel.component';
 import { TermForOrganizerComponent } from './organizer/pages/term-for-organizer/term-for-organizer.component';
 import { EventsComponent } from './admin/pages/events/events.component';
+import { TermForUserComponent } from './user/pages/term-for-user/term-for-user.component';
+import { PrivacyPolicyComponent } from './user/pages/operating-regulations/privacy-policy/privacy-policy.component';
+import { DisputeResolutionComponent } from './user/pages/operating-regulations/dispute-resolution/dispute-resolution.component';
+import { PaymentSecurityComponent } from './user/pages/operating-regulations/payment-security/payment-security.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -80,7 +84,10 @@ export const routes: Routes = [
   { path: 'payment-tickets', component: PaymentTicketsComponent },
   { path: 'slider-captcha', component: SliderCaptchaComponent },
   { path: 'review-ticket/:id', component: ReviewTicketComponent },
-
+  {path: 'terms-of-use', component: TermForUserComponent},
+  {path: 'privacy-policy', component: PrivacyPolicyComponent},
+  {path: 'dispute-resolution', component: DisputeResolutionComponent},
+  {path: 'payment-security', component: PaymentSecurityComponent},
   {
     path: 'admin',
     component: HomeAdminComponent,

@@ -34,7 +34,7 @@
             <div class="service-section">
                 <h3>Dành cho Khách hàng</h3>
                 <ul>
-                <li><a href="#">Điều khoản sử dụng cho khách hàng</a></li>
+                <li><a (click)="navigateToPolicy('Điều khoản sử dụng cho khách hàng')">Điều khoản sử dụng cho khách hàng</a></li>
                 </ul>
             </div>
 
@@ -42,7 +42,6 @@
                 <h3>Dành cho Ban Tổ chức</h3>
                 <ul>
                 <li><a (click)="RegisterBeOrganizer()">Đăng kí làm ban tổ chức</a></li>
-                <li><a href="#">Điều khoản sử dụng cho ban tổ chức</a></li>
                 </ul>
             </div>
         </div>
@@ -55,12 +54,10 @@
                 <h4>Quy chế hoạt động</h4>
                 </div>
                 <ul class="policy-list">
-                <li><a href="#">Chính sách bảo mật thông tin</a></li>
-                <li><a href="#">Cơ chế giải quyết tranh chấp/khiếu nại</a></li>
-                <li><a href="#">Chính sách bảo mật thanh toán</a></li>
-                <li><a href="#">Chính sách đổi trả và kiểm hàng</a></li>
-                <li><a href="#">Điều kiện vận chuyển và giao nhận</a></li>
-                <li><a href="#">Phương thức thanh toán</a></li>
+                <li><a (click)="navigateToPolicy('Chính sách bảo mật thông tin')">Chính sách bảo mật thông tin</a></li>
+                <li><a (click)="navigateToPolicy('Cơ chế giải quyết tranh chấp/khiếu nại')">Cơ chế giải quyết tranh chấp/khiếu nại</a></li>
+                <li><a (click)="navigateToPolicy('Chính sách bảo mật thanh toán')">Chính sách bảo mật thanh toán</a></li>
+                <li><a (click)="navigateToPolicy('Chính sách đổi trả và kiểm hàng')">Chính sách đổi trả và kiểm hàng</a></li>
                 </ul>
             </div>
         </div>

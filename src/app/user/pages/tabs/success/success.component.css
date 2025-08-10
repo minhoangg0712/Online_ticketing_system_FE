@@ -1,5 +1,5 @@
 .page-container {
-  background: linear-gradient(135deg, #fff6f2, #ffffff);
+  background: #fff6f2;
   min-height: 100vh;
   padding: 2rem;
   color: white;
@@ -50,6 +50,7 @@
   margin-bottom: 1.5rem;
   color: white;
   font-family: 'Inter', sans-serif;
+  background: #fff6f2;
 }
 
 .horizontal-ticket {
