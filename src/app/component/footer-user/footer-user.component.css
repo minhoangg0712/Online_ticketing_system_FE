@@ -52,9 +52,9 @@
 }
 
 .logo {
-  padding: 15px 20px;
   border-radius: 5px;
   margin-bottom: 5px;
+  margin-top: 45px;
   display: inline-block;
 }
 
@@ -62,6 +62,7 @@
   font-size: 12px;
   line-height: 1.4;
   margin: 0;
+  white-space: nowrap;
 }
 
 /* Center Section */

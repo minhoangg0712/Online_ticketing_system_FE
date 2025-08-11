@@ -40,9 +40,6 @@ export class FooterUserComponent {
       case 'Chính sách bảo mật thanh toán':
         this.router.navigate(['/payment-security']);
         break;
-      case 'Chính sách đổi trả và kiểm hàng':
-        this.router.navigate(['/return-policy']);
-        break;
     }
   }
 }
