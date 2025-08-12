@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ReviewsService } from '../../services/reviews.service';
 import { ListEventsService } from '../../services/list-events.service';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -29,21 +29,23 @@ export class ReviewsEventComponent implements OnInit {
 
   // Phân trang
   currentPage: number = 1;
-  toggleFilter(): void {
-    this.showFilter = !this.showFilter;
-  }
   pageSize: number = 10;
   totalPages: number = 1;
   pagedEvents: any[] = [];
 
   constructor(
     private listEventsService: ListEventsService,
-    private reviewsService: ReviewsService
+    private reviewsService: ReviewsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.fetchEvents();
     this.filteredEvents = [...this.events];
+  }
+
+  toggleFilter(): void {
+    this.showFilter = !this.showFilter;
   }
 
   fetchEvents() {
@@ -61,10 +63,14 @@ export class ReviewsEventComponent implements OnInit {
           if (eventId && event.status === 'completed') {
             this.reviewsService.getReviewsByEventId(eventId).subscribe({
               next: reviewRes => {
-                event.reviewDetails = reviewRes?.reviewDetails || [];
+                event.reviewDetails = reviewRes?.data?.reviewDetails || [];
+                this.filteredEvents = [...this.filteredEvents];
+                this.cd.detectChanges();
               },
-              error: err => {
+              error: () => {
                 event.reviewDetails = [];
+                this.filteredEvents = [...this.filteredEvents];
+                this.cd.detectChanges();
               }
             });
           } else {
@@ -72,12 +78,12 @@ export class ReviewsEventComponent implements OnInit {
           }
         });
       },
-      error: err => {
-        console.error('Lỗi khi lấy danh sách sự kiện:', err);
+      error: () => {
         this.isLoadingEvents = false;
       }
     });
   }
+
   updatePagedEvents(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
@@ -98,10 +104,10 @@ export class ReviewsEventComponent implements OnInit {
     this.isLoadingReviews = true;
     this.reviewsService.getReviewsByEventId(eventId).subscribe({
       next: res => {
-        this.reviews = res?.reviewDetails || [];
+        this.reviews = res?.data?.reviewDetails || [];
         this.isLoadingReviews = false;
       },
-      error: err => {
+      error: () => {
         this.isLoadingReviews = false;
       }
     });
@@ -111,7 +117,8 @@ export class ReviewsEventComponent implements OnInit {
     const arr = Array.isArray(reviewsArr) ? reviewsArr : this.reviews;
     if (!Array.isArray(arr) || arr.length === 0) return null;
     const sum = arr.reduce((acc: number, r: any) => acc + (typeof r.rating === 'number' ? r.rating : 0), 0);
-    return Math.round((sum / arr.length) * 100) / 100;
+    const avg = Math.round((sum / arr.length) * 10) / 10;
+    return avg;
   }
 
   backToList() {
@@ -147,18 +154,18 @@ export class ReviewsEventComponent implements OnInit {
     this.updatePagedEvents();
   }
 
-  // Xóa tìm kiếm
   clearSearch(): void {
     this.searchTerm = '';
     this.filteredEvents = [...this.events];
     this.currentPage = 1;
     this.updatePagedEvents();
   }
-  // Xử lý thay đổi bộ lọc số sao
+
   onStarFilterChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
     this.selectedStar = value ? Number(value) : null;
     this.onSearchChange();
   }
+
   onNotificationClose() {}
 }
