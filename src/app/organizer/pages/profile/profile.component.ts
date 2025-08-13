@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { UserService } from '../../../user/services/user.service';
+import { ProfileService } from '../../services/profile.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +24,7 @@ export class ProfileComponent {
   @ViewChild('notification') notification!: ToastNotificationComponent;
   
   showNotification = false;
-  constructor(private fb: FormBuilder,private userService: UserService, private authService: AuthService ) {}
+  constructor(private fb: FormBuilder,private profileService: ProfileService, private authService: AuthService ) {}
 
    ngOnInit(): void {
     this.profileForm = this.fb.group({
@@ -39,7 +39,7 @@ export class ProfileComponent {
   }
 
   getUserProfile(): void {
-    this.userService.getUserInfo().subscribe({
+    this.profileService.getUserInfo().subscribe({
       next: (response) => {
         const data = response.data;
 
@@ -99,7 +99,7 @@ export class ProfileComponent {
 
     // Nếu đổi cả hai
     if (isProfileChanged && isAvatarChanged) {
-      this.userService.updateUserProfile(profileData).subscribe({
+      this.profileService.updateUserProfile(profileData).subscribe({
         next: () => {
           this.originalProfileData = { ...profileData };
           this.uploadAvatarOnly();
@@ -160,7 +160,7 @@ export class ProfileComponent {
   }
 
   updateProfileOnly(profileData: any) {
-    this.userService.updateUserProfile(profileData).subscribe({
+    this.profileService.updateUserProfile(profileData).subscribe({
       next: () => {
         this.notification.showNotification('Cập nhật thông tin thành công', 5000, 'success');
         this.originalProfileData = { ...profileData };
@@ -173,7 +173,7 @@ export class ProfileComponent {
   }
 
   uploadAvatarOnly() {
-    this.userService.uploadAvatar(this.selectedFile!).subscribe({
+    this.profileService.uploadAvatar(this.selectedFile!).subscribe({
       next: (res) => {
         this.notification.showNotification('Cập nhật ảnh đại diện thành công', 5000, 'success');
         console.log(res);
