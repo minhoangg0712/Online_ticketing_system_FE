@@ -8,7 +8,6 @@ import { ToastNotificationComponent } from '../../pop-up/toast-notification/toas
 import { FormsModule } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
-import { error } from 'console';
 
 @Component({
   selector: 'app-review-ticket',
@@ -165,6 +164,14 @@ export class ReviewTicketComponent implements OnInit {
   }
 
   submitReview() {
+    if (!this.userService.isUserLoggedIn()) {
+      this.notification.showNotification('Bạn phải đăng nhập để đánh giá sự kiện này !',
+        5000,
+        "warning"
+      );
+      return;
+    }
+    
     if (this.selectedRating === 0 || !this.comment.trim()) {
       this.notification.showNotification('Vui lòng chọn số sao và nhập nội dung!',
         3000,

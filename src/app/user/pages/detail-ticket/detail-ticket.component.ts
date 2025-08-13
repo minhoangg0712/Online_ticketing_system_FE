@@ -40,10 +40,6 @@ export class DetailTicketComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  toggleTicket(index: number): void {
-    this.eventData.ticketPrices[index].isExpanded = !this.eventData.ticketPrices[index].isExpanded;
-  }
-
   constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute,
     private eventsService: EventsService,
     private userService: UserService) { }
@@ -148,7 +144,6 @@ export class DetailTicketComponent implements OnInit {
       12 
     ).subscribe(res => {
       this.events = res?.data?.listEvents || [];
-      // Map lại nếu cần, đảm bảo có đủ các trường
       this.events = this.events.map((event: any) => ({
         id: event.eventId,
         eventName: event.eventName,
@@ -210,6 +205,13 @@ export class DetailTicketComponent implements OnInit {
 
   isAllTicketsSoldOut(): boolean {
     return this.eventData.ticketPrices?.every((ticket: any) => ticket.isSoldOut);
+  }
+
+  isTicketSoldOut(type: string): boolean {
+    if (!this.eventData?.ticketPrices) return false;
+
+    const ticket = this.eventData.ticketPrices.find((t: any) => t.type === type);
+    return ticket ? ticket.isSoldOut : false;
   }
 
   eventHasEnded(): boolean {

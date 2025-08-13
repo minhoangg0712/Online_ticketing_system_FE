@@ -146,17 +146,15 @@
         </div>
 
         <div class="ticket-section" *ngIf="isMainExpanded && !eventHasEnded()">
-          <div class="ticket-item" *ngFor="let ticket of eventData.ticketPrices; let i = index">
-            <div class="ticket-item-header" (click)="toggleTicket(i)">
+          <div class="ticket-item" *ngFor="let ticket of eventData.ticketPrices">
+            <div class="ticket-item-header">
               <div class="ticket-title">
-                <i [ngClass]="ticket.isExpanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></i>
                 <span>{{ ticket.type }}</span>
               </div>
-              <span class="ticket-price">{{ ticket.price | number:'1.0-0' }} VNĐ</span>
-            </div>
-
-            <div class="ticket-details" *ngIf="ticket.isExpanded">
-              <p *ngIf="ticket.isSoldOut" class="text-red-600 font-semibold">Hết vé</p>
+              <div>
+                <span *ngIf="!isTicketSoldOut(ticket.type)" class="ticket-price">{{ ticket.price | number:'1.0-0' }} VNĐ</span>
+                <p *ngIf="isTicketSoldOut(ticket.type)" class="ticket-status">Hết vé</p>
+              </div>
             </div>
           </div>
         </div>

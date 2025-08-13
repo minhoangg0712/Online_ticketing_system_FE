@@ -16,10 +16,13 @@
           <div class="ticket-name">{{ ticket.type }}</div>
           <div class="ticket-price">{{ ticket.price | number:'1.0-3' }} VNĐ</div>
         </div>
-        <div class="quantity-controls">
+        <div class="quantity-controls" *ngIf="!isTicketSoldOut(ticket.type)">
           <button (click)="decreaseQuantity(ticket)">-</button>
           <input [value]="ticket.quantity" readonly />
           <button (click)="increaseQuantity(ticket)" [disabled]="ticket.quantity >= 5" >+</button>
+        </div>
+        <div class="sold-out" *ngIf="isTicketSoldOut(ticket.type)">
+          <span>Hết vé</span> 
         </div>
       </div>
     </div>

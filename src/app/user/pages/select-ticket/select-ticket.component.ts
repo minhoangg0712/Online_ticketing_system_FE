@@ -43,21 +43,30 @@ export class SelectTicketComponent {
       next: (res) => {
         const event = res?.data;
 
-        // Lấy giá đầu tiên từ ticketPrices
         const ticketTypesMap = event.ticketTypes || {}; 
         const ticketPricesObj = event.ticketPrices || {};
         const price = Object.values(ticketPricesObj)[0] || 0;
-
-        // Chuyển ticketPrices object thành mảng để hiển thị danh sách
+        const ticketsSoldObj = event.ticketsSold || {};
+        const ticketsTotalObj = event.ticketsTotal || {};
+        
         const ticketPrices = Object.entries(ticketPricesObj).map(([type, price]) => {
           const ticketId = +Object.keys(ticketTypesMap).find(key => ticketTypesMap[key] === type)!;
+          const sold = ticketsSoldObj[type] || 0;
+          const total = ticketsTotalObj[type] || 0;
+          const available = total - sold;
           return {
             id: ticketId,
             type,
             price,
+            total,
+            sold,
+            available,
+            isSoldOut: available <= 0,
             quantity: 0
           };
         });
+
+        const allSoldOut = ticketPrices.every(ticket => ticket.isSoldOut);
 
         this.eventData = {
           id: event.eventId,
@@ -71,6 +80,7 @@ export class SelectTicketComponent {
           address: event.address,
           price,
           ticketPrices,
+          allSoldOut
         };
       },
       error: (err) => {
@@ -79,6 +89,12 @@ export class SelectTicketComponent {
     });
   }
 
+  isTicketSoldOut(type: string): boolean {
+    if (!this.eventData?.ticketPrices) return false;
+
+    const ticket = this.eventData.ticketPrices.find((t: any) => t.type === type);
+    return ticket ? ticket.isSoldOut : false;
+  }
 
   increaseQuantity(ticket: any): void {
     const index = this.eventData.ticketPrices.findIndex((t: any) => t.type === ticket.type);
