@@ -110,9 +110,9 @@ export class HomeOrganizerComponent implements OnInit {
   updateTabEvents() {
     this.tabEvents = {
       // Đang diễn ra: status = 'upcoming', approvalStatus = 'approved'
-      ongoing: this.events.filter(e => e.status === 'upcoming' && (e.approvalStatus === 'approved' || e.approval_status === 'approved')),
+      ongoing: this.events.filter(e => e.status === 'upcoming' || e.status === 'cancelled' || e.status === 'completed'),
       // Sắp tới: status = 'upcoming', approvalStatus != 'approved'
-      upcoming: this.events.filter(e => e.status === 'upcoming' && (e.approvalStatus !== 'approved' && e.approval_status !== 'approved')),
+      upcoming: this.events.filter(e => e.status === 'upcoming' && (e.approvalStatus === 'approved' || e.approval_status === 'approved')),
       // Đã qua: status = 'completed'
       past: this.events.filter(e => e.status === 'completed'),
       // Chờ duyệt: approvalStatus = 'pending'
