@@ -190,3 +190,10 @@
   background-color: #ff7e42;
   color: white;
 }
+
+.no-events-message {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #666;
+}

@@ -21,6 +21,7 @@ export class SearchEventsComponent implements OnInit {
   totalPages = 1;
   isLoading = false;
   showNotification = false;
+  noEventsFound = false;
 
   locations = ['Toàn quốc', 'Hồ Chí Minh', 'Hà Nội', 'Đà Lạt', 'Vị trí khác'];
   selectedLocation = 'Toàn quốc';
@@ -53,6 +54,7 @@ export class SearchEventsComponent implements OnInit {
     if (this.isLoading || (this.currentPage > this.totalPages)) return;
 
     this.isLoading = true;
+    this.noEventsFound = false; 
 
     const paramsWithPage = { ...this.queryParams, page: this.currentPage };
 
@@ -60,6 +62,10 @@ export class SearchEventsComponent implements OnInit {
       next: (response) => {
         const newEvents = response?.data?.listEvents || [];
         this.totalPages = response?.data?.totalPages || 1;
+
+        if (this.currentPage === 1 && newEvents.length === 0) {
+          this.noEventsFound = true; // Không có kết quả ở trang 1
+        }
 
         this.events = [...this.events, ...newEvents];
         this.isLoading = false;
@@ -104,6 +110,26 @@ export class SearchEventsComponent implements OnInit {
   resetFilter() {
     this.selectedLocation = 'Toàn quốc';
     this.selectedCategories = [];
+    this.queryParams = {
+      category: '',
+      address: '',
+      startTime: '',
+      endTime: '',
+      name: '',
+      page: 1
+    };
+
+    this.currentPage = 1;
+    this.events = [];
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: this.queryParams
+    });
+
+    this.loadEvents();
+
+    this.showFilter = false;
   }
 
   removeLocationFilter() {
@@ -123,7 +149,7 @@ export class SearchEventsComponent implements OnInit {
     if (this.selectedLocation === 'Toàn quốc') {
       addressParam = undefined;
     } else if (this.selectedLocation === 'Vị trí khác') {
-      addressParam = 'Khác';
+      addressParam = 'Vị trí khác';
     } else {
       addressParam = this.selectedLocation;
     }

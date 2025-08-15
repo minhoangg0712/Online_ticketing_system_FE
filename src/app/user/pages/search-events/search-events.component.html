@@ -67,6 +67,10 @@
   <div *ngIf="isLoading" class="text-center mt-4">
     <p>Đang tải thêm sự kiện...</p>
   </div>
+
+  <div *ngIf="noEventsFound" class="no-events-message">
+    Không có sự kiện phù hợp với bộ lọc hoặc từ khóa tìm kiếm.
+  </div>
 </div>
 <app-toast-notification 
   #notification
