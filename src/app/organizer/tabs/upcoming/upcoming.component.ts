@@ -26,8 +26,10 @@ export class UpcomingComponent {
   constructor(private listEventsService: ListEventsService) {}
 
   get upcomingEvents() {
-    // Hiển thị các sự kiện có trạng thái 'pending'
-    return this.events?.filter(event => event.approvalStatus === 'pending') ?? [];
+    return this.events?.filter(e =>
+      e.status === 'upcoming' &&
+      (e.approvalStatus === 'approved' || e.approval_status === 'approved')
+    ) ?? [];
   }
 
   ngOnChanges() {
