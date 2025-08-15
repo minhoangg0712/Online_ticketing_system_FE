@@ -5,6 +5,22 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastNotificationComponent } from '../../../user/pop-up/toast-notification/toast-notification.component';
 
+interface EventItem {
+  eventId: number;
+  eventName: string;
+  status: 'upcoming' | 'completed' | 'cancelled';
+  approvalStatus?: 'pending' | 'approved' | 'rejected';
+  logoUrl?: string;
+  startTime?: string;
+  endTime?: string;
+  updateAt?: string;
+  addressName?: string;
+  category?: string;
+  description?: string;
+  reviewDetails?: any[];
+  id?: number;
+}
+
 @Component({
   selector: 'app-reviews-event',
   templateUrl: './reviews-event.component.html',
@@ -15,23 +31,22 @@ import { ToastNotificationComponent } from '../../../user/pop-up/toast-notificat
 export class ReviewsEventComponent implements OnInit {
   @ViewChild('notification') notification!: ToastNotificationComponent;
 
-  shownotification: boolean = false;
-
-  events: any[] = [];
-  filteredEvents: any[] = [];
-  selectedEvent: any = null;
+  shownotification = false;
+  events: EventItem[] = [];
+  filteredEvents: EventItem[] = [];
+  selectedEvent: EventItem | null = null;
   reviews: any[] = [];
   isLoadingEvents = false;
   isLoadingReviews = false;
-  searchTerm: string = '';
+  searchTerm = '';
   selectedStar: number | null = null;
   showFilter = false;
 
   // Phân trang
-  currentPage: number = 1;
-  pageSize: number = 10;
-  totalPages: number = 1;
-  pagedEvents: any[] = [];
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
+  pagedEvents: EventItem[] = [];
 
   constructor(
     private listEventsService: ListEventsService,
@@ -48,17 +63,22 @@ export class ReviewsEventComponent implements OnInit {
     this.showFilter = !this.showFilter;
   }
 
-  fetchEvents() {
+  fetchEvents(): void {
     this.isLoadingEvents = true;
     this.listEventsService.getEventsByOrganizer().subscribe({
       next: res => {
-        this.events = res?.data?.listEvents || [];
-        this.isLoadingEvents = false;
+        // Lọc chỉ lấy sự kiện upcoming hoặc completed
+        this.events = (res?.data?.listEvents || []).filter(
+          (event: EventItem) =>
+            event.status === 'upcoming' || event.status === 'completed'
+        );
 
+        this.isLoadingEvents = false;
         this.filteredEvents = [...this.events];
         this.updatePagedEvents();
 
-        this.events.forEach(event => {
+        // Lấy review cho các sự kiện đã hoàn thành
+        this.events.forEach((event: EventItem) => {
           const eventId = event.id || event.eventId;
           if (eventId && event.status === 'completed') {
             this.reviewsService.getReviewsByEventId(eventId).subscribe({
@@ -91,16 +111,20 @@ export class ReviewsEventComponent implements OnInit {
     this.totalPages = Math.ceil(this.filteredEvents.length / this.pageSize);
   }
 
-  selectEvent(event: any) {
+  selectEvent(event: EventItem): void {
     if (event.status !== 'completed') {
-      this.notification.showNotification('Không thể xem đánh giá khi sự kiện chưa kết thúc!', 5000, 'warning');
+      this.notification.showNotification(
+        'Không thể xem đánh giá khi sự kiện chưa kết thúc!',
+        5000,
+        'warning'
+      );
       return;
     }
     this.selectedEvent = event;
     this.fetchReviews(event.id || event.eventId);
   }
 
-  fetchReviews(eventId: number | string) {
+  fetchReviews(eventId: number): void {
     this.isLoadingReviews = true;
     this.reviewsService.getReviewsByEventId(eventId).subscribe({
       next: res => {
@@ -116,17 +140,19 @@ export class ReviewsEventComponent implements OnInit {
   getAverageRating(reviewsArr?: any[]): number | null {
     const arr = Array.isArray(reviewsArr) ? reviewsArr : this.reviews;
     if (!Array.isArray(arr) || arr.length === 0) return null;
-    const sum = arr.reduce((acc: number, r: any) => acc + (typeof r.rating === 'number' ? r.rating : 0), 0);
-    const avg = Math.round((sum / arr.length) * 10) / 10;
-    return avg;
+    const sum = arr.reduce(
+      (acc: number, r: any) => acc + (typeof r.rating === 'number' ? r.rating : 0),
+      0
+    );
+    return Math.round((sum / arr.length) * 10) / 10;
   }
 
-  backToList() {
+  backToList(): void {
     this.selectedEvent = null;
     this.reviews = [];
   }
 
-  trackByEventId(index: number, event: any): number {
+  trackByEventId(index: number, event: EventItem): number {
     return event.id || event.eventId;
   }
 
@@ -135,10 +161,18 @@ export class ReviewsEventComponent implements OnInit {
     if (this.searchTerm.trim()) {
       const searchLower = this.searchTerm.toLowerCase().trim();
       filtered = filtered.filter(event => {
-        const nameMatch = event.eventName && event.eventName.toLowerCase().includes(searchLower);
-        const venueMatch = event.addressName && event.addressName.toLowerCase().includes(searchLower);
-        const categoryMatch = event.category && event.category.toLowerCase().includes(searchLower);
-        const descriptionMatch = event.description && event.description.toLowerCase().includes(searchLower);
+        const nameMatch =
+          event.eventName &&
+          event.eventName.toLowerCase().includes(searchLower);
+        const venueMatch =
+          event.addressName &&
+          event.addressName.toLowerCase().includes(searchLower);
+        const categoryMatch =
+          event.category &&
+          event.category.toLowerCase().includes(searchLower);
+        const descriptionMatch =
+          event.description &&
+          event.description.toLowerCase().includes(searchLower);
         return nameMatch || venueMatch || categoryMatch || descriptionMatch;
       });
     }
@@ -167,5 +201,5 @@ export class ReviewsEventComponent implements OnInit {
     this.onSearchChange();
   }
 
-  onNotificationClose() {}
+  onNotificationClose(): void {}
 }

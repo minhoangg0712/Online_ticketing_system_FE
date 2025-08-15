@@ -5,6 +5,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+interface EventItem {
+  eventId: number;
+  eventName: string;
+  status: 'upcoming' | 'completed' | 'cancelled';
+  approvalStatus: 'pending' | 'approved' | 'rejected';
+  logoUrl: string;
+  startTime: string;
+  endTime: string;
+  updateAt: string;
+  addressName?: string;
+  category?: string;
+  description?: string;
+}
+
 @Component({
   selector: 'app-export-file',
   standalone: true,
@@ -13,9 +27,9 @@ import { Router } from '@angular/router';
   styleUrl: './export-file.component.css'
 })
 export class ExportFileComponent implements OnInit {
-  events: any[] = [];
-  filteredEvents: any[] = [];
-  selectedEvent: any = null;
+  events: EventItem[] = [];
+  filteredEvents: EventItem[] = [];
+  selectedEvent: EventItem | null = null;
   isLoadingList = false;
   startDate: string = '';
   endDate: string = '';
@@ -26,7 +40,7 @@ export class ExportFileComponent implements OnInit {
   currentPage: number = 1;
   pageSize: number = 10;
   totalPages: number = 1;
-  pagedEvents: any[] = [];
+  pagedEvents: EventItem[] = [];
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -48,24 +62,26 @@ export class ExportFileComponent implements OnInit {
     this.http.get<any>('http://localhost:8080/api/events/by-organizer', { headers })
       .subscribe({
         next: (res) => {
-          this.events = res.data?.listEvents || [];
+          // Chỉ lấy sự kiện có status là 'upcoming' hoặc 'completed'
+          this.events = (res.data?.listEvents || []).filter((event: EventItem) =>
+            event.status === 'upcoming' || event.status === 'completed'
+          );
           this.filterEvents();
           this.isLoadingList = false;
         },
-        error: (err) => {
+        error: () => {
           this.isLoadingList = false;
         }
       });
   }
 
   filterEvents() {
-    // Nếu không chọn ngày nào thì hiển thị toàn bộ sự kiện
     if (!this.startDate && !this.endDate) {
       this.filteredEvents = [...this.events];
     } else {
       const start = this.startDate ? new Date(this.startDate).getTime() : -Infinity;
       const end = this.endDate ? new Date(this.endDate).getTime() : Infinity;
-      this.filteredEvents = this.events.filter(event => {
+      this.filteredEvents = this.events.filter((event: EventItem) => {
         const eventTime = new Date(event.startTime).getTime();
         return eventTime >= start && eventTime <= end;
       });
@@ -80,15 +96,11 @@ export class ExportFileComponent implements OnInit {
       this.filteredEvents = [...this.events];
     } else {
       const searchLower = this.searchTerm.toLowerCase().trim();
-      this.filteredEvents = this.events.filter(event => {
-        // Tìm kiếm theo tên sự kiện
-        const nameMatch = event.eventName && event.eventName.toLowerCase().includes(searchLower);
-        // Tìm kiếm theo địa điểm
-        const venueMatch = event.addressName && event.addressName.toLowerCase().includes(searchLower);
-        // Tìm kiếm theo thể loại
-        const categoryMatch = event.category && event.category.toLowerCase().includes(searchLower);
-        // Tìm kiếm theo mô tả
-        const descriptionMatch = event.description && event.description.toLowerCase().includes(searchLower);
+      this.filteredEvents = this.events.filter((event: EventItem) => {
+        const nameMatch = event.eventName?.toLowerCase().includes(searchLower);
+        const venueMatch = event.addressName?.toLowerCase().includes(searchLower);
+        const categoryMatch = event.category?.toLowerCase().includes(searchLower);
+        const descriptionMatch = event.description?.toLowerCase().includes(searchLower);
         return nameMatch || venueMatch || categoryMatch || descriptionMatch;
       });
     }
@@ -96,7 +108,6 @@ export class ExportFileComponent implements OnInit {
     this.updatePagedEvents();
   }
 
-  // Xóa tìm kiếm
   clearSearch(): void {
     this.searchTerm = '';
     this.filteredEvents = [...this.events];
@@ -104,7 +115,6 @@ export class ExportFileComponent implements OnInit {
     this.updatePagedEvents();
   }
 
-  // Cập nhật danh sách sự kiện theo trang
   updatePagedEvents(): void {
     this.totalPages = Math.ceil(this.filteredEvents.length / this.pageSize) || 1;
     if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
@@ -133,7 +143,7 @@ export class ExportFileComponent implements OnInit {
     }
   }
 
-  openDetail(event: any): void {
+  openDetail(event: EventItem): void {
     this.selectedEvent = event;
   }
 
@@ -141,7 +151,6 @@ export class ExportFileComponent implements OnInit {
     this.selectedEvent = null;
   }
 
-  // Khi filteredEvents thay đổi, cập nhật pagedEvents
   ngDoCheck(): void {
     this.updatePagedEvents();
   }
