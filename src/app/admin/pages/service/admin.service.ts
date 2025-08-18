@@ -386,4 +386,14 @@ getEventsByStatus(status: string): Observable<any> {
     const body = { cancellationReason: cancellationReason || 'Đã hủy bởi quản trị viên' };
     return this.http.put<any>(`${this.ordersApiUrl}/${orderPayOSCode}`, body);
   }
+    getCompletedEventCount(): Observable<number> {
+    return this.http.get<any>(this.eventsApiUrl).pipe(
+      map(response => {
+        if (response && response.data && response.data.listEvents && Array.isArray(response.data.listEvents)) {
+          return response.data.listEvents.filter((event: any) => event.status === 'completed').length;
+        }
+        return 0;
+      })
+    );
+  }
 }

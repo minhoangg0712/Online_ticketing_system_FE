@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -14,6 +15,7 @@ export class DashboardComponent implements OnInit {
   userCount: number = 0;
   eventCount: number = 0;
   ticketCount: number = 0;
+  completedEventCount: number = 0; // Thêm biến cho số sự kiện đã hoàn thành
   isLoading: boolean = true;
 
   // Statistics for display
@@ -31,7 +33,7 @@ export class DashboardComponent implements OnInit {
   loadCounts(): void {
     console.log('Starting to load counts...');
     let completedRequests = 0;
-    const totalRequests = 6; // User count, event count, ticket count, event stats (3), order stats (3)
+    const totalRequests = 6; // Giữ 6: User count, event count, ticket count, event stats (3), order stats (3)
 
     // Load user count
     this.adminService.getUserCount().subscribe({
@@ -88,6 +90,22 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading ticket count:', error);
+        completedRequests++;
+        this.checkLoadingState(completedRequests, totalRequests);
+      }
+    });
+
+    // Load completed event count
+    this.adminService.getCompletedEventCount().subscribe({
+      next: (count) => {
+        console.log('Received completed event count from service:', count);
+        this.completedEventCount = count;
+        completedRequests++;
+        this.checkLoadingState(completedRequests, totalRequests);
+      },
+      error: (error) => {
+        console.error('Error loading completed event count:', error);
+        this.completedEventCount = 0;
         completedRequests++;
         this.checkLoadingState(completedRequests, totalRequests);
       }
