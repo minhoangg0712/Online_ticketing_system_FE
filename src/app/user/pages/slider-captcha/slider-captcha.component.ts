@@ -38,34 +38,24 @@ export class SliderCaptchaComponent implements OnInit {
   verificationResult: 'success' | 'failed' | null = null;
   attempts = 0;
   maxAttempts = 3;
+  lastRenderTime = 0;
 
   constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) {}
 
-  private challenges: CaptchaChallenge[] = [
-    {
-      type: 'image',
-      question: 'Chọn tất cả hình ảnh có chứa xe hơi',
-      correctAnswer: [0, 2],
-      images: [
-        'https://i.pinimg.com/736x/44/dc/70/44dc70c536977d485f25b3bf0af5a94f.jpg',
-        'https://i.pinimg.com/736x/7c/74/22/7c74220062bd04456f90792ce2eedaaa.jpg',
-        'https://i.pinimg.com/736x/05/37/dc/0537dc90815356d6ebb74522466b8ef8.jpg',
-        'https://i.pinimg.com/736x/6f/d1/53/6fd153b1fa998510c6cf0e2f22b4f6d9.jpg',
-        'https://i.pinimg.com/736x/84/28/00/842800d01eed5ef025d1491bc3dd1b58.jpg',
-        'https://i.pinimg.com/736x/ff/3d/92/ff3d92d78768597eaec5daa18012f07f.jpg'
-      ]
-    },
-    {
-      type: 'math',
-      question: 'Giải phép toán: 15 + 27 = ?',
-      correctAnswer: 42
-    },
-    {
-      type: 'slider',
-      question: 'Kéo thanh trượt để khớp với chấm đỏ',
-      correctAnswer: 0
-    }
-  ];
+  // Image captcha gốc (trước khi shuffle)
+  private baseImageCaptcha: CaptchaChallenge = {
+    type: 'image',
+    question: 'Chọn tất cả hình ảnh có chứa xe hơi',
+    correctAnswer: [0, 2], // sẽ update lại sau khi shuffle
+    images: [
+      'https://i.pinimg.com/736x/44/dc/70/44dc70c536977d485f25b3bf0af5a94f.jpg', // có xe
+      'https://i.pinimg.com/736x/7c/74/22/7c74220062bd04456f90792ce2eedaaa.jpg', // không xe
+      'https://i.pinimg.com/736x/05/37/dc/0537dc90815356d6ebb74522466b8ef8.jpg', // có xe
+      'https://i.pinimg.com/736x/6f/d1/53/6fd153b1fa998510c6cf0e2f22b4f6d9.jpg', // không xe
+      'https://i.pinimg.com/736x/84/28/00/842800d01eed5ef025d1491bc3dd1b58.jpg', // không xe
+      'https://i.pinimg.com/736x/ff/3d/92/ff3d92d78768597eaec5daa18012f07f.jpg'  // không xe
+    ]
+  };
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -75,15 +65,77 @@ export class SliderCaptchaComponent implements OnInit {
     this.setupSliderEvents();
   }
 
-  private initializeChallenge() {
-    const randomIndex = Math.floor(Math.random() * this.challenges.length);
-    this.currentChallenge = { ...this.challenges[randomIndex] };
-    
-    if (this.currentChallenge.type === 'slider') {
-      this.targetPosition = Math.random() * 300 + 50;
-      this.currentChallenge.correctAnswer = this.targetPosition;
+  // Tạo phép toán ngẫu nhiên
+  private generateRandomMathChallenge(): CaptchaChallenge {
+    const a = Math.floor(Math.random() * 40) + 10;
+    const b = Math.floor(Math.random() * 40) + 10;
+    const operators = ['+', '-', '*'];
+    const op = operators[Math.floor(Math.random() * operators.length)];
+    let answer: number = 0;
+    switch(op) {
+      case '+': answer = a + b; break;
+      case '-': answer = a - b; break;
+      case 'x': answer = a * b; break;
+      default: answer = 0; break;
     }
-    
+    // Nếu là phép nhân, hiển thị "x" thay vì "*"
+    const displayOp = op === '*' ? 'x' : op;
+    return {
+      type: 'math',
+      question: `Giải phép toán: ${a} ${displayOp} ${b} = ?`,
+      correctAnswer: answer
+    };
+  }
+
+  // Tạo slider captcha ngẫu nhiên
+  private generateRandomSliderChallenge(): CaptchaChallenge {
+    const minPos = 50;
+    const maxPos = 300;
+    this.targetPosition = Math.floor(Math.random() * (maxPos - minPos)) + minPos;
+    return {
+      type: 'slider',
+      question: 'Kéo thanh trượt để khớp với chấm đỏ',
+      correctAnswer: this.targetPosition
+    };
+  }
+
+  // Shuffle ảnh và cập nhật index đáp án
+  private generateRandomImageChallenge(): CaptchaChallenge {
+    const imagesWithLabel = this.baseImageCaptcha.images!.map((img, idx) => ({
+      img,
+      hasCar: (this.baseImageCaptcha.correctAnswer as number[]).includes(idx)
+    }));
+
+    // Shuffle mảng
+    for (let i = imagesWithLabel.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [imagesWithLabel[i], imagesWithLabel[j]] = [imagesWithLabel[j], imagesWithLabel[i]];
+    }
+
+    // Tạo mảng ảnh mới và đáp án mới
+    const shuffledImages = imagesWithLabel.map(item => item.img);
+    const newCorrectIndexes = imagesWithLabel
+      .map((item, idx) => (item.hasCar ? idx : -1))
+      .filter(idx => idx !== -1);
+
+    return {
+      type: 'image',
+      question: this.baseImageCaptcha.question,
+      correctAnswer: newCorrectIndexes,
+      images: shuffledImages
+    };
+  }
+
+  private initializeChallenge() {
+    this.lastRenderTime = Date.now();
+    const randomType = Math.floor(Math.random() * 3);
+    if (randomType === 0) {
+      this.currentChallenge = this.generateRandomImageChallenge();
+    } else if (randomType === 1) {
+      this.currentChallenge = this.generateRandomMathChallenge();
+    } else {
+      this.currentChallenge = this.generateRandomSliderChallenge();
+    }
     this.resetState();
   }
 
@@ -122,8 +174,7 @@ export class SliderCaptchaComponent implements OnInit {
     const clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
     const container = document.querySelector('.slider-track') as HTMLElement;
     const rect = container.getBoundingClientRect();
-    const newPosition = clientX - rect.left - 20; // 20 is half of slider width
-    
+    const newPosition = clientX - rect.left - 20;
     this.sliderPosition = Math.max(0, Math.min(newPosition, rect.width - 40));
   }
 
@@ -132,6 +183,9 @@ export class SliderCaptchaComponent implements OnInit {
   }
 
   canVerify(): boolean {
+    const elapsed = Date.now() - this.lastRenderTime;
+    if (elapsed < 2000) return false; // chống verify quá nhanh
+
     if (this.currentChallenge.type === 'image') {
       return this.selectedImages.length > 0;
     }
@@ -148,7 +202,6 @@ export class SliderCaptchaComponent implements OnInit {
     this.isVerifying = true;
     this.verificationResult = null;
     
-    // Simulate verification delay
     setTimeout(() => {
       let isCorrect = false;
       
@@ -189,4 +242,3 @@ export class SliderCaptchaComponent implements OnInit {
     this.initializeChallenge();
   }
 }
-

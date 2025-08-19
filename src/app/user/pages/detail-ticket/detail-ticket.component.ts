@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener,ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '../../../auth/services/auth.service';
@@ -6,6 +6,19 @@ import { ToastNotificationComponent } from '../../pop-up/toast-notification/toas
 import { ActivatedRoute } from '@angular/router';
 import { EventsService } from '../../services/events.service';
 import { UserService } from '../../services/user.service';
+import { Meta, Title } from '@angular/platform-browser';
+import { Observable, from } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
+interface Event {
+  id: number;
+  eventName: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  backgroundUrl: string;
+  price: number;
+}
 
 @Component({
   selector: 'app-detail-ticket',
@@ -40,23 +53,36 @@ export class DetailTicketComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute,
+  constructor(
+    private router: Router, 
+    private authService: AuthService, 
+    private route: ActivatedRoute,
     private eventsService: EventsService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private meta: Meta,
+    private title: Title,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.eventId = +params['id'];
+      
+      // Load critical data first
       this.loadEventDetail(this.eventId);
 
       // Check để tránh lỗi trong SSR
       if (typeof window !== 'undefined') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Defer non-critical data loading
+        setTimeout(() => {
+          this.loadEvents();
+          this.loadReviews(this.eventId);
+        }, 100);
       }
     });
-
-    this.loadEvents();
-    this.loadReviews(this.eventId);
   }
 
   loadEventDetail(id: number): void {
@@ -104,28 +130,34 @@ export class DetailTicketComponent implements OnInit {
           addressName = fullAddress;
         }
 
-        this.eventData = {
-          id: event.eventId,
-          eventName: event.eventName,
-          description: event.description,
-          startTime: event.startTime,
-          endTime: event.endTime,
-          ticketsSaleStartTime: event.ticketsSaleStartTime,
-          backgroundUrl: event.backgroundUrl,
-          organizerName: event.organizerName,
-          organizerBio: event.organizerBio,
-          organizerAvatarUrl: event.organizerAvatarUrl,
+          this.eventData = {
+            id: event.eventId,
+            eventName: event.eventName,
+            description: event.description,
+            startTime: event.startTime,
+            endTime: event.endTime,
+            ticketsSaleStartTime: event.ticketsSaleStartTime,
+            backgroundUrl: event.backgroundUrl,
+            organizerName: event.organizerName,
+            organizerBio: event.organizerBio,
+            organizerAvatarUrl: event.organizerAvatarUrl,
 
-          addressDetail: addressDetail,
-          addressName: addressName,
+            addressDetail: addressDetail,
+            addressName: addressName,
 
-          price,
-          ticketPrices,
-          allSoldOut,
-          isExpanded: false
-        };
+            price,
+            ticketPrices,
+            allSoldOut,
+            isExpanded: false
+          };
 
-      },
+          // Update meta tags and title for SEO
+          this.title.setTitle(`${event.eventName} - Chi tiết sự kiện`);
+          this.meta.updateTag({ name: 'description', content: event.description });
+          this.meta.updateTag({ property: 'og:title', content: event.eventName });
+          this.meta.updateTag({ property: 'og:description', content: event.description });
+          this.meta.updateTag({ property: 'og:image', content: event.backgroundUrl });
+          this.meta.updateTag({ name: 'viewport', content: 'width=device-width, initial-scale=1' });      },
       error: (err) => {
         console.error('Lỗi khi lấy chi tiết sự kiện:', err);
       }
@@ -142,22 +174,35 @@ export class DetailTicketComponent implements OnInit {
       '',
       1, 
       12 
-    ).subscribe(res => {
-      this.events = res?.data?.listEvents || [];
-      this.events = this.events.map((event: any) => ({
+    ).pipe(
+      map(res => res?.data?.listEvents || []),
+      map(events => events.map((event: any): Event => ({
         id: event.eventId,
         eventName: event.eventName,
         description: event.description,
         startTime: event.startTime,
         endTime: event.endTime,
-        category: event.category,
-        status: event.status,
-        approval_status: event.approval_status,
         backgroundUrl: event.backgroundUrl,
-        address: event.address || event.addressName,
-        addressDetail: event.addressDetail,
         price: event.minPrice
-      }));
+      }))),
+      tap((events: Event[]) => {
+        // Preload images for better performance
+        if (typeof window !== 'undefined') {
+          requestIdleCallback(() => {
+            events.forEach((event: Event) => {
+              if (event.backgroundUrl) {
+                const img = new Image();
+                img.src = event.backgroundUrl;
+              }
+            });
+          });
+        }
+      })
+    ).subscribe((events: Event[]) => {
+      this.ngZone.run(() => {
+        this.events = events;
+        this.cdr.detectChanges();
+      });
     });
   }
 

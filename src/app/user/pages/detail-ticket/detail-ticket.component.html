@@ -31,6 +31,7 @@
           class="buy-btn"
           [disabled]="isAllTicketsSoldOut() || eventHasEnded() || !canBuyTicket()"
           (click)="needLoginToBuyTicket()"
+          [attr.aria-label]="'Mua vé cho ' + eventData.eventName"
         >
           {{ 
             eventHasEnded() ? 'Sự kiện đã kết thúc' :
@@ -45,11 +46,17 @@
     </div>
 
     <div class="right-panel">
-      <img
-        [src]="eventData.backgroundUrl"
-        alt="Festival poster"
-        class="poster"
-      />
+      <picture>
+        <source [srcset]="eventData.backgroundUrl">
+        <img
+          [src]="eventData.backgroundUrl"
+          [alt]="eventData.eventName + ' poster'"
+          class="poster"
+          width="810"
+          height="500"
+          fetchpriority="high"
+        />
+      </picture>
       <div class="circle top-left"></div>
       <div class="circle bottom-left"></div>
     </div>
@@ -165,8 +172,11 @@
         <div class="organizer-content">
           <img
             [src]="eventData.organizerAvatarUrl"
-            alt = "Ảnh đại diện của ban tổ chức"
+            [alt]="'Ảnh đại diện của ' + eventData.organizerName"
             class="organizer-image"
+            loading="lazy"
+            width="80"
+            height="80"
           />
           <div>
             <p class="organizer-name">
@@ -181,7 +191,13 @@
     </div>
     
     <div class="side-banner">
-      <img src="assets/imgside.webp" alt="Banner quảng cáo" />
+      <img 
+        src="assets/imgside.webp" 
+        alt="Banner quảng cáo" 
+        loading="lazy"
+        width="250"
+        height="600"
+      />
     </div>
   </div>
 </div>
@@ -195,12 +211,15 @@
         *ngFor="let event of events.slice(0, 4)"
         (click)="onEventClick(event.id)"
       >
-        <img 
+        <img
           [src]="event.backgroundUrl" 
           [alt]="event.eventName"
           class="event-image"
+          loading="lazy"
+          width="280"
+          height="160"
         />
-        <h3 class="event-title" [class.font-wb]="event.id === 1">
+        <h3 class="event-title" [class.font-wb]="event.id === 1" [attr.aria-label]="event.eventName">
           {{ event.eventName }}
         </h3>
         <p class="event-price">{{ event.price | number:'1.0-0' }} VNĐ</p>
@@ -236,6 +255,9 @@
         [src]="promotionalBannerUrl" 
         alt="Babymonster Hello Monsters promotion banner"
         class="banner-image"
+        loading="lazy"
+        width="1150"
+        height="100"
       />
     </div>
 
