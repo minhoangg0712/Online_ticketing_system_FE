@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Location, CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
 import { ListEventsService } from '../../services/list-events.service';
-import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -32,7 +31,13 @@ interface TicketStats {
   remainingTickets: number;
   totalRevenue: number;
   ticketTypes: TicketTypeStats[];
-  revenue?: number;
+}
+
+interface TicketsPerDay {
+  date: string;
+  totalTicketSold?: number; // API tổng
+  totalQuantity?: number;   // API lọc theo loại vé
+  ticketType?: string;
 }
 
 @Component({
@@ -42,9 +47,13 @@ interface TicketStats {
   standalone: true,
   imports: [CommonModule, RouterModule, HttpClientModule]
 })
-export class ExportFileDetailComponent implements OnInit {
+export class ExportFileDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('pieChartCanvas', { static: false }) pieChartCanvas!: ElementRef<HTMLCanvasElement>;
   pieChart: Chart | null = null;
+
+  @ViewChild('ticketsPerDayChartCanvas', { static: false }) ticketsPerDayChartCanvas!: ElementRef<HTMLCanvasElement>;
+  ticketsPerDayChart: Chart | null = null;
+
   eventId!: number;
   eventData: EventData | null = null;
 
@@ -56,8 +65,13 @@ export class ExportFileDetailComponent implements OnInit {
     ticketTypes: []
   };
 
+  ticketsPerDay: TicketsPerDay[] = [];
+  selectedTicketType: string = '';
+
   isLoading = true;
   isLoadingStats = true;
+  isLoadingTicketsPerDay = true;
+
   isDownloadingPdf = false;
   isDownloadingExcel = false;
   isDownloadingBuyerPdf = false;
@@ -81,12 +95,15 @@ export class ExportFileDetailComponent implements OnInit {
 
     this.loadEventData();
     this.loadTicketStatistics();
+    this.loadTicketsPerDay();
   }
 
   ngAfterViewInit(): void {
-    // Vẽ pie chart nếu đã có dữ liệu
     if (!this.isLoadingStats && this.ticketStats.ticketTypes.length > 0) {
       this.renderPieChart();
+    }
+    if (!this.isLoadingTicketsPerDay && this.ticketsPerDay.length > 0) {
+      this.renderTicketsPerDayChart();
     }
   }
 
@@ -123,34 +140,29 @@ export class ExportFileDetailComponent implements OnInit {
     ).subscribe({
       next: res => {
         const data = res.data;
-        console.log('API Response:', data); // Debug log
-
         const ticketTypesStats: TicketTypeStats[] = [];
 
-        // Parse dữ liệu từ API response theo cấu trúc thực tế
         if (data.ticketTypes && data.ticketPrices && data.ticketsTotal && data.ticketsSold) {
-          // Lặp qua các ticket types (ví dụ: {"14": "vip"})
           Object.keys(data.ticketTypes).forEach(key => {
-            const ticketType = data.ticketTypes[key]; // "vip"
-            const price = data.ticketPrices[ticketType] || 0; // 10000.0
-            const totalQuantity = data.ticketsTotal[ticketType] || 0; // 10
-            const soldQuantity = data.ticketsSold[ticketType] || 0; // 0
+            const ticketType = data.ticketTypes[key];
+            const price = data.ticketPrices[ticketType] || 0;
+            const totalQuantity = data.ticketsTotal[ticketType] || 0;
+            const soldQuantity = data.ticketsSold[ticketType] || 0;
             
             ticketTypesStats.push({
               ticketType: ticketType,
-              totalQuantity: totalQuantity,
-              soldQuantity: soldQuantity,
+              totalQuantity,
+              soldQuantity,
               remainingQuantity: totalQuantity - soldQuantity,
-              price: price,
-              revenue: soldQuantity * price,
+              price,
+              revenue: soldQuantity * price
             });
           });
         }
 
-        // Tính tổng từ dữ liệu đã parse
-        let totalTickets = ticketTypesStats.reduce((sum, t) => sum + t.totalQuantity, 0);
-        let soldTickets = ticketTypesStats.reduce((sum, t) => sum + t.soldQuantity, 0);
-        let totalRevenue = ticketTypesStats.reduce((sum, t) => sum + (t.soldQuantity * t.price), 0);
+        const totalTickets = ticketTypesStats.reduce((sum, t) => sum + t.totalQuantity, 0);
+        const soldTickets = ticketTypesStats.reduce((sum, t) => sum + t.soldQuantity, 0);
+        const totalRevenue = ticketTypesStats.reduce((sum, t) => sum + t.revenue, 0);
 
         this.ticketStats = {
           totalTickets,
@@ -160,10 +172,7 @@ export class ExportFileDetailComponent implements OnInit {
           ticketTypes: ticketTypesStats
         };
 
-        console.log('Parsed ticket stats:', this.ticketStats); 
         this.isLoadingStats = false;
-
-        // Vẽ lại pie chart khi có dữ liệu
         setTimeout(() => this.renderPieChart(), 0);
       },
       error: err => {
@@ -172,7 +181,79 @@ export class ExportFileDetailComponent implements OnInit {
       }
     });
   }
-renderPieChart(): void {
+
+private loadTicketsPerDay(ticketType?: string): void {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error('Không tìm thấy token!');
+    this.isLoadingTicketsPerDay = false;
+    return;
+  }
+
+  const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+  // Nếu chọn tất cả loại vé, lấy dữ liệu cho từng loại và tổng hợp
+  if (!ticketType) {
+    // Tất cả loại vé
+    this.isLoadingTicketsPerDay = true;
+    const types = this.ticketStats.ticketTypes.map(t => t.ticketType);
+    const requests = types.map(type =>
+      this.http.get<{ data: TicketsPerDay[] }>(
+        `http://localhost:8080/api/events/report/ticket-type-per-day/${this.eventId}?ticketType=${encodeURIComponent(type)}`,
+        { headers }
+      )
+    );
+    Promise.all(requests.map(req => req.toPromise()))
+      .then(responses => {
+        // Tổng hợp dữ liệu: mỗi loại vé là một mảng dữ liệu riêng
+        const allData: { [type: string]: TicketsPerDay[] } = {};
+        responses.forEach((res, idx) => {
+          const type = types[idx];
+          allData[type] = (res?.data || []).map(item => ({
+            date: item.date,
+            totalQuantity: item.totalQuantity || 0,
+            ticketType: type
+          }));
+        });
+        // Lưu lại để vẽ nhiều đường line
+        this.ticketsPerDay = [];
+        (window as any).ticketsPerDayAllTypes = allData; // lưu tạm để vẽ
+        this.isLoadingTicketsPerDay = false;
+        setTimeout(() => this.renderTicketsPerDayChart(), 0);
+      })
+      .catch(err => {
+        console.error('Lỗi khi tải vé bán theo ngày:', err);
+        this.isLoadingTicketsPerDay = false;
+      });
+  } else {
+    // Chỉ một loại vé
+    const url = `http://localhost:8080/api/events/report/ticket-type-per-day/${this.eventId}?ticketType=${encodeURIComponent(ticketType)}`;
+    this.http.get<{ data: TicketsPerDay[] }>(url, { headers })
+      .subscribe({
+        next: res => {
+          let rawData = res.data || [];
+          this.ticketsPerDay = rawData.map(item => ({
+            date: item.date,
+            totalQuantity: item.totalQuantity || 0,
+            ticketType: item.ticketType
+          }));
+          (window as any).ticketsPerDayAllTypes = undefined;
+          this.isLoadingTicketsPerDay = false;
+          setTimeout(() => this.renderTicketsPerDayChart(), 0);
+        },
+        error: err => {
+          console.error('Lỗi khi tải vé bán theo ngày:', err);
+          this.isLoadingTicketsPerDay = false;
+        }
+      });
+  }
+}
+
+  onTicketTypeChange(event: any): void {
+    this.selectedTicketType = event.target.value;
+    this.loadTicketsPerDay(this.selectedTicketType);
+  }
+
+  renderPieChart(): void {
   if (!this.pieChartCanvas) return;
   const ctx = this.pieChartCanvas.nativeElement.getContext('2d');
   if (!ctx) return;
@@ -256,89 +337,164 @@ renderPieChart(): void {
   });
   }
 
+  private renderTicketsPerDayChart(): void {
+  if (!this.ticketsPerDayChartCanvas) return;
+  const ctx = this.ticketsPerDayChartCanvas.nativeElement.getContext('2d');
+  if (!ctx) return;
 
-  formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(amount);
-  }
+  if (this.ticketsPerDayChart) this.ticketsPerDayChart.destroy();
 
-  downloadPdfReport(): void {
-    this.downloadReport('pdf');
-  }
+  const colorList = ['#36A2EB', '#4BC0C0', '#FF6384', '#FFCE56', '#9966FF', '#FF9F40', '#ff7e42', '#3498db'];
 
-  downloadExcelReport(): void {
-    this.downloadReport('excel');
-  }
-
-  private downloadReport(type: 'pdf' | 'excel'): void {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('Không tìm thấy token!');
-      return;
-    }
-
-    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-    const mimeType =
-      type === 'pdf'
-        ? 'application/pdf'
-        : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-    const fileExt = type === 'pdf' ? 'pdf' : 'xlsx';
-
-    if (type === 'pdf') this.isDownloadingPdf = true;
-    if (type === 'excel') this.isDownloadingExcel = true;
-
-    this.http
-      .get(`http://localhost:8080/api/events/${this.eventId}/report/${type}`, {
-        headers,
-        responseType: 'blob'
-      })
-      .subscribe({
-        next: data => {
-          const blob = new Blob([data], { type: mimeType });
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `event_report_${this.eventId}.${fileExt}`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-          if (type === 'pdf') this.isDownloadingPdf = false;
-          if (type === 'excel') this.isDownloadingExcel = false;
-        },
-        error: err => {
-          console.error(`Lỗi khi tải báo cáo ${type.toUpperCase()}:`, err);
-          if (type === 'pdf') this.isDownloadingPdf = false;
-          if (type === 'excel') this.isDownloadingExcel = false;
-        }
+  // Nếu chọn tất cả loại vé, vẽ nhiều đường line
+  const allTypesData = (window as any).ticketsPerDayAllTypes;
+  if (allTypesData) {
+    // Lấy tất cả ngày xuất hiện trong các loại vé
+    const allDatesSet = new Set<string>();
+    (Object.values(allTypesData) as TicketsPerDay[][]).forEach((arr) => {
+      arr.forEach((t: TicketsPerDay) => allDatesSet.add(t.date));
+    });
+    const labels = Array.from(allDatesSet).sort();
+    const datasets = Object.entries(allTypesData).map(([type, arr], idx) => {
+      const arrTyped = arr as TicketsPerDay[];
+      // Map data theo labels (ngày), ép kiểu về number
+      const data: number[] = labels.map(date => {
+        const found = arrTyped.find((t: TicketsPerDay) => t.date === date);
+        return typeof found?.totalQuantity === 'number' ? found.totalQuantity : 0;
       });
-  }
-
-  downloadBuyerReport(type: 'pdf' | 'excel'): void {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    console.error('Không tìm thấy token!');
+      return {
+        label: type,
+        data,
+        borderColor: colorList[idx % colorList.length],
+        backgroundColor: colorList[idx % colorList.length],
+        fill: false,
+        tension: 0.2,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointBackgroundColor: '#fff',
+        pointBorderColor: colorList[idx % colorList.length],
+        pointBorderWidth: 2
+      };
+    });
+    this.ticketsPerDayChart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true, labels: { color: '#fff' } },
+          tooltip: { callbacks: { label: (context) => `${context.parsed.y} vé` } },
+          datalabels: {
+            align: 'top',
+            anchor: 'end',
+            color: '#fff',
+            font: { weight: 'bold' },
+            formatter: (value) => value
+          }
+        },
+        scales: {
+          x: { ticks: { color: '#fff' }, grid: { color: '#444' } },
+          y: { beginAtZero: true, ticks: { color: '#fff' }, grid: { color: '#444' } }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
     return;
   }
 
-  const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-  const mimeType =
-    type === 'pdf'
-      ? 'application/pdf'
-      : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  const fileExt = type === 'pdf' ? 'pdf' : 'xlsx';
+  // Nếu chỉ chọn một loại vé, vẽ một đường line
+  const labels = this.ticketsPerDay.map(t => t.date);
+  const data = this.ticketsPerDay.map(t => t.totalQuantity || 0);
+  const ticketTypeLabel = this.selectedTicketType || 'Loại vé';
 
-  if (type === 'pdf') this.isDownloadingBuyerPdf = true;
-  if (type === 'excel') this.isDownloadingBuyerExcel = true;
+  this.ticketsPerDayChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: ticketTypeLabel,
+        data,
+        borderColor: colorList[0],
+        backgroundColor: colorList[0],
+        fill: false,
+        tension: 0.2,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointBackgroundColor: '#fff',
+        pointBorderColor: colorList[0],
+        pointBorderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, labels: { color: '#fff' } },
+        tooltip: { callbacks: { label: (context) => `${context.parsed.y} vé` } },
+        datalabels: {
+          align: 'top',
+          anchor: 'end',
+          color: '#fff',
+          font: { weight: 'bold' },
+          formatter: (value) => value
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#fff' }, grid: { color: '#444' } },
+        y: { beginAtZero: true, ticks: { color: '#fff' }, grid: { color: '#444' } }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
 
-  this.http
-    .get(`http://localhost:8080/api/events/${this.eventId}/report/buyer-${type}`, {
-      headers,
-      responseType: 'blob'
-    })
-    .subscribe({
+
+  formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+  }
+
+  downloadPdfReport(): void { this.downloadReport('pdf'); }
+  downloadExcelReport(): void { this.downloadReport('excel'); }
+
+  private downloadReport(type: 'pdf' | 'excel'): void {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    const mimeType = type === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const fileExt = type === 'pdf' ? 'pdf' : 'xlsx';
+    if (type === 'pdf') this.isDownloadingPdf = true; else this.isDownloadingExcel = true;
+
+    this.http.get(`http://localhost:8080/api/events/${this.eventId}/report/${type}`, {
+      headers, responseType: 'blob'
+    }).subscribe({
+      next: data => {
+        const blob = new Blob([data], { type: mimeType });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `event_report_${this.eventId}.${fileExt}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        if (type === 'pdf') this.isDownloadingPdf = false; else this.isDownloadingExcel = false;
+      },
+      error: () => {
+        if (type === 'pdf') this.isDownloadingPdf = false; else this.isDownloadingExcel = false;
+      }
+    });
+  }
+
+  downloadBuyerReport(type: 'pdf' | 'excel'): void {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    const mimeType = type === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const fileExt = type === 'pdf' ? 'pdf' : 'xlsx';
+    if (type === 'pdf') this.isDownloadingBuyerPdf = true; else this.isDownloadingBuyerExcel = true;
+
+    this.http.get(`http://localhost:8080/api/events/${this.eventId}/report/buyer-${type}`, {
+      headers, responseType: 'blob'
+    }).subscribe({
       next: data => {
         const blob = new Blob([data], { type: mimeType });
         const url = window.URL.createObjectURL(blob);
@@ -349,14 +505,10 @@ renderPieChart(): void {
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
-
-        if (type === 'pdf') this.isDownloadingBuyerPdf = false;
-        if (type === 'excel') this.isDownloadingBuyerExcel = false;
+        if (type === 'pdf') this.isDownloadingBuyerPdf = false; else this.isDownloadingBuyerExcel = false;
       },
-      error: err => {
-        console.error(`Lỗi khi tải danh sách người mua (${type.toUpperCase()}):`, err);
-        if (type === 'pdf') this.isDownloadingBuyerPdf = false;
-        if (type === 'excel') this.isDownloadingBuyerExcel = false;
+      error: () => {
+        if (type === 'pdf') this.isDownloadingBuyerPdf = false; else this.isDownloadingBuyerExcel = false;
       }
     });
   }

@@ -92,17 +92,38 @@
     </button>
   </div>
 
-
+    <div class="charts-container">
+    <!-- Chart 1: Tỉ lệ vé bán ra -->
     <div class="charts-section" *ngIf="!isLoadingStats">
-      <h3 >Tỉ lệ vé bán ra</h3>
+      <h3>Tỉ lệ vé bán ra</h3>
       <div class="charts-wrapper">
         <div class="chart-box">
           <canvas #pieChartCanvas width="320" height="320"></canvas>
         </div>
-        <div class="chart-content">
-        </div>
+        <div class="chart-content"></div>
       </div>
     </div>
+
+    <!-- Chart 2: Thống kê vé bán theo ngày -->
+    <div class="charts-section" *ngIf="!isLoadingTicketsPerDay">
+      <h3>Thống kê vé bán theo ngày</h3>
+      <div class="charts-wrapper">
+        <div class="chart-box">
+          <canvas #ticketsPerDayChartCanvas width="320" height="320"></canvas>
+        </div>
+        <div class="chart-content"></div>
+      </div>
+      <div class="filter-section">
+        <label for="ticketTypeFilter">Chọn loại vé:</label>
+        <select id="ticketTypeFilter" (change)="onTicketTypeChange($event)">
+          <option value="">Tất cả loại vé</option>
+          <option *ngFor="let type of ticketStats.ticketTypes" [value]="type.ticketType">
+            {{ type.ticketType }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
     
     <!-- Loading stats -->
     <div *ngIf="isLoadingStats" class="loading-stats">
