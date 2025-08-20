@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PurchasedTicketComponent } from './purchased-ticket.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('PurchasedTicketComponent', () => {
   let component: PurchasedTicketComponent;
@@ -8,7 +8,8 @@ describe('PurchasedTicketComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PurchasedTicketComponent]
+      imports: [PurchasedTicketComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

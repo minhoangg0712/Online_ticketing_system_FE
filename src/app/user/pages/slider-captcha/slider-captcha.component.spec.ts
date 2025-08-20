@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SliderCaptchaComponent } from './slider-captcha.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SliderCaptchaComponent', () => {
   let component: SliderCaptchaComponent;
@@ -8,7 +8,8 @@ describe('SliderCaptchaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SliderCaptchaComponent]
+      imports: [SliderCaptchaComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

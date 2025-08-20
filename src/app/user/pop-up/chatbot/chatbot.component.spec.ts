@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ChatbotComponent } from './chatbot.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ChatbotComponent', () => {
   let component: ChatbotComponent;
@@ -8,7 +8,8 @@ describe('ChatbotComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChatbotComponent]
+      imports: [ChatbotComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

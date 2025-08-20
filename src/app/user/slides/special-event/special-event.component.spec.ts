@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SpecialEventComponent } from './special-event.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SpecialEventComponent', () => {
   let component: SpecialEventComponent;
@@ -8,7 +8,8 @@ describe('SpecialEventComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SpecialEventComponent]
+      imports: [SpecialEventComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

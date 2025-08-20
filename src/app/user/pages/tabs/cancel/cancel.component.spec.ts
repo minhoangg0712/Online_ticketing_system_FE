@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CancelComponent } from './cancel.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('CancelComponent', () => {
   let component: CancelComponent;
@@ -8,7 +8,8 @@ describe('CancelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CancelComponent]
+      imports: [CancelComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TimelineEventComponent } from './timeline-event.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TimelineEventComponent', () => {
   let component: TimelineEventComponent;
@@ -8,7 +8,8 @@ describe('TimelineEventComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TimelineEventComponent]
+      imports: [TimelineEventComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SuccessComponent } from './success.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SuccessComponent', () => {
   let component: SuccessComponent;
@@ -8,7 +8,8 @@ describe('SuccessComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SuccessComponent]
+      imports: [SuccessComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { WorkshopEventComponent } from './workshop-event.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('WorkshopEventComponent', () => {
   let component: WorkshopEventComponent;
@@ -8,7 +8,8 @@ describe('WorkshopEventComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WorkshopEventComponent]
+      imports: [WorkshopEventComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

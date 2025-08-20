@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ThisweekendEventComponent } from './thisweekend-event.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ThisweekendEventComponent', () => {
   let component: ThisweekendEventComponent;
@@ -8,7 +8,8 @@ describe('ThisweekendEventComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ThisweekendEventComponent]
+      imports: [ThisweekendEventComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ForyouEventComponent } from './foryou-event.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ForyouEventComponent', () => {
   let component: ForyouEventComponent;
@@ -8,7 +8,8 @@ describe('ForyouEventComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ForyouEventComponent]
+      imports: [ForyouEventComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 

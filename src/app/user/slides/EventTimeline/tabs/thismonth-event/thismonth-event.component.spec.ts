@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ThismonthEventComponent } from './thismonth-event.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ThismonthEventComponent', () => {
   let component: ThismonthEventComponent;
@@ -8,7 +8,8 @@ describe('ThismonthEventComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ThismonthEventComponent]
+      imports: [ThismonthEventComponent,
+        HttpClientTestingModule]
     })
     .compileComponents();
 
