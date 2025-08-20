@@ -118,7 +118,7 @@ export class CreateEventComponent implements OnInit {
       eventEndDate: ['', Validators.required],
       eventEndTime: ['', Validators.required],
       tickets: this.fb.array([this.createTicketGroup()]),
-      discounts: this.fb.array([this.createDiscount()])
+      discounts: this.fb.array([])
     });
   }
 
@@ -563,15 +563,15 @@ export class CreateEventComponent implements OnInit {
   }
   
   createDiscount(): FormGroup {
-  return this.fb.group({
-    discountCode: ['', Validators.required],
-    discountDescription: ['', Validators.required],
-    discountType: ['percentage', Validators.required],
-    discountValue: [null, [Validators.required, Validators.min(1)]],
-    discountValidFrom: ['', Validators.required],
-    discountValidTo: ['', Validators.required],
-    discountMaxUses: [1, [Validators.required, Validators.min(1)]],
-  });
+    return this.fb.group({
+      discountCode: [''],
+      discountDescription: [''],
+      discountType: ['percentage'],
+      discountValue: [null],
+      discountValidFrom: [''],
+      discountValidTo: [''],
+      discountMaxUses: [1],
+    });
   }
 
   get discounts(): FormArray {
