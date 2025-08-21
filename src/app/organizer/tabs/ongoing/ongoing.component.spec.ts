@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { OngoingComponent } from './ongoing.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('OngoingComponent', () => {
   let component: OngoingComponent;
@@ -8,9 +8,11 @@ describe('OngoingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OngoingComponent]
-    })
-    .compileComponents();
+      imports: [
+        OngoingComponent,         
+        HttpClientTestingModule    
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(OngoingComponent);
     component = fixture.componentInstance;

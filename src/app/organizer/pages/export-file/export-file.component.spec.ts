@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ExportFileComponent } from './export-file.component';
 
 describe('ExportFileComponent', () => {
@@ -8,7 +8,7 @@ describe('ExportFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExportFileComponent]
+      imports: [ExportFileComponent, HttpClientTestingModule],
     })
     .compileComponents();
 
