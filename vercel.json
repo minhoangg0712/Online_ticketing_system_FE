@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "framework": "angular",
+  "buildCommand": "npm run build:ssr",
+  "outputDirectory": "dist/online-ticketing-system-fe/browser",
+  "routes": [
+    { "src": "/.*", "dest": "/" }
+  ]
+}
