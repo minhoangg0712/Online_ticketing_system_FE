@@ -15,6 +15,7 @@ export class ForyouEventComponent implements OnInit {
   visibleItems: any[] = [];
   startIndex: number = 0;
   readonly ITEMS_PER_PAGE = 4;
+  recommendations: any[] = [];
 
   constructor(private eventService: EventsService,private router: Router) {}
 
@@ -22,29 +23,18 @@ export class ForyouEventComponent implements OnInit {
     this.loadForYouEvents();
   }
 
-  loadForYouEvents() {
-    this.eventService.getRecommendedEvents('foryou').subscribe(res => {
-      this.events = res?.data?.listEvents || [];
-      
-
-      // Map lại nếu cần, đảm bảo có đủ các trường
-      this.events = this.events.map((event: any) => ({
-        id: event.eventId,
-        eventName: event.eventName,
-        description: event.description,
-        startTime: event.startTime,
-        endTime: event.endTime,
-        category: event.category,
-        status: event.status,
-        approval_status: event.approval_status,
-        backgroundUrl: event.backgroundUrl,
-        address: event.address || event.addressName,
-        addressDetail: event.addressDetail,
-        price: event.minPrice
-      }));
-      
-      this.startIndex = 0;
-      this.updateVisibleItems();
+  loadForYouEvents(): void {
+    this.eventService.getRecommendations().subscribe({
+      next: (res) => {
+        this.events = res?.data ?? [];
+        this.startIndex = 0;
+        this.updateVisibleItems();
+      },
+      error: (err) => {
+        if (err.status !== 401) {
+          console.error('Error loading recommended events:', err);
+        }
+      }
     });
   }
 
@@ -75,7 +65,6 @@ export class ForyouEventComponent implements OnInit {
   }
 
   goToEventDetail(eventId: number) {
-    // Lưu đường dẫn vào sessionStorage
     sessionStorage.setItem('redirectAfterLogin', `/detail-ticket/${eventId}`);
     this.router.navigate(['/detail-ticket', eventId]);
   }

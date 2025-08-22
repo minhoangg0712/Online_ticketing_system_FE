@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class EventsService {
 
   private apiUrl = 'http://localhost:8080/api/events';
+  private baseUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) { }
 
@@ -68,5 +69,9 @@ export class EventsService {
     }
     
     return this.http.get(`${this.apiUrl}/recommend`, { params: httpParams });
+  }
+
+  getRecommendations(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/recommendations`);
   }
 }
