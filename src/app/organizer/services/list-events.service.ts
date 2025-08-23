@@ -31,10 +31,15 @@ export class ListEventsService {
       formData.append('background', background, background.name);
     }
 
+    const token = localStorage.getItem('token');
+    const headers: any = {
+      Accept: 'application/json'
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
     return this.http.put(`${this.baseUrl}/${eventId}`, formData, {
-      headers: {
-        Accept: 'application/json'
-      }
+      headers
     });
   }
 }
