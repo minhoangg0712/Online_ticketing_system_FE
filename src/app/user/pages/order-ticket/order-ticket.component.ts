@@ -21,7 +21,7 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
 
   async canDeactivate(): Promise<boolean> {
     if (this.forceNavigate) {
-      return true; // Bỏ qua Swal nếu đang tự động chuyển trang
+      return true;
     }
 
     const result = await Swal.fire({

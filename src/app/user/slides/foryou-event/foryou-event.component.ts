@@ -27,6 +27,22 @@ export class ForyouEventComponent implements OnInit {
     this.eventService.getRecommendations().subscribe({
       next: (res) => {
         this.events = res?.data ?? [];
+
+        this.events = this.events.map((event: any) => ({
+        id: event.eventId,
+        eventName: event.eventName,
+        description: event.description,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        category: event.category,
+        status: event.status,
+        approval_status: event.approval_status,
+        backgroundUrl: event.backgroundUrl,
+        address: event.address || event.addressName,
+        addressDetail: event.addressDetail,
+        price: event.minPrice
+      }));
+      
         this.startIndex = 0;
         this.updateVisibleItems();
       },
