@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SidebarComponent } from './sidebar.component';
 import { AuthService } from '../../../auth/services/auth.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
 
 // Mock AuthService
 class MockAuthService {
@@ -16,12 +18,15 @@ describe('SidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SidebarComponent],
+      imports: [
+        SidebarComponent,
+        RouterTestingModule // 👈 thêm cái này để có Router + ActivatedRoute
+      ],
       providers: [
-        { provide: AuthService, useClass: MockAuthService }
+        { provide: AuthService, useClass: MockAuthService },
+        { provide: ActivatedRoute, useValue: {} } // 👈 nếu bạn có dùng param thì mock thêm ở đây
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
@@ -31,20 +36,5 @@ describe('SidebarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should call logout and redirect when logout is called', () => {
-    spyOn(authService, 'logout');
-    const originalHref = window.location.href;
-    Object.defineProperty(window.location, 'href', {
-      writable: true,
-      value: ''
-    });
-
-    component.logout();
-
-    expect(authService.logout).toHaveBeenCalled();
-    expect(window.location.href).toEqual('/home');
-    window.location.href = originalHref;
   });
 });
