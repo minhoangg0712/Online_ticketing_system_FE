@@ -139,6 +139,7 @@
 
 .forgot-password:hover {
   color: #e55d22;
+  cursor: pointer;
 }
 
 /* Login Button */
@@ -180,6 +181,7 @@
 
 .create-account a:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 /* Divider */
