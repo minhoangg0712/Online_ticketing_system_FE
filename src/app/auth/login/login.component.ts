@@ -26,21 +26,31 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required,]],
-      rememberMe: [false]
-    });
+      // Kiểm tra nếu đã lưu email trong localStorage
+      const savedEmail = localStorage.getItem('rememberedEmail') || '';
+      const savedRememberMe = !!savedEmail;
+      this.loginForm = this.fb.group({
+        email: [savedEmail, [Validators.required, Validators.email]],
+        password: ['', [Validators.required,]],
+        rememberMe: [savedRememberMe]
+      });
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
+      const { email, password, rememberMe } = this.loginForm.value;
 
       this.authService.login(email, password).subscribe({
         next: (res: any) => {
           if (res.token) {
             this.authService.setToken(res.token);
+
+            // Nếu chọn nhớ mật khẩu thì lưu email vào localStorage
+            if (rememberMe) {
+              localStorage.setItem('rememberedEmail', email);
+            } else {
+              localStorage.removeItem('rememberedEmail');
+            }
 
             const redirectPath = sessionStorage.getItem('redirectAfterLogin');
 
