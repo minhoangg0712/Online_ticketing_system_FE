@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
     styleUrl: './success-popup.component.css',
 })
 export class SuccessPopupComponent {
-    @Input() redirectTo: string = '/home';
+    @Input() redirectTo: string = '/login';
     @Input() message: string = 'Đặt lại mật khẩu thành công!';
     @Input() delay: number = 5;
     @Output() closed = new EventEmitter<void>();
