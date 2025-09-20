@@ -15,7 +15,7 @@ export interface ApiResponse<T> {
   providedIn: 'root'
 })
 export class LocationService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'http://113.20.107.77:8080/api';
 
   constructor(private http: HttpClient) {}
 

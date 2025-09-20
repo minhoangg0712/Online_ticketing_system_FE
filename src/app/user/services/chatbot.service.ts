@@ -13,7 +13,7 @@ export interface ChatMessage {
 
 @Injectable({ providedIn: 'root' })
 export class ChatbotService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'http://113.20.107.77:8080/api';
   private storageKey = 'chatMessages';
   private messages: ChatMessage[] = [];
   private encryptionKey = 'eventa-secret-key';

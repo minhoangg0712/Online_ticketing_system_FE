@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class TicketOrderService {
   private orderData: any;
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'http://113.20.107.77:8080/api';
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object,
   private http: HttpClient) {}
