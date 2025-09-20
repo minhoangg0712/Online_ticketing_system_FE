@@ -4,11 +4,24 @@
   min-height: 89vh;
 }
 
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
 .left-panel {
   flex: 1;
   padding: 20px;
   background: linear-gradient(135deg, #fff6f2, #ffffff);
   font-family: 'Inter',sans-serif;
+}
+
+@media (max-width: 1024px) {
+  .left-panel {
+    padding: 15px;
+    min-height: 50vh;
+  }
 }
 
 .right-panel {
@@ -20,6 +33,14 @@
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
   width: 450px;
+}
+
+@media (max-width: 1024px) {
+  .right-panel {
+    width: 100%;
+    height: auto;
+    min-height: 40vh;
+  }
 }
 
 .header {
@@ -35,6 +56,13 @@
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
+  font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  .header h2 {
+    font-size: 20px;
+  }
 }
 
 .back-btn {
@@ -44,6 +72,12 @@
   border: none;
   font-size: 16px;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .back-btn {
+    font-size: 14px;
+  }
 }
 
 .labels {
@@ -71,6 +105,13 @@
   overflow-y: auto;
   justify-content: center;
   align-items: center;
+  padding: 10px 0;
+}
+
+@media (max-width: 768px) {
+  .ticket-list {
+    gap: 15px;
+  }
 }
 
 .ticket-item {
@@ -81,6 +122,20 @@
   padding-bottom: 10px;
   font-size: 16px;
   width: 70%;
+}
+
+@media (max-width: 768px) {
+  .ticket-item {
+    width: 90%;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ticket-item {
+    width: 100%;
+    padding: 0 10px 10px;
+  }
 }
 
 .ticket-name {
@@ -149,6 +204,13 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+  .match-info {
+    padding: 15px;
+    font-size: 13px;
+  }
+}
+
 .match-info p {
   margin: 12px 0;
   color: white;
@@ -157,12 +219,25 @@
   gap: 8px;
 }
 
+@media (max-width: 480px) {
+  .match-info p {
+    margin: 8px 0;
+    gap: 6px;
+  }
+}
+
 .price-summary {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
   margin-bottom: 0;
   box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .price-summary {
+    padding: 15px;
+  }
 }
 
 .price-summary h4 {
@@ -235,6 +310,23 @@
   box-sizing: border-box;
   text-align: center;
   align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .checkout-btn {
+    max-width: 90%;
+    margin: 10px auto;
+    padding: 14px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout-btn {
+    max-width: 95%;
+    font-size: 14px;
+    padding: 12px;
+    margin: 8px auto;
+  }
 }
 
 .checkout-btn:disabled {

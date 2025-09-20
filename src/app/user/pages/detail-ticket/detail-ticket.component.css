@@ -229,11 +229,34 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 200px;
+  height: 100px;
   background: linear-gradient(to bottom, rgba(253, 250, 246, 0.5), #FDFAF6);
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 1;
+}
+
+/* Khi có ít hơn 4 vé */
+.tp-fade-overlay.few-tickets {
+  height: 80px;
+}
+
+@media (max-width: 1024px) {
+  .tp-fade-overlay {
+    height: 90px;
+  }
+  .tp-fade-overlay.few-tickets {
+    height: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tp-fade-overlay {
+    height: 80px;
+  }
+  .tp-fade-overlay.few-tickets {
+    height: 60px;
+  }
 }
 
 .header-info {
@@ -298,6 +321,12 @@ body {
   justify-content: right;
   align-items: flex-start;
   background-color: transparent;
+}
+
+@media (max-width: 1024px) {
+  .side-banner {
+    display: none;
+  }
 }
 
 .side-banner img {
@@ -482,6 +511,32 @@ body {
   .ticket-container {
     padding: 16px;
   }
+
+  .card {
+    height: auto;
+    min-height: 300px;
+  }
+
+  .left-panel {
+    padding: 24px;
+  }
+
+  .right-panel {
+    height: 300px;
+  }
+
+  .poster {
+    height: 100%;
+    border-radius: 0 0 20px 20px;
+  }
+
+  .price-section {
+    margin-top: 15px;
+  }
+
+  .divider {
+    margin: 30px 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -531,9 +586,51 @@ body {
   .organizer-description {
     font-size: 0.7rem;
   }
+
+  .card {
+    min-height: 250px;
+  }
+
+  .right-panel {
+    height: 250px;
+  }
+
+  .left-panel {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .info {
+    margin-top: 12px;
+  }
+
+  .address {
+    font-size: 11px;
+  }
+
+  .price {
+    font-size: 20px;
+  }
+
+  .rating-box {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .btn-rate {
+    font-size: 14px;
+    padding: 4px 8px;
+  }
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
   .tp-content {
     padding: 10px;
   }
@@ -589,6 +686,53 @@ body {
 
   .tp-fade-overlay {
     height: 120px;
+  }
+
+  .card {
+    min-height: 200px;
+  }
+
+  .right-panel {
+    height: 200px;
+  }
+
+  .left-panel {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .price-label {
+    font-size: 14px;
+  }
+
+  .divider {
+    margin: 20px 0;
+  }
+
+  .text-green {
+    font-size: 12px;
+  }
+
+  .icon {
+    font-size: 16px;
+  }
+
+  .star {
+    font-size: 16px;
+  }
+
+  .btn-rate {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 8px;
   }
 }
 
@@ -797,11 +941,20 @@ body {
   margin: 0 auto;
 }
 
+@media (max-width: 1024px) {
+  .sticky-header {
+    display: none;
+  }
+}
+
 .sticky-header span {
   font-family: Inter, sans-serif;
   color: white;
   font-weight: bold;
   font-size: 1.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sticky-header button {

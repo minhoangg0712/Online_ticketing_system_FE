@@ -22,9 +22,9 @@ body {
 .event-header {
   display: flex;
   flex-direction: column;
-  gap: 12rem;
+  gap: 1rem;
   padding: 1.5rem;
-  max-width: 1500px;
+  max-width: 1250px;
   margin: 0 auto;
 }
 
@@ -33,12 +33,25 @@ body {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    gap: 50rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .event-header {
+    padding: 1rem;
   }
 }
 
 .event-details {
   max-width: 600px;
   flex: 1;
+}
+
+@media (max-width: 768px) {
+  .event-details {
+    text-align: center;
+  }
 }
 
 .event-title {
@@ -70,6 +83,14 @@ body {
   flex-direction: column;
   padding: 0.5rem;
   line-height: 1.2;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .countdown-box {
+    width: 140px;
+    height: 110px;
+  }
 }
 
 .countdown-title {
@@ -77,6 +98,13 @@ body {
   margin: 0 0 1rem 0;
   text-align: center;
   white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .countdown-title {
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem 0;
+  }
 }
 
 .timer-display {
@@ -117,6 +145,12 @@ body {
   margin: 0 auto;
 }
 
+@media (max-width: 1024px) {
+  .payment-section {
+    padding: 1rem;
+  }
+}
+
 .section-title {
   font-size: 1.75rem;
   margin-bottom: 1.5rem;
@@ -124,10 +158,24 @@ body {
   color: #fb8442;
 }
 
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+}
+
 .payment-container {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
+}
+
+@media (max-width: 1024px) {
+  .payment-container {
+    gap: 1rem;
+  }
 }
 
 @media (min-width: 768px) {

@@ -46,7 +46,7 @@
   bottom: 0;
   width: 100%;
   height: 2px;
-  background-color: #00c896;
+  background-color: #ff7e42;
   border-radius: 2px;
 }
 
@@ -74,6 +74,7 @@
   padding: clamp(5px, 2vw, 10px);
   margin: clamp(5px, 2vw, 10px) auto;
   max-width: 1350px; 
+  height: auto;
   box-sizing: border-box;
 }
 
@@ -94,7 +95,8 @@
   border-radius: 8px;
 }
 
-@media (min-width: 768px) {
+/* Màn hình lớn hơn laptop */
+@media (min-width: 1025px) {
   .filter-tab {
     padding: 0.5rem 1rem;
   }
@@ -109,29 +111,73 @@
   }
 }
 
-@media (max-width: 480px) {
+/* Màn hình nhỏ hơn hoặc bằng laptop */
+@media (max-width: 1024px) {
   .filter-tab {
     padding: 0.5rem;
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
 
   .tab-group {
-    margin-left: 0;
-    justify-content: center;
-  }
-
-  .filter-btn {
-    font-size: clamp(12px, 3vw, 14px);
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    align-items: center;
   }
 
   .see-more-btn {
-    font-size: clamp(11px, 2.8vw, 13px);
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: 14px;
   }
 
   .see-more-btn i {
     margin-right: 5px;
-    font-size: clamp(9px, 2.3vw, 11px);
+    font-size: 12px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .filter-tab {
+    padding: 0.5rem 1rem;
+  }
+
+  .filter-btn {
+    font-size: 13px;
+  }
+
+  .see-more-btn {
+    font-size: 13px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .filter-tab {
+    padding: 0.5rem;
+  }
+
+  .tab-group {
+    gap: 0.8rem;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .see-more-btn {
+    font-size: 12px;
+  }
+
+  .see-more-btn i {
+    font-size: 10px;
   }
 
   .banner-container {

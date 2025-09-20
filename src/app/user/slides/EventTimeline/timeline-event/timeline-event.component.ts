@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class TimelineEventComponent {
   images: string[] = [
-    '/assets/anh.webp'
+    'assets/Banner.jpg'
   ];
 
   selectedTab: string = 'thisweekend';

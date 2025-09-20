@@ -22,6 +22,7 @@
   align-items: center;
   overflow: hidden;
   width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 .event-list {
@@ -29,6 +30,44 @@
   flex-wrap: nowrap;
   gap: 15px;
   padding-bottom: 10px;
+  transition: transform 0.3s ease-out;
+}
+
+@media (max-width: 1024px) {
+  .event-carousel {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scroll-snap-type: x mandatory;
+    padding: 0 5px;
+  }
+
+  .event-carousel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  .event-list {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 5px 0;
+  }
+
+  .event-card {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Thêm hiệu ứng khi vuốt */
+  .event-list {
+    will-change: transform;
+    cursor: grab;
+  }
+
+  .event-list:active {
+    cursor: grabbing;
+  }
 }
 
 .event-card {
@@ -109,8 +148,8 @@
   right: 10px;
 }
 
-/* Media Queries for Larger Screens */
-@media (min-width: 768px) {
+/* Media Queries */
+@media (min-width: 1024px) {
   .event-section {
     padding: 20px 30px;
   }
@@ -123,41 +162,98 @@
     height: 170px;
   }
 
+  .event-list {
+    gap: 20px;
+  }
+
   .scroll-btn {
-    padding: 8px;
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
   }
 
-  .scroll-btn.left {
-    left: 0;
-  }
-
-  .scroll-btn.right {
-    right: 0;
+  .scroll-btn:hover {
+    opacity: 1;
   }
 }
 
-/* Media Queries for Smaller Screens */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .event-section {
+    padding: 15px 30px;
+  }
+
+  .event-card {
+    width: 300px;
+  }
+
+  .event-image {
+    height: 150px;
+  }
+
+  .scroll-btn {
+    padding: 8px;
+    font-size: 22px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .event-section {
+    padding: 12px 20px;
+  }
+
+  .event-card {
+    width: 260px;
+  }
+
+  .event-image {
+    height: 140px;
+  }
+
+  .scroll-btn {
+    padding: 7px;
+    font-size: 20px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
 @media (max-width: 480px) {
   .event-section {
     padding: 10px;
   }
 
   .event-card {
-    width: 80vw;
+    width: 220px;
+    min-width: 220px;
   }
 
   .event-image {
     height: 130px;
   }
 
+  .event-list {
+    gap: 12px;
+  }
+
+  .event-title {
+    font-size: 13px;
+  }
+
+  .event-price {
+    font-size: 12px;
+  }
+
+  .event-date {
+    font-size: 11px;
+  }
+
   .scroll-btn {
     padding: 6px;
     font-size: 18px;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
+    top: 30%;
   }
 
   .scroll-btn.left {
