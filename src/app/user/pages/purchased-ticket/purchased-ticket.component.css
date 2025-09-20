@@ -92,3 +92,92 @@
   border: none;
   cursor: pointer;
 }
+
+/* Responsive styles for tablets and phones */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 280px;
+  }
+
+  .container {
+    max-width: 860px;
+    padding: 1.5rem 1rem;
+  }
+
+  .filter-btn {
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Stack layout vertically on small screens */
+  .purchased-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Hide sidebar to maximize content area on phones */
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .heading {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Make filter buttons full width and stacked for easier tapping */
+  .filter-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .filter-btn {
+    min-width: 0;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+  }
+
+  .no-ticket {
+    padding: 1rem 0 3rem 0;
+  }
+
+  .no-ticket img {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+  }
+
+  .buy-btn {
+    width: 100%;
+    max-width: 420px;
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+  }
+}
+
+/* Tiny phones - ensure very small screens still usable */
+@media (max-width: 360px) {
+  .filter-btn {
+    padding: 0.7rem 0.75rem;
+    font-size: 0.92rem;
+  }
+
+  .heading {
+    font-size: 1rem;
+  }
+}

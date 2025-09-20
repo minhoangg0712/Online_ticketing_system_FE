@@ -7,16 +7,24 @@
   position: relative;
 }
 
+/* Desktop: tất cả trên 1 hàng */
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 16px 20px;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 10px;
 }
 
+/* Hàng dưới: search + account (dùng cho cả desktop và mobile) */
+.header-bottom {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 10px;
+}
 
 .logo {
   display: flex;
@@ -28,6 +36,17 @@
 .logo-badge {
   width: 180px;
   height: auto;
+}
+
+/* Make logo smaller on medium/small screens */
+@media (max-width: 1024px) {
+  .logo-badge {
+    width: 140px;
+  }
+  .search-container {
+    max-width: 220px;
+    margin-left: 16px;
+  }
 }
 
 /* Search */
@@ -141,6 +160,7 @@
   opacity: 0;
   transform: translateY(10px);
   pointer-events: none;
+  cursor: pointer;
 }
 
 .dropdown-menu.show {
@@ -168,18 +188,74 @@
   background: #ffece6;
 }
 
-/* Responsive */
+/* Responsive: logo tách lên trên, search + account xuống dưới */
 @media (max-width: 768px) {
   .header-container {
-    flex-direction: column;
+    flex-direction: column; /* logo 1 dòng riêng */
     align-items: stretch;
   }
-  .search-container {
+
+  .header-bottom {
     width: 100%;
-    margin: 10px 0;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-top: 10px;
   }
+
+  .search-container {
+    flex: 1;
+    max-width: none;
+    margin: 0;
+  }
+
   .nav-actions {
-    justify-content: center;
-    flex-wrap: wrap;
+    margin-left: 0;
+    gap: 10px;
+  }
+}
+
+/* Small screens: compact header */
+@media (max-width: 480px) {
+  .header-container {
+    padding: 12px 12px;
+  }
+
+  .logo-badge {
+    width: 120px;
+  }
+
+  .search-container {
+    display: block;
+    max-width: 50%;
+    margin-left: 0;
+  }
+
+  .search-box {
+    padding: 10px 12px 10px 40px;
+    font-size: 14px;
+  }
+
+  /* hide text labels to save space, keep avatar and icon */
+  .account-label {
+    display: none;
+  }
+
+  .auth-link {
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-actions {
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .dropdown-menu {
+    min-width: 160px;
   }
 }

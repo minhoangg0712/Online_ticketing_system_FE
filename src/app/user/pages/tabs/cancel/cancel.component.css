@@ -134,3 +134,58 @@
   height: 1.5rem;
   border-radius: 0.25rem;
 }
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+  .horizontal-ticket {
+    flex-direction: column;
+    height: auto;
+    padding: 0.75rem;
+  }
+
+  .left {
+    width: 100%;
+    flex-direction: row;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .ticket-icon, .ticket-icon.qr {
+    width: 4.25rem;
+    height: 4.25rem;
+  }
+
+  .main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .dashed-line, .ticket-perforation {
+    display: none;
+  }
+
+  .ticket-column {
+    gap: 0.5rem;
+  }
+
+  .ticket-text-line1, .ticket-text-line2, .ticket-text-line3, .right-line1 {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .ticket-icon, .ticket-icon.qr {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .status-toggle {
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+}

@@ -86,6 +86,28 @@
   margin-bottom: 0.25rem;
 }
 
+.gender-options {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.gender-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.gender-options input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+}
+
 input,
 select {
   padding: 0.5rem 1rem;
@@ -143,4 +165,101 @@ select {
   cursor: pointer;
   width: 100%;
   margin-top: 1rem;
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .account-info-container {
+    max-width: 30rem;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .account-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Hide sidebar on small screens to maximize content */
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .account-info-container {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .account-info-title {
+    font-size: 1.125rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .profile-section {
+    margin-top: 1rem;
+  }
+
+  .profile-img {
+    width: 84px;
+    height: 84px;
+  }
+
+  .camera-icon {
+    padding: 0.35rem;
+    font-size: 0.7rem;
+  }
+
+  .info-text {
+    font-size: 14px;
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+
+  .form-section {
+    gap: 1rem;
+  }
+
+  .phone-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  input,
+  select {
+    width: 90%;
+  }
+
+  .input-with-icon input {
+    padding-right: 2.5rem;
+  }
+}
+
+/* Tiny phones */
+@media (max-width: 360px) {
+  .account-info-container {
+    padding: 0.75rem;
+  }
+
+  .profile-img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .account-info-title {
+    font-size: 1rem;
+  }
+
+  .submit-btn {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.95rem;
+  }
 }
