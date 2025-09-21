@@ -226,6 +226,19 @@ body {
   min-height: calc(100vh - 120px);
 }
 
+.hamburger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: #202020;
+  border: none;
+  padding: 8px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     width: 220px;

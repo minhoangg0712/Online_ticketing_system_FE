@@ -1,7 +1,9 @@
 <div class="organizer-layout">
   <nav class="sidebar" [class.mobile-open]="mobileOpen">
     <div class="logo">
-    <img src="assets/logoeventa-white.png" alt="Eventa Logo"/>
+      <a (click)="goToEvents()">
+        <img src="assets/logoeventa-white.png" alt="Eventa Logo" />
+      </a>
   </div>
     <ul class="nav-links">
       <li>
@@ -36,7 +38,7 @@
       <div class="header-actions">
         <!-- Hamburger for mobile -->
         <button class="hamburger-btn" (click)="toggleSidebar()" aria-label="Toggle menu">
-          <i class="bi bi-list" style="font-size:18px;color:white"></i>
+          <i class="bi bi-list"></i>
         </button>
         <button class="create-event-btn" 
         (click)="goToCreateEvent()" [class.active]="currentRoute === '/organizer/create-event'">
