@@ -15,12 +15,14 @@
     <button 
       class="nav-btn prev-btn" 
       (click)="scrollLeft()"
+      *ngIf="canScrollLeft"
       >
       ‹
     </button>
     <button 
       class="nav-btn next-btn" 
       (click)="scrollRight()" 
+      *ngIf="canScrollRight"
       >
       ›
     </button>

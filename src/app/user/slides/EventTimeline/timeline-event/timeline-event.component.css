@@ -51,7 +51,7 @@
 }
 
 .see-more-btn {
-  color: #222;
+  color: gray;
   font-size: clamp(12px, 3vw, 14px);
   gap: clamp(3px, 1vw, 5px);
   text-decoration: none;
@@ -67,7 +67,7 @@
 
 .see-more-btn i {
   margin-right: clamp(5px, 2vw, 10px);
-  font-size: clamp(10px, 2.5vw, 12px);
+  font-size: clamp(12px, 3vw, 14px);
 }
 
 .banner-container {
@@ -102,7 +102,7 @@
   }
 
   .tab-group {
-    margin-left: 20px;
+    margin-left: 15px;
   }
 
   .banner-container {
@@ -114,7 +114,6 @@
 /* Màn hình nhỏ hơn hoặc bằng laptop */
 @media (max-width: 1024px) {
   .filter-tab {
-    padding: 0.5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

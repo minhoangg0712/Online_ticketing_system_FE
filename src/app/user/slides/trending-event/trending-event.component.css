@@ -2,17 +2,16 @@
   padding: 40px 20px;
   color: white;
   font-family: 'Inter', sans-serif;
-  max-width: 1350px;
+  max-width: 1345px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #fff6f2, #ffffff);
+  background: transparent;
 }
 
 .section-header {
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-bottom: 20px;
-  margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .section-header p {
@@ -86,52 +85,39 @@
 }
 
 .nav-btn {
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  padding: clamp(6px, 2vw, 8px);
+  border-radius: 25%;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.95);
-  color: #333;
-  border: none;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  font-size: 22px;
-  font-weight: bold;
   cursor: pointer;
+  z-index: 100;
+  font-size: clamp(18px, 5vw, 24px);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  z-index: 3;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  
-  &:hover:not(:disabled) {
-    background: white;
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  }
-  
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
+  width: clamp(30px, 8vw, 40px);
+  height: clamp(30px, 8vw, 40px);
 }
 
 .prev-btn {
-  left: 15px;
+  left: 5px;
 }
 
 .next-btn {
-  right: 15px;
+  right: 8px;
 }
 
 @media (max-width: 768px) {
   .trending-section {
-    padding: 20px 15px;
+    padding: 20px 30px;
     
     .section-header {
       p {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
     
