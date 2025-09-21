@@ -1,5 +1,5 @@
 <div class="organizer-layout">
-  <nav class="sidebar">
+  <nav class="sidebar" [class.mobile-open]="mobileOpen">
     <div class="logo">
     <img src="assets/logoeventa-white.png" alt="Eventa Logo"/>
   </div>
@@ -34,6 +34,10 @@
   <div class="main-content">
     <nav class="nav-header">
       <div class="header-actions">
+        <!-- Hamburger for mobile -->
+        <button class="hamburger-btn" (click)="toggleSidebar()" aria-label="Toggle menu">
+          <i class="bi bi-list" style="font-size:18px;color:white"></i>
+        </button>
         <button class="create-event-btn" 
         (click)="goToCreateEvent()" [class.active]="currentRoute === '/organizer/create-event'">
           <i class="bi bi-plus-circle"></i>
@@ -63,6 +67,9 @@
         </div>
       </div>
     </nav>
+
+    <!-- overlay when sidebar open on mobile -->
+    <div class="mobile-overlay" *ngIf="mobileOpen" (click)="closeSidebar()"></div>
 
     <div class="content">
       <router-outlet></router-outlet>

@@ -20,6 +20,7 @@ export class NavOrganizerComponent implements OnInit {
   isLogoutModalOpen: boolean = false;
   notificationCount: number = 2;
   currentDate: Date = new Date();
+  mobileOpen: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -29,6 +30,14 @@ export class NavOrganizerComponent implements OnInit {
       .subscribe((event: NavigationEnd) => {
         this.currentRoute = event.urlAfterRedirects;
       });
+  }
+
+  toggleSidebar(): void {
+    this.mobileOpen = !this.mobileOpen;
+  }
+
+  closeSidebar(): void {
+    this.mobileOpen = false;
   }
 
   logout() {

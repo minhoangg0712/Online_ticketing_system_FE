@@ -237,6 +237,10 @@ body {
     transform: translateX(0);
   }
 
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
   .main-content {
     margin-left: 0;
   }
@@ -264,6 +268,27 @@ body {
 
   .user-name {
     display: none;
+  }
+
+  /* Hamburger button */
+  .hamburger-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 8px;
+    margin-right: 8px;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 900;
   }
 }
 

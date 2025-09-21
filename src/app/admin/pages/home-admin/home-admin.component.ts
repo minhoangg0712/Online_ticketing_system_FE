@@ -29,7 +29,6 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     '/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css',
     '/assets/plugins/jqvmap/jqvmap.min.css',
     '/assets/dist/css/adminlte.min.css',
-    '/assets/dist/css/style.css',
     '/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
     '/assets/plugins/daterangepicker/daterangepicker.css',
     '/assets/plugins/summernote/summernote-bs4.min.css',
@@ -39,18 +38,17 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     '/assets/plugins/jquery/jquery.min.js',
     '/assets/plugins/jquery-ui/jquery-ui.min.js',
     '/assets/plugins/bootstrap/js/bootstrap.bundle.min.js',
+    '/assets/plugins/moment/moment.min.js',
+    '/assets/plugins/daterangepicker/daterangepicker.js',
+    '/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js',
     '/assets/plugins/chart.js/Chart.min.js',
     '/assets/plugins/sparklines/sparkline.js',
     '/assets/plugins/jqvmap/jquery.vmap.min.js',
     '/assets/plugins/jqvmap/maps/jquery.vmap.usa.js',
     '/assets/plugins/jquery-knob/jquery.knob.min.js',
-    '/assets/plugins/moment/moment.min.js',
-    '/assets/plugins/daterangepicker/daterangepicker.js',
-    '/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js',
     '/assets/plugins/summernote/summernote-bs4.min.js',
     '/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js',
     '/assets/dist/js/adminlte.js',
-    '/assets/dist/js/demo.js',
     '/assets/dist/js/pages/dashboard.js',
   ];
 
@@ -62,7 +60,7 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Tải các tệp CSS
+    // Load CSS
     this.cssFiles.forEach(css => {
       const link = this.renderer.createElement('link');
       this.renderer.setAttribute(link, 'rel', 'stylesheet');
@@ -71,19 +69,33 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
       this.elements.push(link);
     });
 
-    // Tải các tệp JS
-    this.jsFiles.forEach(js => {
+    // Load JS theo thứ tự
+    this.loadScriptsSequentially(this.jsFiles, () => {
+      // Sau khi load xong JS, khởi tạo AdminLTE
+      setTimeout(() => {
+        const $ = (window as any).$;
+        if ($) {
+          $.widget?.bridge('uibutton', $.ui.button);
+          $('[data-widget="treeview"]').Treeview?.('init');
+          $('[data-widget="pushmenu"]').PushMenu?.();
+        }
+      }, 300);
+    });
+  }
+
+  private loadScriptsSequentially(files: string[], callback: () => void) {
+    const loadNext = (index: number) => {
+      if (index >= files.length) {
+        callback();
+        return;
+      }
       const script = this.renderer.createElement('script');
-      this.renderer.setAttribute(script, 'src', js);
+      this.renderer.setAttribute(script, 'src', files[index]);
+      script.onload = () => loadNext(index + 1);
       this.renderer.appendChild(this.document.body, script);
       this.elements.push(script);
-    });
-
-    // Thêm đoạn mã giải quyết xung đột jQuery UI và Bootstrap tooltip
-    const script = this.renderer.createElement('script');
-    script.text = `$.widget.bridge('uibutton', $.ui.button);`;
-    this.renderer.appendChild(this.document.body, script);
-    this.elements.push(script);
+    };
+    loadNext(0);
   }
 
   ngOnDestroy(): void {
@@ -96,3 +108,4 @@ export class HomeAdminComponent implements OnInit, OnDestroy {
     this.elements = [];
   }
 }
+ 

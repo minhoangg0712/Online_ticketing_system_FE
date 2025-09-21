@@ -7,6 +7,7 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* --- SEARCH + FILTER SECTION --- */
 .search-filter-section {
   display: flex;
   justify-content: space-between;
@@ -15,7 +16,7 @@
   margin-bottom: 30px;
 }
 
-/* --- TÌM KIẾM --- */
+/* SEARCH */
 .search-section {
   flex: 1;
   max-width: 380px;
@@ -28,6 +29,7 @@
   border-radius: 8px;
   padding: 8px 12px;
   position: relative;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .search-icon {
@@ -63,11 +65,7 @@
   color: #666;
 }
 
-.clear-search-btn i {
-  font-size: 16px;
-}
-
-/* --- TABS --- */
+/* FILTER TABS */
 .filter-tab {
   display: flex;
   gap: 10px;
@@ -82,9 +80,6 @@
   border: 2px solid transparent;
   font-size: 15px;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
   transition: 0.2s;
   cursor: pointer;
 }
@@ -100,12 +95,12 @@
   font-weight: bold;
 }
 
-/* --- CONTENT --- */
+/* EVENTS LIST */
 .events-list {
   margin-top: 40px;
 }
 
-/* --- NO RESULTS --- */
+/* NO RESULTS */
 .no-results {
   display: flex;
   justify-content: center;
@@ -151,7 +146,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-decoration: none;
   display: inline-block;
 }
 
@@ -161,14 +155,77 @@
   box-shadow: 0 4px 12px rgba(255, 126, 66, 0.3);
 }
 
-/* Responsive nhỏ hơn 768px */
+/* --- RESPONSIVE DESIGN --- */
+
+/* Tablet landscape & small laptop */
+@media (max-width: 1024px) {
+  .content {
+    padding: 24px;
+  }
+
+  .filter-btn {
+    font-size: 14px;
+    padding: 6px 16px;
+  }
+}
+
+/* Tablet portrait & mobile large */
 @media (max-width: 768px) {
   .search-filter-section {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
+  }
+
+  .search-section {
+    max-width: 100%;
   }
 
   .filter-tab {
     justify-content: space-between;
+  }
+
+  .filter-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 480px) {
+  .content {
+    padding: 12px;
+  }
+
+  .search-input-wrapper {
+    padding: 6px 8px;
+  }
+
+  .search-input {
+    font-size: 14px;
+  }
+
+  .filter-tab {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    width: 100%;
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  .no-results-content h3 {
+    font-size: 18px;
+  }
+
+  .no-results-content p {
+    font-size: 14px;
+  }
+
+  .clear-search-link {
+    padding: 10px 16px;
+    font-size: 13px;
   }
 }

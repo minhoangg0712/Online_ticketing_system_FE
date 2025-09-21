@@ -363,25 +363,32 @@
   min-width: 100px;
 }
 
-/* Responsive */
+/* Tablet & small laptop */
 @media (max-width: 1024px) {
   .event-container {
-    max-width: 98vw;
-    padding: 12px;
+    padding: 16px;
   }
   .event-card {
-    padding: 16px 8px;
+    padding: 18px 16px;
   }
 }
+
+/* Tablet portrait & large mobile */
 @media (max-width: 768px) {
+  .search-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin: 10px 15px;
+  }
+  .search-section {
+    max-width: 100%;
+  }
   .event-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
-    padding: 12px 6px;
-  }
-  .event-details {
-    width: 100%;
+    gap: 12px;
+    padding: 16px;
   }
   .event-actions {
     margin-left: 0;
@@ -392,11 +399,6 @@
   .btn {
     width: 100%;
     text-align: center;
-    justify-content: center;
-  }
-  .filter-container {
-    margin-right: 0;
-    justify-content: center;
   }
   .filter-popup {
     right: 50%;
@@ -406,22 +408,33 @@
     padding: 12px 8px;
   }
 }
+
+/* Mobile nhỏ */
 @media (max-width: 480px) {
   .event-container {
-    padding: 4px;
+    padding: 8px;
+  }
+  .search-input-wrapper {
+    padding: 6px 8px;
+  }
+  .search-input {
+    font-size: 14px;
   }
   .event-card {
-    padding: 8px 2px;
-    font-size: 13px;
+    padding: 12px 8px;
   }
   .event-name {
-    font-size: 15px;
+    font-size: 16px;
   }
   .event-info {
-    font-size: 12px;
+    font-size: 13px;
   }
   .btn {
     font-size: 13px;
     padding: 7px 8px;
+  }
+  .filter-popup {
+    min-width: 100%;
+    right: 0;
   }
 }

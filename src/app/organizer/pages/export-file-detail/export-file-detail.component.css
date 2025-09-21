@@ -316,40 +316,130 @@
   min-width: 300px;
 }
 
-/* Responsive design */
+/* ============================= */
+/* 📱 Responsive Design - Nâng cao */
+/* ============================= */
+
+/* Tablet (<= 992px) */
+@media (max-width: 992px) {
+  .main-content {
+    padding: 16px;
+  }
+
+  .charts-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .charts-container .charts-section {
+    min-width: 100%;
+    padding: 16px;
+  }
+
+  .chart-box {
+    min-width: auto;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .chart-content {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+/* Mobile (<= 768px) */
 @media (max-width: 768px) {
+  .event-title {
+    font-size: 1.8rem;
+    margin: 10px 0;
+    text-align: left;
+  }
+
   .info-grid {
     grid-template-columns: 1fr;
-  }
-
-  .event-title {
-    font-size: 1.5rem;
-  }
-
-  .info-card h3,
-  .ticket-types-section h3 {
-    font-size: 1.25rem;
+    gap: 12px;
   }
 
   .ticket-table th,
   .ticket-table td {
-    font-size: 0.85rem;
-    padding: 10px;
+    font-size: 0.8rem;
+    padding: 8px;
   }
 
   .report-download-section {
     flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
 
   .download-btn,
   .back-btn {
     width: 100%;
-    text-align: center;
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .charts-wrapper {
+    flex-direction: column;
+    gap: 16px;
+    width: 90%;
+  }
+
+  .chart-box {
+    padding: 12px;
   }
 }
 
-@media (max-width: 640px) {
-  .charts-wrapper {
-    flex-wrap: wrap;
+/* Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 12px;
+  }
+
+  .header-section {
+    gap: 6px;
+  }
+
+  .event-title {
+    font-size: 1.4rem;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .info-card {
+    padding: 12px;
+  }
+
+  .info-item .label {
+    font-size: 0.85rem;
+  }
+
+  .info-item .value {
+    font-size: 0.9rem;
+  }
+
+  .ticket-table th,
+  .ticket-table td {
+    font-size: 0.75rem;
+    padding: 6px;
+  }
+
+  .charts-section h3 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+  }
+
+  .filter-section select {
+    width: 90%;
+    font-size: 0.9rem;
   }
 }
+
