@@ -386,6 +386,17 @@ p {
     padding-top: 20px;
   }
 
+  .logo {
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .logo-badge {
+    width: 150px;
+  }
+
   .signup-box {
     margin: 20px;
     padding: 25px 20px;
