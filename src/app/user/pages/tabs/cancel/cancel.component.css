@@ -41,6 +41,7 @@
 .stub-line1, .stub-line2 {
   height: 0.75rem;
   border-radius: 0.25rem;
+  justify-content: center;
 }
 
 .stub-line1 {
@@ -48,7 +49,7 @@
 }
 
 .stub-line2 {
-  width: 4rem;
+  width: 8rem;
 }
 
 .dashed-line {
@@ -100,25 +101,38 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  margin-right: 6rem;
 }
 
+.ticket-icon.qr {
+  width: 6rem;
+  height: 6rem;
+  background-color: #4b5563;
+  border-radius: 0.5rem;
+}
+
+.ticket-icon.qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background-color: #4b5563;
+}
 
 .ticket-column {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 5px;
 }
 
 .ticket-text-line1 {
-  width: 10rem;
-  height: 1.0rem;
+  width: 12rem;
+  height: 2.5rem;
   border-radius: 0.25rem;
 }
 
 .ticket-text-line2 {
-  width: 10rem;
-  height: 1rem;
+  width: 12rem;
+  height: 2.5rem;
   border-radius: 0.25rem;
 }
 
@@ -128,10 +142,9 @@
   border-radius: 0.25rem;
 }
 
-
 .right-line1 {
   width: 6rem;
-  height: 1.5rem;
+  height: 3.5rem;
   border-radius: 0.25rem;
 }
 
@@ -152,7 +165,7 @@
     justify-content: flex-start;
   }
 
-  .ticket-icon, .ticket-icon.qr {
+  .ticket-icon.qr, .ticket-icon {
     width: 4.25rem;
     height: 4.25rem;
   }
@@ -179,7 +192,7 @@
 }
 
 @media (max-width: 360px) {
-  .ticket-icon, .ticket-icon.qr {
+  .ticket-icon.qr, .ticket-icon {
     width: 3.5rem;
     height: 3.5rem;
   }

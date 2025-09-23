@@ -1,5 +1,5 @@
 .page-container {
-  background: #fff6f2;
+  background:#fff6f2;
   min-height: 100vh;
   padding: 2rem;
   color: white;
@@ -32,17 +32,6 @@
   padding-bottom: 0.25rem;
 }
 
-.img {
-  border-radius: 9999px;
-  margin-bottom: 1rem;
-  margin-top: 2.5rem;;
-}
-
-.no-ticket-msg {
-  color: #6b7080;
-  margin-bottom: 4rem;
-}
-
 .ticket-list {
   display: flex;
   flex-direction: column;
@@ -50,7 +39,6 @@
   margin-bottom: 1.5rem;
   color: white;
   font-family: 'Inter', sans-serif;
-  background: #fff6f2;
 }
 
 .horizontal-ticket {
@@ -76,6 +64,7 @@
 .stub-line1, .stub-line2 {
   height: 0.75rem;
   border-radius: 0.25rem;
+  justify-content: center;
 }
 
 .stub-line1 {
@@ -83,7 +72,7 @@
 }
 
 .stub-line2 {
-  width: 4rem;
+  width: 8rem;
 }
 
 .dashed-line {
@@ -137,14 +126,14 @@
   gap: 1.5rem;
 }
 
-.ticket-icon {
+.ticket-icon.qr {
   width: 6rem;
   height: 6rem;
   background-color: #4b5563;
   border-radius: 0.5rem;
 }
 
-.ticket-icon img {
+.ticket-icon.qr img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -155,18 +144,18 @@
 .ticket-column {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 5px;
 }
 
 .ticket-text-line1 {
-  width: 10rem;
-  height: 1.0rem;
+  width: 12rem;
+  height: 2.5rem;
   border-radius: 0.25rem;
 }
 
 .ticket-text-line2 {
-  width: 10rem;
-  height: 1rem;
+  width: 12rem;
+  height: 2.5rem;
   border-radius: 0.25rem;
 }
 
@@ -176,15 +165,9 @@
   border-radius: 0.25rem;
 }
 
-/* .middle-line2 {
-  width: 5rem;
-  height: 1.5rem;
-  border-radius: 0.25rem;
-} */
-
 .right-line1 {
   width: 6rem;
-  height: 1.5rem;
+  height: 3.5rem;
   border-radius: 0.25rem;
 }
 
@@ -205,7 +188,7 @@
     justify-content: flex-start;
   }
 
-  .ticket-icon, .ticket-icon.qr {
+  .ticket-icon.qr, .ticket-icon {
     width: 4.25rem;
     height: 4.25rem;
   }
@@ -232,7 +215,7 @@
 }
 
 @media (max-width: 360px) {
-  .ticket-icon, .ticket-icon.qr {
+  .ticket-icon.qr, .ticket-icon {
     width: 3.5rem;
     height: 3.5rem;
   }
@@ -242,14 +225,4 @@
     padding: 0 0.5rem;
   }
 }
-
-/* .right-line2 {
-  width: 5rem;
-  height: 5rem;
-  background-color: #6b7280;
-  border-radius: 0.25rem;
-} */
-
-
-
 

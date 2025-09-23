@@ -64,6 +64,7 @@
 .stub-line1, .stub-line2 {
   height: 0.75rem;
   border-radius: 0.25rem;
+  justify-content: center;
 }
 
 .stub-line1 {
@@ -71,7 +72,7 @@
 }
 
 .stub-line2 {
-  width: 4rem;
+  width: 8rem;
 }
 
 .dashed-line {
@@ -143,18 +144,18 @@
 .ticket-column {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 5px;
 }
 
 .ticket-text-line1 {
-  width: 10rem;
-  height: 1.0rem;
+  width: 12rem;
+  height: 2.5rem;
   border-radius: 0.25rem;
 }
 
 .ticket-text-line2 {
-  width: 10rem;
-  height: 1rem;
+  width: 12rem;
+  height: 2.5rem;
   border-radius: 0.25rem;
 }
 
@@ -166,7 +167,7 @@
 
 .right-line1 {
   width: 6rem;
-  height: 1.5rem;
+  height: 3.5rem;
   border-radius: 0.25rem;
 }
 
