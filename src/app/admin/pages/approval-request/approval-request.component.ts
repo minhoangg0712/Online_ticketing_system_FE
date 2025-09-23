@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../service/admin.service';
@@ -71,7 +71,7 @@ export class ApprovalRequestComponent {
     rejected: 0
   };
   currentDate: Date = new Date();
-  constructor(private adminService: AdminService, private http: HttpClient) {}
+  constructor(private adminService: AdminService, private http: HttpClient,private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loadEvents();
@@ -116,6 +116,7 @@ export class ApprovalRequestComponent {
           this.stats.rejected = this.events.filter(event => event.status === 'rejected').length;
           console.log('Stats:', this.stats);
           this.applyFilters();
+          this.cdr.detectChanges(); // Buộc phát hiện thay đổi
         }
         this.loading = false;
       },
@@ -264,6 +265,7 @@ export class ApprovalRequestComponent {
 
     this.totalItems = this.filteredEvents.length;
     this.currentPage = 1;
+    this.cdr.detectChanges(); // Buộc phát hiện thay đổi
   }
 
   // Search events
@@ -294,10 +296,11 @@ export class ApprovalRequestComponent {
   }
 
   goToPage(page: number) {
-    if (page >= 1 && page <= this.getTotalPages()) {
-      this.currentPage = page;
-    }
+  if (page >= 1 && page <= this.getTotalPages()) {
+    this.currentPage = page;
+    this.cdr.detectChanges(); // Buộc phát hiện thay đổi
   }
+}
 
   getDisplayEndIndex(): number {
     return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
