@@ -70,7 +70,7 @@ export class ApprovalRequestComponent {
     approved: 0,
     rejected: 0
   };
-
+  currentDate: Date = new Date();
   constructor(private adminService: AdminService, private http: HttpClient) {}
 
   ngOnInit() {
@@ -126,6 +126,10 @@ export class ApprovalRequestComponent {
     });
   }
 
+  formatDate1(date: Date): string {
+    if (!date || isNaN(date.getTime())) return 'Không xác định';
+    return date.toLocaleDateString('vi-VN'); // Định dạng dd/MM/yyyy, ví dụ: 23/09/2025
+  }
   // Load statistics
   loadStatistics() {
     this.adminService.getEventCount().subscribe({
