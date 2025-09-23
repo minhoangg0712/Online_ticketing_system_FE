@@ -7,11 +7,10 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AdminService {
-  private apiUrl = 'http://113.20.107.77/api/users';
-  private eventsApiUrl = 'http://113.20.107.77/api/events';
-  private ordersApiUrl = 'http://113.20.107.77/api/orders';
-
-  private reviewsApiUrl = 'http://113.20.107.77/api/review'; 
+  private apiUrl = 'http://113.20.107.77:8080/api/users';
+  private eventsApiUrl = 'http://113.20.107.77:8080/api/events';
+  private ordersApiUrl = 'http://113.20.107.77:8080/api/orders';
+  private reviewsApiUrl = 'http://113.20.107.77:8080/api/review'; 
   constructor(private http: HttpClient) {}
 
   // ==================== USER METHODS ====================

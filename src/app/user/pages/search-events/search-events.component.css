@@ -1,9 +1,14 @@
 .container {
   max-width: 1200px;
   margin: auto;
-  background: linear-gradient(135deg, #fff6f2, #ffffff);
+  background: transparent;
   padding: 2rem 10rem;
   font-family: 'Inter', sans-serif;
+}
+
+:host {
+  display: block;
+  background: linear-gradient(135deg, #fff6f2, #ffffff);
 }
 
 .search-title {

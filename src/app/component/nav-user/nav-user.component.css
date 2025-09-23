@@ -6,10 +6,9 @@
   background: 135deg, #fff6f2;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
-  flex-direction: row; /* mặc định là row */
+  flex-direction: row; 
 }
 
-/* Ảnh đại diện */
 .profile-img {
   width: 40px;
   height: 40px;

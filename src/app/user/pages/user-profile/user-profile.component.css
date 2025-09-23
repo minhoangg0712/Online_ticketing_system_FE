@@ -6,7 +6,8 @@
 }
 
 .sidebar {
-  width: 270px;
+  width: 200px;
+  margin-left: 3cm;
 }
 
 .content {
@@ -14,7 +15,7 @@
 }
 
 .account-info-container {
-  max-width: 28rem;
+  max-width: 25rem;
   margin: 0 auto;
   padding: 1.5rem;
 }
@@ -188,6 +189,8 @@ select {
   /* Hide sidebar on small screens to maximize content */
   .sidebar {
     display: none;
+    /* ensure no left margin on mobile */
+    margin-left: 0;
   }
 
   .content {
