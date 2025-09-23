@@ -14,6 +14,9 @@ export class ProfileService {
   private apiUrl = 'http://113.20.107.77:8080/api/users';
   private reviewUrl = 'http://113.20.107.77:8080/api/review';
 
+  // private apiUrl = 'http://localhost:8080/api/users';
+  // private reviewUrl = 'http://localhost:8080/api/review';
+
   constructor( private http: HttpClient,
     private router: Router,
     private authService: AuthService,

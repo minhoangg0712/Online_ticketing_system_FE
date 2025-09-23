@@ -1,0 +1,10 @@
+# Bỏ node_modules để tránh copy lên Docker context
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Bỏ các file không cần cho build
+.dockerignore
+.git
+.gitignore
+Dockerfile

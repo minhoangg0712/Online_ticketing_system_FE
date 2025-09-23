@@ -136,7 +136,7 @@ export class ExportFileDetailComponent implements OnInit, AfterViewInit {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
     this.http.get<{ data: any }>(
-      `http://localhost:8080/api/events/${this.eventId}`, { headers }
+      `http://113.20.107.77:8080/api/events/${this.eventId}`, { headers }
     ).subscribe({
       next: res => {
         const data = res.data;
@@ -198,7 +198,7 @@ private loadTicketsPerDay(ticketType?: string): void {
     const types = this.ticketStats.ticketTypes.map(t => t.ticketType);
     const requests = types.map(type =>
       this.http.get<{ data: TicketsPerDay[] }>(
-        `http://localhost:8080/api/events/report/ticket-type-per-day/${this.eventId}?ticketType=${encodeURIComponent(type)}`,
+        `http://113.20.107.77:8080/api/events/report/ticket-type-per-day/${this.eventId}?ticketType=${encodeURIComponent(type)}`,
         { headers }
       )
     );
@@ -226,7 +226,7 @@ private loadTicketsPerDay(ticketType?: string): void {
       });
   } else {
     // Chỉ một loại vé
-    const url = `http://localhost:8080/api/events/report/ticket-type-per-day/${this.eventId}?ticketType=${encodeURIComponent(ticketType)}`;
+    const url = `http://113.20.107.77:8080/api/events/report/ticket-type-per-day/${this.eventId}?ticketType=${encodeURIComponent(ticketType)}`;
     this.http.get<{ data: TicketsPerDay[] }>(url, { headers })
       .subscribe({
         next: res => {
@@ -463,7 +463,7 @@ private loadTicketsPerDay(ticketType?: string): void {
     const fileExt = type === 'pdf' ? 'pdf' : 'xlsx';
     if (type === 'pdf') this.isDownloadingPdf = true; else this.isDownloadingExcel = true;
 
-    this.http.get(`http://localhost:8080/api/events/${this.eventId}/report/${type}`, {
+    this.http.get(`http://113.20.107.77:8080/api/events/${this.eventId}/report/${type}`, {
       headers, responseType: 'blob'
     }).subscribe({
       next: data => {
@@ -492,7 +492,7 @@ private loadTicketsPerDay(ticketType?: string): void {
     const fileExt = type === 'pdf' ? 'pdf' : 'xlsx';
     if (type === 'pdf') this.isDownloadingBuyerPdf = true; else this.isDownloadingBuyerExcel = true;
 
-    this.http.get(`http://localhost:8080/api/events/${this.eventId}/report/buyer-${type}`, {
+    this.http.get(`http://113.20.107.77:8080/api/events/${this.eventId}/report/buyer-${type}`, {
       headers, responseType: 'blob'
     }).subscribe({
       next: data => {

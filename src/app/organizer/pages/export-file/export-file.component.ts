@@ -59,7 +59,7 @@ export class ExportFileComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get<any>('http://localhost:8080/api/events/by-organizer', { headers })
+    this.http.get<any>('http://113.20.107.77:8080/api/events/by-organizer', { headers })
       .subscribe({
         next: (res) => {
           // Chỉ lấy sự kiện có status là 'upcoming' hoặc 'completed'

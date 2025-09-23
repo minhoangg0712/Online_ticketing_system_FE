@@ -53,7 +53,7 @@ export class HomeOrganizerComponent implements OnInit {
     });
 
     // 1. Gọi API lấy danh sách sự kiện
-    this.http.get<any>('http://localhost:8080/api/events/by-organizer', { headers })
+    this.http.get<any>('http://113.20.107.77:8080/api/events/by-organizer', { headers })
       .subscribe({
         next: res => {
           this.events = res.data.listEvents;
