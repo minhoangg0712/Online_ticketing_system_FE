@@ -22,7 +22,7 @@ export class TrendingEventComponent implements OnInit {
   }
 
   loadTrendingEvents(): void {
-    this.eventService.getRecommendedEvents('trending').subscribe(res => {
+    this.eventService.getRecommendedEvents('Trending').subscribe(res => {
       const events = res?.data?.listEvents || [];
 
       this.events = events.map((event: any) => ({
