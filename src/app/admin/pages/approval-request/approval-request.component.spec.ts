@@ -153,7 +153,7 @@ describe('ApprovalRequestComponent', () => {
   it('should export event excel', fakeAsync(() => {
     const mockBlob = new Blob(['excel'], { type: 'application/vnd.ms-excel' });
     component.exportEventExcel(123);
-    const req = httpMock.expectOne('http://localhost:8080/api/events/123/report/excel');
+    const req = httpMock.expectOne('http://113.20.107.77:8080/api/events/123/report/excel');
     expect(req.request.method).toBe('GET');
     req.flush(mockBlob);
     tick();
@@ -163,7 +163,7 @@ describe('ApprovalRequestComponent', () => {
   it('should export event pdf', fakeAsync(() => {
     const mockBlob = new Blob(['pdf'], { type: 'application/pdf' });
     component.exportEventPdf(456);
-    const req = httpMock.expectOne('http://localhost:8080/api/events/456/report/pdf');
+    const req = httpMock.expectOne('http://113.20.107.77:8080/api/events/456/report/pdf');
     expect(req.request.method).toBe('GET');
     req.flush(mockBlob);
     tick();
