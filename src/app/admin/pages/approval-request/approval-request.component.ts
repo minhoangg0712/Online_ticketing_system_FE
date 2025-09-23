@@ -149,7 +149,7 @@ export class ApprovalRequestComponent {
   // Export Excel for a single event
   exportEventExcel(eventId: number) {
     this.loading = true;
-    const url = `http://localhost:8080/api/events/${eventId}/report/excel`;
+    const url = `http://113.20.107.77:8080/api/events/${eventId}/report/excel`;
     this.http.get(url, { responseType: 'blob' }).subscribe({
       next: (response: Blob) => {
         this.downloadFile(response, `event_${eventId}_report.xlsx`);
@@ -173,7 +173,7 @@ export class ApprovalRequestComponent {
 
     this.loading = true;
     const exportPromises = this.selectedEvents.map(eventId => {
-      const url = `http://localhost:8080/api/events/${eventId}/report/excel`;
+      const url = `http://113.20.107.77:8080/api/events/${eventId}/report/excel`;
       return this.http.get(url, { responseType: 'blob' }).toPromise().then((response: Blob | undefined) => {
         if (response) {
           this.downloadFile(response, `event_${eventId}_report.xlsx`);
@@ -204,7 +204,7 @@ export class ApprovalRequestComponent {
     // Export PDF for a single event
   exportEventPdf(eventId: number) {
     this.loading = true;
-    const url = `http://localhost:8080/api/events/${eventId}/report/pdf`;
+    const url = `http://113.20.107.77:8080/api/events/${eventId}/report/pdf`;
     this.http.get(url, { responseType: 'blob' }).subscribe({
       next: (response: Blob) => {
         this.downloadFile(response, `event_${eventId}_report.pdf`);
@@ -227,7 +227,7 @@ export class ApprovalRequestComponent {
     }
     this.loading = true;
     const exportPromises = this.selectedEvents.map(eventId => {
-      const url = `http://localhost:8080/api/events/${eventId}/report/pdf`;
+      const url = `http://113.20.107.77:8080/api/events/${eventId}/report/pdf`;
       return this.http.get(url, { responseType: 'blob' }).toPromise().then((response: Blob | undefined) => {
         if (response) {
           this.downloadFile(response, `event_${eventId}_report.pdf`);
