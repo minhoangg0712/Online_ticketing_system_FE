@@ -10,9 +10,6 @@ export class EventsService {
   private apiUrl = 'http://113.20.107.77:8080/api/events';
   private baseUrl = 'http://113.20.107.77:8080/api';
 
-  // private apiUrl = 'http://localhost:8080/api/events';
-  // private baseUrl = 'http://localhost:8080/api';
-
   constructor(private http: HttpClient) { }
 
    getRecommendedEvents(

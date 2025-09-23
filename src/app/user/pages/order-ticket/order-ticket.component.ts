@@ -285,8 +285,8 @@ export class OrderTicketComponent implements OnInit, OnDestroy, CanComponentDeac
     const paymentData = {
       ...this.orderData,
       discountCode: this.discountCode,
-      returnUrl: 'https://url.ngrok-free.app/success',
-      cancelUrl: 'https://url.ngrok-free.app/cancel'
+      cancelUrl: "http://eventa.cmcu.edu.vn/home",
+      returnUrl: "http://eventa.cmcu.edu.vn/home"
     };
 
     this.ticketOrderService.payOrder(paymentData).subscribe({

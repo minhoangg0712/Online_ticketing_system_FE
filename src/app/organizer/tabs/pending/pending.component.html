@@ -43,6 +43,7 @@
         <p *ngIf="selectedEvent.approvalStatus === 'rejected' && selectedEvent.rejectReason">
           <strong>Lý do từ chối:</strong> {{ selectedEvent.rejectReason }}
         </p>
+        
         <div class="ticket-prices" *ngIf="selectedEvent.ticketPrices">
           <p *ngIf="ticketPriceList.length">
             <strong>Giá vé:</strong>
