@@ -45,7 +45,7 @@ export class TicketOrderService {
   }
 
   payOrder(orderData: any): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/api/orders', orderData);
+    return this.http.post<any>('http://113.20.107.77:8080/api/orders', orderData);
   }
 
   clearOrder() {

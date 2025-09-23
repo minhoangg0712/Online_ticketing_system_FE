@@ -101,6 +101,6 @@ export class UserService {
   }
 
   getDiscountByCode(code: string) {
-    return this.http.get<any>(`http://localhost:8080/api/discounts/${code}`);
+    return this.http.get<any>(`http://113.20.107.77:8080/api/discounts/${code}`);
   }
 }

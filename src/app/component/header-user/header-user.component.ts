@@ -46,6 +46,8 @@ export class HeaderUserComponent {
     } else {
       this.router.navigate(['/search-events']);
     }
+
+    this.searchKeyword = '';
   }
 
 
