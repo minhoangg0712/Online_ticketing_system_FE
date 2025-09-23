@@ -145,12 +145,12 @@
       <!-- Existing code for loading and empty states -->
       <tr *ngFor="let event of getPaginatedEvents(); let i = index">
         <td>
-          <input
+            <input
             type="checkbox"
             [checked]="isEventSelected(event.id)"
             (change)="toggleEventSelection(event.id)">
         </td>
-        <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+       <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
         <td>
           <div class="d-flex align-items-center">
             <div>
@@ -269,7 +269,7 @@
 </div>
 
         <!-- Pagination -->
-        <div class="card-footer">
+       <div class="card-footer">
           <div class="row">
             <div class="col-sm-12 col-md-5">
               <div class="dataTables_info">
@@ -285,9 +285,7 @@
                       Trước
                     </a>
                   </li>
-                  <li
-                    class="page-item"
-                    *ngFor="let page of [].constructor(getTotalPages()); let i = index"
+                  <li class="page-item" *ngFor="let page of [].constructor(getTotalPages()); let i = index"
                     [class.active]="currentPage === i + 1">
                     <a class="page-link" href="#" (click)="goToPage(i + 1); $event.preventDefault()">
                       {{ i + 1 }}
