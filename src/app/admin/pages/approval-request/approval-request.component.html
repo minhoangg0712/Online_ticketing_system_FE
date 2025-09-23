@@ -189,6 +189,11 @@
             <i [class]="getStatusIcon(event.status)" class="mr-1"></i>
             {{ getStatusText(event.status) }}
           </span>
+          <div *ngIf="event.status === 'pending' && event.endDate" class="text-danger mt-1 small">
+    <ng-container *ngIf="formatDate(event.endDate) < formatDate1(currentDate)">
+      Sự kiện đã hết hạn, không thể phê duyệt/từ chối!
+    </ng-container>
+  </div>
         </td>
         <td class="text-center">
           <div class="btn-group" role="group">
@@ -197,13 +202,13 @@
               <button
                 class="btn btn-success btn-sm"
                 (click)="approveEvent(event.id)"
-                title="Duyệt">
+                title="Duyệt" [disabled]="event.endDate && formatDate(event.endDate) < formatDate1(currentDate)">
                 <i class="fas fa-check"></i>
               </button>
               <button
                 class="btn btn-danger btn-sm"
                 (click)="openRejectModal(event)"
-                title="Từ chối">
+                title="Từ chối"  [disabled]="event.endDate && formatDate(event.endDate) < formatDate1(currentDate)">
                 <i class="fas fa-times"></i>
               </button>
             </ng-container>
