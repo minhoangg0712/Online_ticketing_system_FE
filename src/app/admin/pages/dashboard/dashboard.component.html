@@ -20,60 +20,7 @@
 <section class="content">
   <div class="container-fluid">
     <!-- Small boxes (Stat box) -->
-    <div class="row">
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
-          <div class="inner">
-            <h3 *ngIf="!isLoading">{{ eventCount }}</h3>
-            <h3 *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i></h3>
-            <p>Tổng sự kiện</p>
-          </div>
-          <div class="icon">
-            <i class="fas fa-calendar-alt"></i>
-          </div>
-          <a [routerLink]="['/admin/approval-request']" class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
-          <div class="inner">
-            <h3 *ngIf="!isLoading">{{ ticketCount }}</h3>
-            <h3 *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i></h3>
-            <p>Tổng vé</p>
-          </div>
-          <div class="icon">
-            <i class="fas fa-ticket-alt"></i>
-          </div>
-          <a [routerLink]="['/admin/orders-request']" class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
-          <div class="inner">
-            <h3 *ngIf="!isLoading">{{ userCount }}</h3>
-            <h3 *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i></h3>
-            <p>Đăng ký người dùng</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-person-add"></i>
-          </div>
-          <a [routerLink]="['/admin/user-management']" class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-danger">
-          <div class="inner">
-            <h3 *ngIf="!isLoading">{{ completedEventCount }}</h3>
-            <h3 *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i></h3>
-            <p>Sự kiện đã hoàn thành</p>
-          </div>
-          <div class="icon">
-            <i class="fas fa-calendar-check"></i> <!-- Thay ion-pie-graph bằng fa-calendar-check -->
-          </div>
-          <a [routerLink]="['/admin/events']" class="small-box-footer">Thêm thông tin <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-    </div>
+    
     <!-- Statistics Section -->
     <div class="row">
       <div class="col-lg-4 col-md-6">
