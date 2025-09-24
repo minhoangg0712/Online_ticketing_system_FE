@@ -46,7 +46,7 @@ export class UserManagementComponent implements OnInit {
   selectAll: boolean = false;
 
   currentPage: number = 1;
-  itemsPerPage: number = 10; 
+  itemsPerPage: number = 7; 
   totalItems: number = 0;
  
   constructor(
