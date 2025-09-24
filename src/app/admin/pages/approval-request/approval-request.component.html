@@ -143,14 +143,13 @@
     </thead>
     <tbody>
       <!-- Existing code for loading and empty states -->
-      <tr *ngFor="let event of getPaginatedEvents(); let i = index">
+      <tr *ngFor="let event of events; let i = index">
         <td>
-            <input
-            type="checkbox"
-            [checked]="isEventSelected(event.id)"
-            (change)="toggleEventSelection(event.id)">
+            <input type="checkbox" 
+                 [checked]="isEventSelected(event.id)"
+                 (change)="toggleEventSelection(event.id)">
         </td>
-       <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+        <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
         <td>
           <div class="d-flex align-items-center">
             <div>
