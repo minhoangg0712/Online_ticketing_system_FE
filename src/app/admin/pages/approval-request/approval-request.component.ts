@@ -140,22 +140,22 @@ export class ApprovalRequestComponent implements OnInit {
 
   loadStatistics() {
     this.adminService.getEventCount().subscribe({
-      next: (count) => (this.stats.total = count.data || 0),
+      next: (count) => (this.stats.total = count || 0), // ✅ Đã sửa
       error: (error) => console.error('Error loading total events:', error)
     });
     this.adminService.getEventCountByStatus('pending').subscribe({
-      next: (count) => (this.stats.pending = count.data || 0),
+      next: (count) => (this.stats.pending = count || 0), // ✅ Đã sửa
       error: (error) => console.error('Error loading pending events:', error)
     });
     this.adminService.getEventCountByStatus('approved').subscribe({
-      next: (count) => (this.stats.approved = count.data || 0),
+      next: (count) => (this.stats.approved = count || 0), // ✅ Đã sửa
       error: (error) => console.error('Error loading approved events:', error)
     });
     this.adminService.getEventCountByStatus('rejected').subscribe({
-      next: (count) => (this.stats.rejected = count.data || 0),
+      next: (count) => (this.stats.rejected = count || 0), // ✅ Đã sửa
       error: (error) => console.error('Error loading rejected events:', error)
     });
-  }
+}
 
   onSearch() {
     this.currentPage = 1;
