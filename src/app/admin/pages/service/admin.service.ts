@@ -16,10 +16,21 @@ export class AdminService {
   // ==================== USER METHODS ====================
 
   // Lấy danh sách người dùng
-   getUsers(): Observable<any> {
-    return this.http.get<any>(this.apiUrl, { withCredentials: true }).pipe(
+    getUsers(page: number, itemsPerPage: number, role?: string, status?: string): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', itemsPerPage.toString());
+
+    if (role) {
+      params = params.set('role', role);
+    }
+    if (status) {
+      params = params.set('status', status);
+    }
+
+    return this.http.get<any>(this.apiUrl, { params, withCredentials: true }).pipe(
       map(response => {
-        console.log('Raw API response:', JSON.stringify(response, null, 2));
+        console.log('Raw API response for paginated users:', JSON.stringify(response, null, 2));
         if (response && response.data && response.data.listUsers) {
           response.data.listUsers = response.data.listUsers.map((user: any) => ({
             id: user.id,
@@ -36,7 +47,17 @@ export class AdminService {
             bio: user.bio
           }));
         }
-        return response;
+        // Đảm bảo ánh xạ đúng các trường phân trang
+        return {
+          data: {
+            listUsers: response.data.listUsers ?? [],
+            pageNo: response.data.pageNo ?? 1,
+            totalPage: response.data.totalPage ?? 1,
+            pageSize: response.data.pageSize ?? 10
+          },
+          message: response.message,
+          status: response.status
+        };
       })
     );
   }
