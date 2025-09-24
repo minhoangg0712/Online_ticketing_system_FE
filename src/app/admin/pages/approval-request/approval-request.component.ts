@@ -84,7 +84,7 @@ export class ApprovalRequestComponent implements OnInit {
     const params = {
       name: this.searchKeyword || undefined,
       approvalStatus: this.selectedStatus === 'all' ? undefined : this.selectedStatus,
-      category: this.selectedCategory === 'all' ? undefined : this.selectedCategory,
+      // API của bạn không có 'category', nên không cần gửi tham số này
       page: this.currentPage,
       size: this.itemsPerPage
     };
