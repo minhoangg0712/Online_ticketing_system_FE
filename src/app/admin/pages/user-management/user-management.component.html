@@ -75,7 +75,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let user of getPaginatedUsers(); let i = index" (click)="logUser(user)">
+          <tr *ngFor="let user of users; let i = index" (click)="logUser(user)">
             <td>
               <input type="checkbox" [checked]="isUserSelected(user.id)" (change)="toggleUserSelection(user.id)">
             </td>
@@ -124,7 +124,7 @@
               </button>
             </td>
           </tr>
-          <tr *ngIf="filteredUsers.length === 0 && !isLoading && !isDeleting && !isDisabling && !isApproving">
+          <tr *ngIf="users.length === 0 && !isLoading && !isDeleting && !isDisabling && !isApproving">
             <td colspan="7" class="text-center">Không có người dùng nào phù hợp với bộ lọc</td>
           </tr>
         </tbody>
@@ -162,8 +162,10 @@
         </div>
       </div>
     </div>
-  </div> </section>
+  </div>
+</section>
 
+<!-- Các modal khác giữ nguyên -->
 <div class="modal fade" [ngClass]="{'show d-block': showReviewModal}" [attr.aria-hidden]="!showReviewModal"
   role="dialog" aria-modal="true">
   <div class="modal-dialog modal-lg">
