@@ -162,8 +162,20 @@ approveOrganizer(userId: number): Observable<any> {
         httpParams = httpParams.set(key, value);
       }
     });
-    // ✅ SỬA LẠI URL CHO ĐÚNG
-    return this.http.get(this.eventsApiUrl, { params: httpParams });
+
+    return this.http.get(this.eventsApiUrl, { params: httpParams, withCredentials: true }).pipe(
+      map((response: any) => {
+        console.log('Raw API response for events:', JSON.stringify(response, null, 2));
+        return {
+          data: {
+            content: response.data.listEvents || [],
+            page: response.data.pageNo || 1,
+            size: response.data.pageSize || 10,
+            totalElements: (response.data.totalPages || 1) * (response.data.pageSize || 10)
+          }
+        };
+      })
+    );
   }
 
   // Lấy danh sách sự kiện theo trạng thái
