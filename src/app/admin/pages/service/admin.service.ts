@@ -383,7 +383,7 @@ getEventsByStatus(status: string): Observable<any> {
   }
    // Lấy danh sách đơn hàng
 
-  getOrders(params: {
+   getOrders(params: {
     status?: string,
     startAmount?: number,
     endAmount?: number,
@@ -402,10 +402,23 @@ getEventsByStatus(status: string): Observable<any> {
     }
     if (params.startTime) queryParams = queryParams.set('startTime', params.startTime);
     if (params.endTime) queryParams = queryParams.set('endTime', params.endTime);
-    queryParams = queryParams.set('page', (params.page || 0).toString());
+    queryParams = queryParams.set('page', (params.page || 1).toString()); // Backend expects 1-based
     queryParams = queryParams.set('size', (params.size || 10).toString());
 
-    return this.http.get<any>(`${this.ordersApiUrl}/list`, { params: queryParams });
+    return this.http.get<any>(`${this.ordersApiUrl}/list`, { params: queryParams, withCredentials: true }).pipe(
+      map(response => {
+        console.log('Raw API response for orders:', JSON.stringify(response, null, 2));
+        return {
+          data: {
+            listOrders: response.data.listOrders || [],
+            pageNo: response.data.pageNo || 1,
+            pageSize: response.data.pageSize || 10,
+            totalPages: response.data.totalPages || 1,
+            totalElements: response.data.totalElements || (response.data.totalPages * response.data.pageSize) || 0
+          }
+        };
+      })
+    );
   }
 
   getOrderCountByStatus(status: string): Observable<number> {
