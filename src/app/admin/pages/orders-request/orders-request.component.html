@@ -173,18 +173,18 @@
               <tr *ngIf="loading">
                 <td colspan="11" class="text-center py-4">
                   <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Đang tải...</span>
                   </div>
                   <p class="mt-2 mb-0">Đang tải dữ liệu...</p>
                 </td>
               </tr>
-              <tr *ngIf="!loading && getPaginatedOrders().length === 0">
+              <tr *ngIf="!loading && orders.length === 0">
                 <td colspan="11" class="text-center py-4">
                   <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                   <p class="text-muted">Không có đơn hàng nào</p>
                 </td>
               </tr>
-              <tr *ngFor="let order of getPaginatedOrders(); let i = index">
+              <tr *ngFor="let order of orders; let i = index">
                 <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                 <td>{{ order.id }}</td>
                 <td>{{ order.userName }}</td>
@@ -221,7 +221,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class="card-footer">
+        <div class="card-footer" *ngIf="!loading && totalItems > 0">
           <div class="row">
             <div class="col-sm-12 col-md-5">
               <div class="dataTables_info">
