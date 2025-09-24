@@ -36,7 +36,8 @@ export class EventsComponent implements OnInit {
 
   loadCompletedEvents(): void {
     this.isLoading = true;
-    this.adminService.getEvents().subscribe({
+    const defaultParams = { page: 1, size: 10 }; 
+this.adminService.getEvents(defaultParams).subscribe({
       next: (response) => {
         console.log('All events response:', JSON.stringify(response, null, 2));
         this.completedEvents = (response.data?.listEvents ?? [])
