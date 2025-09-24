@@ -178,6 +178,30 @@ approveOrganizer(userId: number): Observable<any> {
     );
   }
 
+  getCompletedEvents(params: {
+    page?: number,
+    size?: number
+  }): Observable<any> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('status', 'completed');
+    queryParams = queryParams.set('page', (params.page || 1).toString());
+    queryParams = queryParams.set('size', (params.size || 10).toString());
+
+    return this.http.get<any>(this.eventsApiUrl, { params: queryParams, withCredentials: true }).pipe(
+      map(response => {
+        console.log('Raw API response for completed events (AdminService):', JSON.stringify(response, null, 2));
+        return {
+          data: {
+            listEvents: response.data.listEvents || [],
+            pageNo: response.data.pageNo || 1,
+            pageSize: response.data.pageSize || 10,
+            totalPages: response.data.totalPages || 1,
+            totalElements: response.data.totalElements || response.data.listEvents.length || 0
+          }
+        };
+      })
+    );
+  }
   // Lấy danh sách sự kiện theo trạng thái
  // Trong file admin.service.ts
 
