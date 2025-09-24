@@ -41,7 +41,11 @@ export class UserManagementComponent implements OnInit {
   selectedUserFullName: string | null = null;
   isLoading: boolean = true;
   isLoadingReviews: boolean = false;
-
+  
+  selectAll: boolean = false;
+  currentPage: number = 1;
+  itemsPerPage: number = 10; 
+  totalItems: number = 0;
   constructor(
     private adminService: AdminService,
     private sanitizer: DomSanitizer,
@@ -53,6 +57,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   loadUsers(): void {
+    this.isLoading = true; 
     this.adminService.getUsers().subscribe({
       next: (response) => {
         console.log('Raw API response:', JSON.stringify(response, null, 2));
@@ -73,16 +78,52 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  applyFilter(): void {
+   applyFilter(): void {
     this.filteredUsers = this.users.filter(user => {
       const matchRole = !this.filterRole || user.role === this.filterRole;
       const matchStatus = !this.filterStatus || user.status === this.filterStatus;
       return matchRole && matchStatus;
     });
+
+    // === BẮT ĐẦU: Cập nhật logic phân trang sau khi lọc ===
+    this.totalItems = this.filteredUsers.length;
+    this.currentPage = 1; // Reset về trang đầu tiên mỗi khi lọc
+    this.updateSelectAllState();
+    // === KẾT THÚC: Cập nhật logic phân trang sau khi lọc ===
+
     console.log('Filtered users:', this.filteredUsers);
     this.cdr.detectChanges();
   }
+  // === BẮT ĐẦU: Thêm các phương thức hỗ trợ phân trang ===
+  getPaginatedUsers(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredUsers.slice(startIndex, endIndex);
+  }
 
+  getTotalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.getTotalPages()) {
+      this.currentPage = page;
+      this.updateSelectAllState(); // Cập nhật trạng thái select all khi chuyển trang
+    }
+  }
+
+  getDisplayEndIndex(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+  updateSelectAllState(): void {
+    const paginatedUsers = this.getPaginatedUsers();
+    if (paginatedUsers.length === 0) {
+      this.selectAll = false;
+      return;
+    }
+    this.selectAll = paginatedUsers.every(user => this.selectedUsers.includes(user.id));
+  }
+  // === KẾT THÚC: Thêm các phương thức hỗ trợ phân trang ===
   canApproveSelectedUsers(): boolean {
     return this.selectedUsers.every(userId => {
       const user = this.users.find(u => u.id === userId);
@@ -171,15 +212,22 @@ export class UserManagementComponent implements OnInit {
     } else {
       this.selectedUsers.push(userId);
     }
+     this.updateSelectAllState();
     this.cdr.detectChanges();
   }
 
-  toggleSelectAll(event: Event): void {
-    const isChecked = (event.target as HTMLInputElement).checked;
-    if (isChecked) {
-      this.selectedUsers = this.filteredUsers.map(user => user.id);
+ toggleSelectAll(): void {
+    const paginatedUserIds = this.getPaginatedUsers().map(user => user.id);
+    if (this.selectAll) {
+      // Thêm những user chưa được chọn của trang hiện tại vào danh sách
+      paginatedUserIds.forEach(id => {
+        if (!this.selectedUsers.includes(id)) {
+          this.selectedUsers.push(id);
+        }
+      });
     } else {
-      this.selectedUsers = [];
+      // Loại bỏ những user của trang hiện tại khỏi danh sách
+      this.selectedUsers = this.selectedUsers.filter(id => !paginatedUserIds.includes(id));
     }
     this.cdr.detectChanges();
   }
