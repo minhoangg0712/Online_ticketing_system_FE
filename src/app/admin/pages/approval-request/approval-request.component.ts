@@ -1,8 +1,9 @@
-import { Component,ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../service/admin.service';
-import { HttpClient } from '@angular/common/http'; // Add HttpClient import
+import { HttpClient } from '@angular/common/http';
+
 interface Event {
   id: number;
   title: string;
@@ -16,15 +17,15 @@ interface Event {
   status: 'pending' | 'approved' | 'rejected' | 'cancelled';
   createdDate: string;
   updatedDate?: string;
-  imageUrl?: string; // logoUrl
-  backgroundUrl?: string; // backgroundUrl
+  imageUrl?: string;
+  backgroundUrl?: string;
   organizer: {
     id: number;
     name: string;
-    avatar?: string; // organizerAvatarUrl
-    bio?: string; // organizerBio
-    email?: string; // organizerEmail
-    phoneNumber?: string | null; // organizerPhoneNumber
+    avatar?: string;
+    bio?: string;
+    email?: string;
+    phoneNumber?: string | null;
   };
   rejectionReason?: string;
   ticketPrices?: any;
@@ -38,24 +39,21 @@ interface Event {
   templateUrl: './approval-request.component.html',
   styleUrls: ['./approval-request.component.css']
 })
-export class ApprovalRequestComponent {
+export class ApprovalRequestComponent implements OnInit {
   events: Event[] = [];
-  filteredEvents: Event[] = [];
   loading: boolean = false;
   searchKeyword: string = '';
   selectedStatus: string = 'all';
   selectedCategory: string = 'all';
+  uniqueCategories: string[] = [];
 
-  // Pagination
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalItems: number = 0;
 
-  // Selection
   selectedEvents: number[] = [];
   selectAll: boolean = false;
 
-  // Modal states
   showDetailModal: boolean = false;
   showRejectModal: boolean = false;
   showConfirmModal: boolean = false;
@@ -63,7 +61,6 @@ export class ApprovalRequestComponent {
   rejectReason: string = '';
   confirmAction: string = '';
 
-  // Statistics
   stats = {
     total: 0,
     pending: 0,
@@ -71,27 +68,38 @@ export class ApprovalRequestComponent {
     rejected: 0
   };
   currentDate: Date = new Date();
-  constructor(private adminService: AdminService, private http: HttpClient,private cdr: ChangeDetectorRef) {}
+
+  constructor(private adminService: AdminService, private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loadEvents();
     this.loadStatistics();
+    this.loadAllCategories();
   }
 
- // Load events
   loadEvents() {
     this.loading = true;
-    this.adminService.getEvents().subscribe({
+    this.selectAll = false;
+
+    const params = {
+      name: this.searchKeyword || undefined,
+      approvalStatus: this.selectedStatus === 'all' ? undefined : this.selectedStatus,
+      category: this.selectedCategory === 'all' ? undefined : this.selectedCategory,
+      page: this.currentPage,
+      size: this.itemsPerPage
+    };
+
+    this.adminService.getEvents(params).subscribe({
       next: (response) => {
-        if (response && response.data && response.data.listEvents) {
-          this.events = response.data.listEvents.map((apiEvent: any) => ({
+        if (response && response.data) {
+          this.events = (response.data.content || []).map((apiEvent: any) => ({
             id: apiEvent.eventId,
             title: apiEvent.eventName,
             description: apiEvent.description || 'Không có mô tả',
             startDate: apiEvent.startTime ? apiEvent.startTime.split('T')[0] : '',
             endDate: apiEvent.endTime ? apiEvent.endTime.split('T')[0] : '',
-            startTime: apiEvent.startTime ? apiEvent.startTime.split('T')[1] : '',
-            endTime: apiEvent.endTime ? apiEvent.endTime.split('T')[1] : '',
+            startTime: apiEvent.startTime ? apiEvent.startTime.split('T')[1].substring(0, 5) : '',
+            endTime: apiEvent.endTime ? apiEvent.endTime.split('T')[1].substring(0, 5) : '',
             location: apiEvent.address || 'Chưa cung cấp địa chỉ',
             category: apiEvent.category || 'Không xác định',
             status: apiEvent.approvalStatus,
@@ -109,49 +117,91 @@ export class ApprovalRequestComponent {
             },
             rejectionReason: apiEvent.rejectReason || ''
           }));
-          console.log('Mapped events:', this.events);
-          this.stats.total = this.events.length;
-          this.stats.pending = this.events.filter(event => event.status === 'pending').length;
-          this.stats.approved = this.events.filter(event => event.status === 'approved').length;
-          this.stats.rejected = this.events.filter(event => event.status === 'rejected').length;
-          console.log('Stats:', this.stats);
-          this.applyFilters();
-          this.cdr.detectChanges(); // Buộc phát hiện thay đổi
+          this.totalItems = response.data.totalElements || 0;
+          this.updateSelectAll();
+        } else {
+            this.events = [];
+            this.totalItems = 0;
         }
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading events:', error);
+        this.showError('Có lỗi xảy ra khi tải danh sách sự kiện!');
         this.loading = false;
       }
     });
   }
 
-  formatDate1(date: Date): string {
-    if (!date || isNaN(date.getTime())) return 'Không xác định';
-    return date.toLocaleDateString('vi-VN'); // Định dạng dd/MM/yyyy, ví dụ: 23/09/2025
+  loadAllCategories() {
+    this.uniqueCategories = ["Hội thảo", "Âm nhạc", "Thể thao", "Văn hóa"];
   }
-  // Load statistics
+
   loadStatistics() {
     this.adminService.getEventCount().subscribe({
-      next: (count) => (this.stats.total = count),
+      next: (count) => (this.stats.total = count.data || 0),
       error: (error) => console.error('Error loading total events:', error)
     });
     this.adminService.getEventCountByStatus('pending').subscribe({
-      next: (count) => (this.stats.pending = count),
+      next: (count) => (this.stats.pending = count.data || 0),
       error: (error) => console.error('Error loading pending events:', error)
     });
     this.adminService.getEventCountByStatus('approved').subscribe({
-      next: (count) => (this.stats.approved = count),
+      next: (count) => (this.stats.approved = count.data || 0),
       error: (error) => console.error('Error loading approved events:', error)
     });
     this.adminService.getEventCountByStatus('rejected').subscribe({
-      next: (count) => (this.stats.rejected = count),
+      next: (count) => (this.stats.rejected = count.data || 0),
       error: (error) => console.error('Error loading rejected events:', error)
     });
   }
 
-  // Export Excel for a single event
+  onSearch() {
+    this.currentPage = 1;
+    this.loadEvents();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.loadEvents();
+  }
+
+  onCategoryChange() {
+    this.currentPage = 1;
+    this.loadEvents();
+  }
+
+  getTotalPages(): number {
+    if (this.totalItems === 0) return 1;
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.getTotalPages() && page !== this.currentPage) {
+      this.currentPage = page;
+      this.loadEvents();
+    }
+  }
+
+  getDisplayEndIndex(): number {
+    const end = this.currentPage * this.itemsPerPage;
+    return Math.min(end, this.totalItems);
+  }
+
+  formatDate1(date: Date): string {
+    if (!date || isNaN(date.getTime())) return 'Không xác định';
+    return date.toLocaleDateString('vi-VN');
+  }
+
+  private downloadFile(blob: Blob, fileName: string) {
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+    window.URL.revokeObjectURL(link.href);
+  }
+
   exportEventExcel(eventId: number) {
     this.loading = true;
     const url = `http://113.20.107.77:8080/api/events/${eventId}/report/excel`;
@@ -169,13 +219,11 @@ export class ApprovalRequestComponent {
     });
   }
 
-  // Optional: Batch export Excel for selected events
   batchExportExcel() {
     if (this.selectedEvents.length === 0) {
       this.showError('Vui lòng chọn ít nhất một sự kiện để xuất!');
       return;
     }
-
     this.loading = true;
     const exportPromises = this.selectedEvents.map(eventId => {
       const url = `http://113.20.107.77:8080/api/events/${eventId}/report/excel`;
@@ -185,7 +233,6 @@ export class ApprovalRequestComponent {
         }
       });
     });
-
     Promise.all(exportPromises)
       .then(() => {
         this.showSuccess(`Đã xuất ${this.selectedEvents.length} file Excel thành công!`);
@@ -198,15 +245,6 @@ export class ApprovalRequestComponent {
       });
   }
 
-  // Utility method to download file
-  private downloadFile(blob: Blob, fileName: string) {
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
-    window.URL.revokeObjectURL(link.href);
-  }
-    // Export PDF for a single event
   exportEventPdf(eventId: number) {
     this.loading = true;
     const url = `http://113.20.107.77:8080/api/events/${eventId}/report/pdf`;
@@ -224,7 +262,6 @@ export class ApprovalRequestComponent {
     });
   }
 
-  // Batch export PDF
   batchExportPdf() {
     if (this.selectedEvents.length === 0) {
       this.showError('Vui lòng chọn ít nhất một sự kiện để xuất!');
@@ -250,63 +287,7 @@ export class ApprovalRequestComponent {
         this.loading = false;
       });
   }
-  // Apply filters
-  applyFilters() {
-    this.filteredEvents = this.events.filter(event => {
-      const matchesSearch = !this.searchKeyword ||
-        event.title.toLowerCase().includes(this.searchKeyword.toLowerCase()) ||
-        event.organizer.name.toLowerCase().includes(this.searchKeyword.toLowerCase());
 
-      const matchesStatus = this.selectedStatus === 'all' || event.status === this.selectedStatus;
-      const matchesCategory = this.selectedCategory === 'all' || event.category === this.selectedCategory;
-
-      return matchesSearch && matchesStatus && matchesCategory;
-    });
-
-    this.totalItems = this.filteredEvents.length;
-    this.currentPage = 1;
-    this.cdr.detectChanges(); // Buộc phát hiện thay đổi
-  }
-
-  // Search events
-  onSearch() {
-    this.applyFilters();
-  }
-
-  // Filter by status
-  onStatusChange() {
-    this.applyFilters();
-  }
-
-  // Filter by category
-  onCategoryChange() {
-    this.applyFilters();
-  }
-
-  // Get paginated events
-  getPaginatedEvents(): Event[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredEvents.slice(startIndex, endIndex);
-  }
-
-  // Pagination methods
-  getTotalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage);
-  }
-
-  goToPage(page: number) {
-  if (page >= 1 && page <= this.getTotalPages()) {
-    this.currentPage = page;
-    this.cdr.detectChanges(); // Buộc phát hiện thay đổi
-  }
-}
-
-  getDisplayEndIndex(): number {
-    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
-  }
-
-  // Selection methods
   toggleEventSelection(eventId: number) {
     const index = this.selectedEvents.indexOf(eventId);
     if (index > -1) {
@@ -318,24 +299,30 @@ export class ApprovalRequestComponent {
   }
 
   toggleSelectAll() {
+    const paginatedEventIds = this.events.map(event => event.id);
     if (this.selectAll) {
-      this.selectedEvents = this.getPaginatedEvents().map(event => event.id);
+      paginatedEventIds.forEach(id => {
+        if (!this.selectedEvents.includes(id)) {
+          this.selectedEvents.push(id);
+        }
+      });
     } else {
-      this.selectedEvents = [];
+      this.selectedEvents = this.selectedEvents.filter(id => !paginatedEventIds.includes(id));
     }
   }
 
   updateSelectAll() {
-    const paginatedEvents = this.getPaginatedEvents();
-    this.selectAll = paginatedEvents.length > 0 &&
-      paginatedEvents.every(event => this.selectedEvents.includes(event.id));
+    if (this.events.length === 0) {
+      this.selectAll = false;
+      return;
+    }
+    this.selectAll = this.events.every(event => this.selectedEvents.includes(event.id));
   }
 
   isEventSelected(eventId: number): boolean {
     return this.selectedEvents.includes(eventId);
   }
 
-  // Event actions
   approveEvent(eventId: number) {
     this.adminService.approveEvent(eventId).subscribe({
       next: (response) => {
@@ -394,10 +381,8 @@ export class ApprovalRequestComponent {
     });
   }
 
-  // Batch actions
   batchApprove() {
     if (this.selectedEvents.length === 0) return;
-
     this.adminService.approveEvents(this.selectedEvents).subscribe({
       next: () => {
         this.showSuccess(`Đã duyệt ${this.selectedEvents.length} sự kiện!`);
@@ -415,7 +400,6 @@ export class ApprovalRequestComponent {
 
   batchReject() {
     if (this.selectedEvents.length === 0) return;
-
     this.adminService.rejectEvents(this.selectedEvents, this.rejectReason).subscribe({
       next: () => {
         this.showSuccess(`Đã từ chối ${this.selectedEvents.length} sự kiện!`);
@@ -435,7 +419,6 @@ export class ApprovalRequestComponent {
 
   batchDelete() {
     if (this.selectedEvents.length === 0) return;
-
     this.adminService.deleteEvents(this.selectedEvents).subscribe({
       next: () => {
         this.showSuccess(`Đã xóa ${this.selectedEvents.length} sự kiện!`);
@@ -451,8 +434,6 @@ export class ApprovalRequestComponent {
     });
   }
 
-  // Modal methods
-  // View event detail
   viewEventDetail(event: Event) {
     this.loading = true;
     this.adminService.getEventById(event.id).subscribe({
@@ -497,11 +478,11 @@ export class ApprovalRequestComponent {
       }
     });
   }
-goToEventDetail(eventId: number) {
-  // Điều hướng hoặc xử lý logic khi click vào ảnh
-  console.log('Navigate to event detail:', eventId);
-  // Ví dụ: this.router.navigate(['/event', eventId]);
-}
+
+  goToEventDetail(eventId: number) {
+    console.log('Navigate to event detail:', eventId);
+  }
+
   openRejectModal(event: Event) {
     this.selectedEvent = event;
     this.showRejectModal = true;
@@ -515,7 +496,6 @@ goToEventDetail(eventId: number) {
 
   confirmModalAction() {
     if (!this.selectedEvent) return;
-
     switch (this.confirmAction) {
       case 'approve':
         this.approveEvent(this.selectedEvent.id);
@@ -527,7 +507,6 @@ goToEventDetail(eventId: number) {
         this.deleteEvent(this.selectedEvent.id);
         break;
     }
-
     this.showConfirmModal = false;
   }
 
@@ -539,7 +518,6 @@ goToEventDetail(eventId: number) {
     this.rejectReason = '';
   }
 
-  // Utility methods
   getStatusClass(status: string): string {
     switch (status) {
       case 'pending': return 'badge-warning';
@@ -579,22 +557,16 @@ goToEventDetail(eventId: number) {
     return date.toLocaleString('vi-VN');
   }
 
-  // Toast notifications
   showSuccess(message: string) {
     console.log('Success:', message);
+    alert(message);
   }
 
   showError(message: string) {
     console.error('Error:', message);
+    alert(message);
   }
 
-  // Get unique categories
-  getUniqueCategories(): string[] {
-    const categories = this.events.map(event => event.category);
-    return [...new Set(categories)];
-  }
-
-  // View rejection reason
   viewRejectionReason(event: Event) {
     if (event.rejectionReason) {
       this.showSuccess(`Lý do từ chối: ${event.rejectionReason}`);
