@@ -42,6 +42,13 @@ export class UserManagementComponent implements OnInit {
   isLoading: boolean = true;
   isLoadingReviews: boolean = false;
 
+  
+  selectAll: boolean = false;
+
+  currentPage: number = 1;
+  itemsPerPage: number = 10; 
+  totalItems: number = 0;
+ 
   constructor(
     private adminService: AdminService,
     private sanitizer: DomSanitizer,
@@ -52,36 +59,59 @@ export class UserManagementComponent implements OnInit {
     this.loadUsers();
   }
 
-  loadUsers(): void {
-    this.adminService.getUsers().subscribe({
-      next: (response) => {
-        console.log('Raw API response:', JSON.stringify(response, null, 2));
-        console.log('Dữ liệu người dùng:', response.data.listUsers);
-        this.users = response.data.listUsers ?? [];
-        this.applyFilter();
-        this.selectedUsers = [];
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.error('Lỗi khi lấy danh sách người dùng:', error);
-        this.modalMessage = 'Có lỗi xảy ra khi tải danh sách người dùng. Vui lòng thử lại!';
-        this.showErrorModal = true;
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
+    loadUsers(): void {
+    this.isLoading = true; // Bắt đầu tải
+    this.adminService.getUsers().subscribe({
+      next: (response) => {
+        this.users = response.data.listUsers ?? [];
+        this.applyFilter();
+        this.selectedUsers = [];
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Lỗi khi lấy danh sách người dùng:', error);
+        this.modalMessage = 'Có lỗi xảy ra khi tải danh sách người dùng. Vui lòng thử lại!';
+        this.showErrorModal = true;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
   applyFilter(): void {
-    this.filteredUsers = this.users.filter(user => {
-      const matchRole = !this.filterRole || user.role === this.filterRole;
-      const matchStatus = !this.filterStatus || user.status === this.filterStatus;
-      return matchRole && matchStatus;
-    });
-    console.log('Filtered users:', this.filteredUsers);
-    this.cdr.detectChanges();
-  }
+    this.filteredUsers = this.users.filter(user => {
+      const matchRole = !this.filterRole || user.role === this.filterRole;
+      const matchStatus = !this.filterStatus || user.status === this.filterStatus;
+      return matchRole && matchStatus;
+    });
+    this.totalItems = this.filteredUsers.length;
+    this.currentPage = 1; 
+    this.updateSelectAllState();
+    console.log('Filtered users:', this.filteredUsers);
+    this.cdr.detectChanges();
+  }
+  getPaginatedUsers(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredUsers.slice(startIndex, endIndex);
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.getTotalPages()) {
+      this.currentPage = page;
+      this.updateSelectAllState(); // Cập nhật trạng thái select all khi chuyển trang
+    }
+  }
+
+  getDisplayEndIndex(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
 
   canApproveSelectedUsers(): boolean {
     return this.selectedUsers.every(userId => {
@@ -166,23 +196,38 @@ export class UserManagementComponent implements OnInit {
   }
 
   toggleUserSelection(userId: number): void {
-    if (this.selectedUsers.includes(userId)) {
-      this.selectedUsers = this.selectedUsers.filter(id => id !== userId);
-    } else {
-      this.selectedUsers.push(userId);
-    }
-    this.cdr.detectChanges();
-  }
+    if (this.selectedUsers.includes(userId)) {
+      this.selectedUsers = this.selectedUsers.filter(id => id !== userId);
+    } else {
+      this.selectedUsers.push(userId);
+    }
+    this.updateSelectAllState();
+    this.cdr.detectChanges();
+  }
 
-  toggleSelectAll(event: Event): void {
-    const isChecked = (event.target as HTMLInputElement).checked;
-    if (isChecked) {
-      this.selectedUsers = this.filteredUsers.map(user => user.id);
-    } else {
-      this.selectedUsers = [];
-    }
-    this.cdr.detectChanges();
-  }
+  toggleSelectAll(): void {
+    const paginatedUserIds = this.getPaginatedUsers().map(user => user.id);
+    if (this.selectAll) {
+      // Thêm những user chưa được chọn của trang hiện tại vào danh sách
+      paginatedUserIds.forEach(id => {
+        if (!this.selectedUsers.includes(id)) {
+          this.selectedUsers.push(id);
+        }
+      });
+    } else {
+      // Loại bỏ những user của trang hiện tại khỏi danh sách
+      this.selectedUsers = this.selectedUsers.filter(id => !paginatedUserIds.includes(id));
+    }
+    this.cdr.detectChanges();
+  }
+  updateSelectAllState(): void {
+    const paginatedUsers = this.getPaginatedUsers();
+    if (paginatedUsers.length === 0) {
+      this.selectAll = false;
+      return;
+    }
+    this.selectAll = paginatedUsers.every(user => this.selectedUsers.includes(user.id));
+  }
 
   canDisableSelectedUsers(): boolean {
     return this.selectedUsers.every(userId => {
