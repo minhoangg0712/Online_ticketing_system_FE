@@ -1,5 +1,3 @@
-
-<!-- Content Header (Page header) -->
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -16,7 +14,6 @@
   </div>
 </section>
 
-<!-- Main content -->
 <section class="content">
   <div class="card">
     <div class="card-header">
@@ -26,14 +23,17 @@
       <div *ngIf="isLoading" class="text-center p-3">
         <i class="fas fa-spinner fa-spin"></i> Đang tải...
       </div>
-      <div class="table-responsive" style="overflow-x: auto;">
-        <table class="table table-striped table-bordered" *ngIf="!isLoading">
+      <div *ngIf="!isLoading && completedEvents.length === 0" class="text-center p-3">
+        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+        <p class="text-muted">Không có sự kiện nào phù hợp</p>
+      </div>
+      <div class="table-responsive" style="overflow-x: auto;" *ngIf="!isLoading && completedEvents.length > 0">
+        <table class="table table-striped table-bordered">
           <thead>
             <tr>
               <th style="min-width: 80px;">Event ID</th>
               <th style="min-width: 200px;">Tên sự kiện</th>
               <th style="min-width: 100px;">Trạng thái</th>
-
               <th style="min-width: 120px;">Trạng thái phê duyệt</th>
               <th style="min-width: 140px;">Thời gian bắt đầu</th>
               <th style="min-width: 140px;">Thời gian kết thúc</th>
@@ -48,7 +48,6 @@
               <td>
                 <span class="badge badge-success">{{ event.status }}</span>
               </td>
-
               <td>
                 <span class="badge" [ngClass]="{
                   'badge-success': event.approvalStatus === 'approved',
@@ -65,11 +64,42 @@
                 </button>
               </td>
             </tr>
-            <tr *ngIf="completedEvents.length === 0 && !isLoading">
-              <td colspan="9" class="text-center">Không có sự kiện nào phù hợp</td>
-            </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+    <div class="card-footer" *ngIf="!isLoading && totalItems > 0">
+      <div class="row">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info">
+            Hiển thị {{ (currentPage - 1) * itemsPerPage + 1 }} đến
+            {{ getDisplayEndIndex() }} của {{ totalItems }} sự kiện
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-7">
+          <nav aria-label="Page navigation">
+            <ul class="pagination pagination-sm float-right">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" href="#" (click)="goToPage(currentPage - 1); $event.preventDefault()">
+                  Trước
+                </a>
+              </li>
+              <li
+                class="page-item"
+                *ngFor="let page of [].constructor(getTotalPages()); let i = index"
+                [class.active]="currentPage === i + 1">
+                <a class="page-link" href="#" (click)="goToPage(i + 1); $event.preventDefault()">
+                  {{ i + 1 }}
+                </a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages || completedEvents.length === 0">
+                <a class="page-link" href="#" (click)="goToPage(currentPage + 1); $event.preventDefault()">
+                  Sau
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </div>
@@ -92,8 +122,8 @@
         <div *ngIf="isLoadingReviews" class="text-center p-3">
           <i class="fas fa-spinner fa-spin"></i> Đang tải đánh giá...
         </div>
-        <div class="table-responsive" style="overflow-x: auto;">
-          <table class="table table-striped table-bordered" *ngIf="!isLoadingReviews">
+        <div class="table-responsive" style="overflow-x: auto;" *ngIf="!isLoadingReviews">
+          <table class="table table-striped table-bordered">
             <thead>
               <tr>
                 <th style="min-width: 80px;">Review ID</th>
@@ -169,4 +199,3 @@
 <div class="modal-backdrop fade" [class.show]="showErrorModal || showReviewsModal"
   [style.display]="showErrorModal || showReviewsModal ? 'block' : 'none'" (click)="closeErrorModal(); closeReviewsModal()">
 </div>
-
