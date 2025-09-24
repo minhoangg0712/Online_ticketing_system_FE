@@ -133,15 +133,17 @@ approveOrganizer(userId: number): Observable<any> {
   // ==================== EVENT METHODS ====================
 
   // Lấy danh sách tất cả sự kiện
-getEvents(params: any): Observable<any> {
-  let httpParams = new HttpParams();
-  Object.keys(params).forEach(key => {
-    if (params[key] !== undefined && params[key] !== null && params[key] !== '') {
-      httpParams = httpParams.set(key, params[key]);
-    }
-  });
-  return this.http.get('/api/events', { params: httpParams }); // Thay đổi URL API của bạn ở đây
-}
+ getEvents(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach(key => {
+      const value = params[key];
+      if (value !== undefined && value !== null && value !== '') {
+        httpParams = httpParams.set(key, value);
+      }
+    });
+    // ✅ SỬA LẠI URL CHO ĐÚNG
+    return this.http.get(this.eventsApiUrl, { params: httpParams });
+  }
 
   // Lấy danh sách sự kiện theo trạng thái
  // Trong file admin.service.ts
