@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../service/admin.service';
@@ -35,9 +35,8 @@ interface OrderDetail {
   templateUrl: './orders-request.component.html',
   styleUrls: ['./orders-request.component.css']
 })
-export class OrdersRequestComponent {
+export class OrdersRequestComponent implements OnInit {
   orders: Order[] = [];
-  filteredOrders: Order[] = [];
   loading: boolean = false;
   searchKeyword: string = '';
   selectedStatus: string = 'all';
@@ -61,7 +60,7 @@ export class OrdersRequestComponent {
     cancelled: 0
   };
 
-  constructor(private adminService: AdminService) {}
+  constructor(private adminService: AdminService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loadOrders();
@@ -76,73 +75,71 @@ export class OrdersRequestComponent {
       endAmount: this.endAmount || undefined,
       startTime: this.startTime || undefined,
       endTime: this.endTime || undefined,
-      page: this.currentPage - 1,
+      page: this.currentPage, // Backend expects 1-based
       size: this.itemsPerPage
     };
 
     this.adminService.getOrders(params).subscribe({
       next: (response) => {
+        console.log('Raw API response for orders:', JSON.stringify(response, null, 2));
         if (response && response.data && response.data.listOrders) {
           this.orders = response.data.listOrders.map((apiOrder: any) => ({
             id: apiOrder.orderId,
             userName: apiOrder.userName || 'Không xác định',
             userEmail: apiOrder.userEmail || 'Không xác định',
             orderPayOSCode: apiOrder.orderPayOSCode || 0,
-            status: apiOrder.status,
+            status: apiOrder.status.toLowerCase(),
             totalAmount: apiOrder.totalAmount || 0,
             orderDate: apiOrder.orderDate,
             totalTicketsCount: apiOrder.totalTicketsCount || 0,
             cancellationReason: apiOrder.cancellationReason || undefined
           }));
-          this.totalItems = response.data.totalElements || this.orders.length;
-          this.applyFilters();
+          this.totalItems = response.data.totalElements || (response.data.totalPages * response.data.pageSize) || this.orders.length;
+          this.currentPage = response.data.pageNo || 1;
+          this.itemsPerPage = response.data.pageSize || 10;
+        } else {
+          this.orders = [];
+          this.totalItems = 0;
+          this.currentPage = 1;
+          this.itemsPerPage = 10;
         }
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading orders:', error);
         this.showError('Có lỗi xảy ra khi tải danh sách đơn hàng!');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   loadStatistics() {
     this.adminService.getOrderCountByStatus('pending').subscribe({
-      next: (count) => this.stats.pending = count,
+      next: (count) => { this.stats.pending = count; this.cdr.detectChanges(); },
       error: (error) => console.error('Error loading pending orders:', error)
     });
     this.adminService.getOrderCountByStatus('paid').subscribe({
-      next: (count) => this.stats.paid = count,
+      next: (count) => { this.stats.paid = count; this.cdr.detectChanges(); },
       error: (error) => console.error('Error loading paid orders:', error)
     });
     this.adminService.getOrderCountByStatus('cancelled').subscribe({
-      next: (count) => this.stats.cancelled = count,
+      next: (count) => { this.stats.cancelled = count; this.cdr.detectChanges(); },
       error: (error) => console.error('Error loading cancelled orders:', error)
     });
     this.adminService.getOrders({}).subscribe({
-      next: (response) => this.stats.total = response.data.totalElements || 0,
+      next: (response) => {
+        this.stats.total = response.data.totalElements || (response.data.totalPages * response.data.pageSize) || 0;
+        this.cdr.detectChanges();
+      },
       error: (error) => console.error('Error loading total orders:', error)
     });
   }
 
-  applyFilters() {
-    this.filteredOrders = this.orders.filter(order => {
-      const matchesSearch = !this.searchKeyword ||
-        order.userName.toLowerCase().includes(this.searchKeyword.toLowerCase()) ||
-        order.userEmail.toLowerCase().includes(this.searchKeyword.toLowerCase()) ||
-        order.orderPayOSCode.toString().includes(this.searchKeyword.toLowerCase());
-      const matchesStatus = this.selectedStatus === 'all' || order.status === this.selectedStatus;
-      const matchesAmount = (!this.startAmount || order.totalAmount >= this.startAmount) &&
-                           (!this.endAmount || order.totalAmount <= this.endAmount);
-      return matchesSearch && matchesStatus && matchesAmount;
-    });
-    this.totalItems = this.filteredOrders.length;
-  }
-
   onSearch() {
     this.currentPage = 1;
-    this.applyFilters();
+    this.loadOrders();
   }
 
   onStatusChange() {
@@ -152,7 +149,7 @@ export class OrdersRequestComponent {
 
   onAmountChange() {
     this.currentPage = 1;
-    this.applyFilters();
+    this.loadOrders();
   }
 
   onDateChange() {
@@ -160,24 +157,20 @@ export class OrdersRequestComponent {
     this.loadOrders();
   }
 
-  getPaginatedOrders(): Order[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredOrders.slice(startIndex, endIndex);
-  }
-
   getTotalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage);
+    return Math.ceil(this.totalItems / this.itemsPerPage) || 1;
   }
 
   goToPage(page: number) {
-    if (page >= 1 && page <= this.getTotalPages()) {
+    if (page >= 1 && page <= this.getTotalPages() && page !== this.currentPage) {
       this.currentPage = page;
+      this.loadOrders();
     }
   }
 
   getDisplayEndIndex(): number {
-    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+    const end = this.currentPage * this.itemsPerPage;
+    return Math.min(end, this.totalItems);
   }
 
   viewOrderDetail(order: Order) {
@@ -197,16 +190,17 @@ export class OrdersRequestComponent {
             cancellationReason: response.data.cancellationReason || undefined,
             canceledAt: response.data.canceledAt || undefined
           };
-          // Lưu thông tin order để sử dụng cho hủy
-          this.orderToCancel = order; // Lưu order để có userName, userEmail
+          this.orderToCancel = order;
           this.showDetailModal = true;
         }
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading order detail:', error);
         this.showError('Có lỗi xảy ra khi tải chi tiết đơn hàng!');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -219,6 +213,7 @@ export class OrdersRequestComponent {
     this.orderToCancel = order;
     this.cancellationReason = '';
     this.showCancelModal = true;
+    this.cdr.detectChanges();
   }
 
   confirmCancelOrder() {
@@ -236,11 +231,13 @@ export class OrdersRequestComponent {
           }
         }
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error cancelling order:', error);
         this.showError('Có lỗi xảy ra khi hủy đơn hàng!');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -249,12 +246,14 @@ export class OrdersRequestComponent {
     this.showCancelModal = false;
     this.orderToCancel = null;
     this.cancellationReason = '';
+    this.cdr.detectChanges();
   }
 
   closeDetailModal() {
     this.showDetailModal = false;
     this.selectedOrderDetail = null;
     this.orderToCancel = null;
+    this.cdr.detectChanges();
   }
 
   getStatusClass(status: string): string {
@@ -296,9 +295,11 @@ export class OrdersRequestComponent {
 
   showSuccess(message: string) {
     console.log('Success:', message);
+    alert(message);
   }
 
   showError(message: string) {
     console.error('Error:', message);
+    alert(message);
   }
 }
